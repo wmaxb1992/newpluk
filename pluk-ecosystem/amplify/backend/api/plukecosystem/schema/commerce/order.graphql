@@ -1,0 +1,25 @@
+type Order 
+  @model 
+  @key(name: "byUser", fields: ["userID", "createdAt"])
+  @key(name: "byStatus", fields: ["status", "createdAt"])
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins", "Drivers"] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  items: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+  total: Float!
+  status: OrderStatus!
+  paymentID: ID
+  payment: Payment @belongsTo(fields: ["paymentID"])
+  deliveryID: ID
+  delivery: Delivery @belongsTo(fields: ["deliveryID"])
+  addressID: ID!
+  address: Address @belongsTo(fields: ["addressID"])
+  notes: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

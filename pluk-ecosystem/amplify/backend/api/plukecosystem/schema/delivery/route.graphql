@@ -1,0 +1,20 @@
+type DeliveryRoute 
+  @model 
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins", "Drivers"] }
+  ]) {
+  id: ID!
+  deliveryID: ID!
+  delivery: Delivery @belongsTo(fields: ["deliveryID"])
+  route: AWSJSON # JSON array of waypoints with coordinates
+  estimatedTravelTime: Int # in minutes
+  estimatedDistance: Float # in miles or kilometers
+  actualTravelTime: Int # in minutes
+  actualDistance: Float # in miles or kilometers
+  startTime: AWSDateTime
+  endTime: AWSDateTime
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

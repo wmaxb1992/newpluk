@@ -1,0 +1,18 @@
+type ProduceVariety 
+  @model 
+  @key(name: "byType", fields: ["typeID"])
+  @auth(rules: [
+    { allow: public, operations: [read] },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  typeID: ID!
+  type: ProduceType @belongsTo(fields: ["typeID"])
+  name: String!
+  description: String
+  image: String
+  nutrients: [ProduceNutrient] @hasMany(indexName: "byVariety", fields: ["id"])
+  listings: [ProduceListing] @hasMany(indexName: "byVariety", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

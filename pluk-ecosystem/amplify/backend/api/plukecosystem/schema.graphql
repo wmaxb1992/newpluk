@@ -1,0 +1,543 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+# Basic enums
+enum UserRole {
+  CONSUMER
+  FARMER
+  DRIVER
+  ADMIN
+}
+
+# Enums
+enum InventoryStatus {
+  PLANNED
+  PLANTED
+  GROWING
+  HARVESTED
+  SOLD_OUT
+  EXPIRED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  READY_FOR_PICKUP
+  COMPLETED
+  CANCELLED
+}
+
+enum PostType {
+  GENERAL
+  GROWING_UPDATE
+  HARVEST_ANNOUNCEMENT
+  EDUCATIONAL
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  READY_FOR_PICKUP
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  APPLE_PAY
+  GOOGLE_PAY
+  CASH_ON_DELIVERY
+}
+
+enum DeliveryStatus {
+  ASSIGNED
+  PICKING_UP
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+# Core models
+type User @model @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "id" }]) {
+  id: ID!
+  email: AWSEmail!
+  name: String
+  role: UserRole!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# Produce Taxonomy Models
+type ProduceCategory @model @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  name: String!
+  description: String
+  image: String
+  subcategories: [ProduceSubcategory] @hasMany(indexName: "byCategory", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type ProduceSubcategory @model @key(name: "byCategory", fields: ["categoryID"]) @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  categoryID: ID!
+  category: ProduceCategory @belongsTo(fields: ["categoryID"])
+  name: String!
+  description: String
+  image: String
+  types: [ProduceType] @hasMany(indexName: "bySubcategory", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type ProduceType @model @key(name: "bySubcategory", fields: ["subcategoryID"]) @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  subcategoryID: ID!
+  subcategory: ProduceSubcategory @belongsTo(fields: ["subcategoryID"])
+  name: String!
+  description: String
+  image: String
+  varieties: [ProduceVariety] @hasMany(indexName: "byType", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type ProduceVariety @model @key(name: "byType", fields: ["typeID"]) @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  typeID: ID!
+  type: ProduceType @belongsTo(fields: ["typeID"])
+  name: String!
+  description: String
+  image: String
+  nutrients: [ProduceNutrient] @hasMany(indexName: "byVariety", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type ProduceNutrient @model @key(name: "byVariety", fields: ["varietyID"]) @auth(rules: [{ allow: public, operations: [read] }]) {
+  id: ID!
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  name: String!
+  amount: Float!
+  unit: String!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# Farm Models
+type Farm @model @auth(rules: [{ allow: public, operations: [read] }, { allow: owner }]) {
+  id: ID!
+  name: String!
+  description: String
+  images: [String]
+  location: Location
+  contactEmail: AWSEmail
+  contactPhone: AWSPhone
+  website: AWSURL
+  organic: Boolean!
+  yearEstablished: Int
+  zones: [Zone] @hasMany(indexName: "byFarm", fields: ["id"])
+  marketSchedule: [MarketSchedule] @hasMany(indexName: "byFarm", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Zone @model @key(name: "byFarm", fields: ["farmID"]) @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  name: String!
+  description: String
+  location: Location
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type MarketSchedule @model @key(name: "byFarm", fields: ["farmID"]) @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  dayOfWeek: Int!
+  startTime: AWSTime!
+  endTime: AWSTime!
+  location: Location
+  notes: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Location {
+  latitude: Float!
+  longitude: Float!
+  address: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+}
+
+# Inventory Management Models
+type InventoryBatch @model 
+  @key(name: "byFarm", fields: ["farmID"]) 
+  @key(name: "byVariety", fields: ["varietyID"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  plantingDate: AWSDate
+  estimatedHarvestDate: AWSDate
+  actualHarvestDate: AWSDate
+  expirationDate: AWSDate
+  quantity: Float!
+  unit: String!
+  status: InventoryStatus!
+  storageConditions: String
+  notes: String
+  preHarvestListings: [PreHarvestListing] @hasMany(indexName: "byInventoryBatch", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type PreHarvestListing @model 
+  @key(name: "byFarm", fields: ["farmID"]) 
+  @key(name: "byVariety", fields: ["varietyID"]) 
+  @key(name: "byInventoryBatch", fields: ["inventoryBatchID"]) 
+  @key(name: "byHarvestDate", fields: ["estimatedHarvestDate", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  inventoryBatchID: ID
+  inventoryBatch: InventoryBatch @belongsTo(fields: ["inventoryBatchID"])
+  title: String!
+  description: String
+  estimatedHarvestDate: AWSDate!
+  estimatedQuantity: Float!
+  unit: String!
+  pricePerUnit: Float!
+  organic: Boolean!
+  images: [String]
+  reservations: [PreHarvestReservation] @hasMany(indexName: "byPreHarvestListing", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type PreHarvestReservation @model 
+  @key(name: "byPreHarvestListing", fields: ["preHarvestListingID", "createdAt"]) 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @key(name: "byStatus", fields: ["status", "createdAt"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  preHarvestListingID: ID!
+  preHarvestListing: PreHarvestListing @belongsTo(fields: ["preHarvestListingID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  quantity: Float!
+  unit: String!
+  status: ReservationStatus!
+  notes: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# Social Feature Models
+type FarmPost @model 
+  @key(name: "byFarm", fields: ["farmID", "createdAt"]) 
+  @key(name: "byPreHarvestListing", fields: ["preHarvestListingID", "createdAt"]) 
+  @key(name: "byType", fields: ["type", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  type: PostType!
+  title: String!
+  content: String!
+  images: [String]
+  videos: [String]
+  preHarvestListingID: ID
+  preHarvestListing: PreHarvestListing @belongsTo(fields: ["preHarvestListingID"])
+  comments: [PostComment] @hasMany(indexName: "byPost", fields: ["id"])
+  likes: [PostLike] @hasMany(indexName: "byPost", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type PostComment @model 
+  @key(name: "byPost", fields: ["postID", "createdAt"]) 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  postID: ID!
+  post: FarmPost @belongsTo(fields: ["postID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  content: String!
+  likes: [CommentLike] @hasMany(indexName: "byComment", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type PostLike @model 
+  @key(name: "byPost", fields: ["postID", "createdAt"]) 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  postID: ID!
+  post: FarmPost @belongsTo(fields: ["postID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type CommentLike @model 
+  @key(name: "byComment", fields: ["commentID", "createdAt"]) 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  commentID: ID!
+  comment: PostComment @belongsTo(fields: ["commentID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type FarmFollow @model 
+  @key(name: "byFarm", fields: ["farmID", "createdAt"]) 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  notificationPreferences: AWSJSON
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# Commerce Models
+type ProduceListing @model 
+  @key(name: "byFarm", fields: ["farmID", "createdAt"]) 
+  @key(name: "byVariety", fields: ["varietyID", "createdAt"]) 
+  @key(name: "byInventoryBatch", fields: ["inventoryBatchID", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  inventoryBatchID: ID
+  inventoryBatch: InventoryBatch @belongsTo(fields: ["inventoryBatchID"])
+  title: String!
+  description: String
+  pricePerUnit: Float!
+  unit: String!
+  quantityAvailable: Float!
+  organic: Boolean!
+  isInstantlyAvailable: Boolean!
+  instantDeliveryFee: Float
+  estimatedDeliveryMinutes: Int
+  harvestDate: AWSDate
+  expirationDate: AWSDate
+  images: [String]
+  reviews: [ListingReview] @hasMany(indexName: "byListing", fields: ["id"])
+  freshness: Int
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type ListingReview @model 
+  @key(name: "byListing", fields: ["listingID", "createdAt"]) 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  listingID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  rating: Int!
+  comment: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Cart @model 
+  @key(name: "byUser", fields: ["userID"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  items: [CartItem] @hasMany(indexName: "byCart", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type CartItem @model 
+  @key(name: "byCart", fields: ["cartID"]) 
+  @key(name: "byListing", fields: ["listingID"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  cartID: ID!
+  cart: Cart @belongsTo(fields: ["cartID"])
+  listingID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  quantity: Float!
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Order @model 
+  @key(name: "byUser", fields: ["userID", "createdAt"]) 
+  @key(name: "byStatus", fields: ["status", "createdAt"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  items: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+  status: OrderStatus!
+  subtotal: Float!
+  tax: Float!
+  deliveryFee: Float!
+  total: Float!
+  deliveryAddress: Location
+  deliveryNotes: String
+  payment: Payment @hasOne
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type OrderItem @model 
+  @key(name: "byOrder", fields: ["orderID"]) 
+  @key(name: "byListing", fields: ["listingID"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  orderID: ID!
+  order: Order @belongsTo(fields: ["orderID"])
+  listingID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  quantity: Float!
+  pricePerUnit: Float!
+  subtotal: Float!
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Payment @model 
+  @key(name: "byOrder", fields: ["orderID"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  orderID: ID!
+  order: Order @belongsTo(fields: ["orderID"])
+  amount: Float!
+  status: PaymentStatus!
+  method: PaymentMethod!
+  transactionId: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# Delivery Models
+type Driver @model 
+  @auth(rules: [{ allow: public, operations: [read] }, { allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  firstName: String!
+  lastName: String!
+  phoneNumber: AWSPhone!
+  profilePicture: String
+  licensePlate: String
+  carMake: String
+  carModel: String
+  carYear: Int
+  carColor: String
+  isActive: Boolean!
+  latitude: Float
+  longitude: Float
+  currentDelivery: Delivery @hasOne
+  deliveries: [Delivery] @hasMany(indexName: "byDriver", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Delivery @model 
+  @key(name: "byDriver", fields: ["driverID", "createdAt"]) 
+  @key(name: "byOrder", fields: ["orderID"]) 
+  @key(name: "byStatus", fields: ["status", "createdAt"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  orderID: ID!
+  order: Order @belongsTo(fields: ["orderID"])
+  driverID: ID!
+  driver: Driver @belongsTo(fields: ["driverID"])
+  status: DeliveryStatus!
+  pickupLocation: Location
+  deliveryLocation: Location
+  pickupTime: AWSDateTime
+  deliveryTime: AWSDateTime
+  deliveryNotes: String
+  deliveryRoute: DeliveryRoute @hasOne
+  rating: Int
+  feedback: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type DeliveryRoute @model 
+  @key(name: "byDelivery", fields: ["deliveryID"]) 
+  @auth(rules: [{ allow: owner, ownerField: "owner" }]) {
+  id: ID!
+  deliveryID: ID!
+  delivery: Delivery @belongsTo(fields: ["deliveryID"])
+  route: AWSJSON
+  estimatedDuration: Int
+  estimatedDistance: Float
+  actualDuration: Int
+  actualDistance: Float
+  startTime: AWSDateTime
+  endTime: AWSDateTime
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

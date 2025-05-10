@@ -1,0 +1,94 @@
+# Common enums used across domains
+
+# Order status enums
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PREPARING
+  READY_FOR_PICKUP
+  OUT_FOR_DELIVERY
+  DELIVERED
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+# Payment status enums
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+# Payment method enums
+enum PaymentMethodType {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  APPLE_PAY
+  GOOGLE_PAY
+  BANK_TRANSFER
+  CASH
+}
+
+# Inventory status enums
+enum InventoryStatus {
+  PLANNED
+  PLANTED
+  GROWING
+  HARVESTED
+  SOLD_OUT
+  EXPIRED
+}
+
+# Post type enums
+enum PostType {
+  GENERAL
+  GROWING_UPDATE
+  HARVEST_ANNOUNCEMENT
+  EDUCATIONAL
+}
+
+# Reservation status enums
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  READY_FOR_PICKUP
+  COMPLETED
+  CANCELLED
+}
+
+# Delivery status enums
+enum DeliveryStatus {
+  PENDING
+  ASSIGNED
+  PICKING_UP
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+# Notification type enums
+enum NotificationType {
+  ORDER_STATUS
+  DELIVERY_UPDATE
+  PROMOTION
+  FARM_POST
+  HARVEST_ANNOUNCEMENT
+  PRICE_DROP
+  RESERVATION_READY
+  SYSTEM
+}
+
+# User role enums
+enum UserRole {
+  CONSUMER
+  FARMER
+  DRIVER
+  ADMIN
+  SUPPORT
+}

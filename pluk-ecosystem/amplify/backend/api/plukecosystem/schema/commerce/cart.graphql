@@ -1,0 +1,18 @@
+type Cart 
+  @model 
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  items: [CartItem] @hasMany(indexName: "byCart", fields: ["id"])
+  total: Float
+  isSmartCart: Boolean
+  smartCartParams: AWSJSON
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

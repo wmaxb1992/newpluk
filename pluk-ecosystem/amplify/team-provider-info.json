@@ -1,0 +1,36 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-plukecosystem-dev-01ea0-authRole",
+      "UnauthRoleArn": "arn:aws:iam::207091906014:role/amplify-plukecosystem-dev-01ea0-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::207091906014:role/amplify-plukecosystem-dev-01ea0-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-plukecosystem-dev-01ea0-deployment",
+      "UnauthRoleName": "amplify-plukecosystem-dev-01ea0-unauthRole",
+      "StackName": "amplify-plukecosystem-dev-01ea0",
+      "StackId": "arn:aws:cloudformation:us-east-1:207091906014:stack/amplify-plukecosystem-dev-01ea0/1a2c2ec0-2d42-11f0-ae03-0affcf34068b",
+      "AmplifyAppId": "d1e4crb9os1yrm"
+    }
+  },
+  "pluk": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-plukecosystem-pluk-31784-authRole",
+      "UnauthRoleArn": "arn:aws:iam::207091906014:role/amplify-plukecosystem-pluk-31784-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::207091906014:role/amplify-plukecosystem-pluk-31784-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-plukecosystem-pluk-31784-deployment",
+      "UnauthRoleName": "amplify-plukecosystem-pluk-31784-unauthRole",
+      "StackName": "amplify-plukecosystem-pluk-31784",
+      "StackId": "arn:aws:cloudformation:us-east-1:207091906014:stack/amplify-plukecosystem-pluk-31784/445475d0-2d43-11f0-b327-0ebe3e5eaf19",
+      "AmplifyAppId": "d1e4crb9os1yrm"
+    },
+    "categories": {
+      "api": {
+        "plukecosystem": {}
+      },
+      "auth": {
+        "plukecosystem8896845f": {}
+      }
+    }
+  }
+}

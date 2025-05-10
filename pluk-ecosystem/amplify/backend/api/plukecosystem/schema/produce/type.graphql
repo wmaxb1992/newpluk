@@ -1,0 +1,17 @@
+type ProduceType 
+  @model 
+  @key(name: "bySubcategory", fields: ["subcategoryID"])
+  @auth(rules: [
+    { allow: public, operations: [read] },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  subcategoryID: ID!
+  subcategory: ProduceSubcategory @belongsTo(fields: ["subcategoryID"])
+  name: String!
+  description: String
+  image: String
+  varieties: [ProduceVariety] @hasMany(indexName: "byType", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

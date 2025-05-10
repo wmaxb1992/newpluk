@@ -1,0 +1,28 @@
+type Farm 
+  @model 
+  @auth(rules: [
+    { allow: public, operations: [read] },
+    { allow: owner },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  name: String!
+  description: String
+  images: [String]
+  location: Location
+  contactEmail: AWSEmail
+  contactPhone: AWSPhone
+  website: AWSURL
+  organic: Boolean!
+  yearEstablished: Int
+  zones: [Zone] @hasMany(indexName: "byFarm", fields: ["id"])
+  marketSchedule: [MarketSchedule] @hasMany(indexName: "byFarm", fields: ["id"])
+  inventoryBatches: [InventoryBatch] @hasMany(indexName: "byFarm", fields: ["id"])
+  listings: [ProduceListing] @hasMany(indexName: "byFarm", fields: ["id"])
+  posts: [FarmPost] @hasMany(indexName: "byFarm", fields: ["id"])
+  followers: [FarmFollow] @hasMany(indexName: "byFarm", fields: ["id"])
+  metrics: FarmMetrics @hasOne
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

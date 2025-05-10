@@ -80,6 +80,7 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
+amplify-admin_accessKeys.csv
 
 # TypeScript
 *.tsbuildinfo

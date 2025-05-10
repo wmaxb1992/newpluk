@@ -1,0 +1,18 @@
+type Zone 
+  @model 
+  @key(name: "byFarm", fields: ["farmID"])
+  @auth(rules: [
+    { allow: public, operations: [read] },
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  name: String!
+  description: String
+  location: Location
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
