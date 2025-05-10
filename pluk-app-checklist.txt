@@ -44,6 +44,8 @@ PLUK ECOSYSTEM DEVELOPMENT CHECKLIST
    [✓] Set up Amplify environments (dev, pluk)
    [ ] Configure Amplify storage for assets
    [ ] Set up multi-auth with different user pools for different apps
+   [ ] Implement proper user creation flow with role assignment (CONSUMER, FARMER, DRIVER, ADMIN) in frontend apps
+   [ ] Configure post-authentication flow to create GraphQL User records
 
 4. SCHEMA IMPLEMENTATION (PRIORITY)
    [✓] Reorganize existing GraphQL schemas into domain folders
@@ -83,6 +85,10 @@ PLUK ECOSYSTEM DEVELOPMENT CHECKLIST
    [ ] Initialize React Native Expo project for consumer app
    [ ] Set up navigation structure with React Navigation
    [ ] Implement authentication flow
+      [ ] User registration with role selection (CONSUMER by default)
+      [ ] Email verification and account confirmation
+      [ ] Login and password reset
+      [ ] Post-authentication creation of User record in GraphQL API
    [ ] Create app-specific Zustand stores
    [ ] Configure MMKV for local storage
    [ ] Build core screens
@@ -106,6 +112,10 @@ PLUK ECOSYSTEM DEVELOPMENT CHECKLIST
    [ ] Set up mobile app with React Native Expo
    [ ] Set up web dashboard with React
    [ ] Implement shared authentication
+      [ ] Farmer registration with FARMER role assignment
+      [ ] Farm profile creation after authentication
+      [ ] Verification process for farmers
+      [ ] Login with role-based redirection
    [ ] Create farmer-specific components
    [ ] Build core screens/pages
       [ ] Dashboard
@@ -120,6 +130,10 @@ PLUK ECOSYSTEM DEVELOPMENT CHECKLIST
    [ ] Initialize React Native Expo project for driver app
    [ ] Set up navigation structure
    [ ] Implement authentication flow
+      [ ] Driver registration with DRIVER role assignment
+      [ ] Driver verification and approval process
+      [ ] Background check integration
+      [ ] Post-authentication creation of Driver record in GraphQL API
    [ ] Build core screens
       [ ] Dashboard
       [ ] Delivery management
