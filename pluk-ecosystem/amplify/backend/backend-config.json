@@ -1,7 +1,15 @@
 {
   "api": {
     "plukecosystem": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "plukecosystem8896845f"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [

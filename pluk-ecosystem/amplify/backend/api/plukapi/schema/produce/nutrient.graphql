@@ -1,16 +1,13 @@
-type ProduceNutrient 
-  @model 
-  @key(name: "byVariety", fields: ["varietyID"])
-  @auth(rules: [
-    { allow: public, operations: [read] },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type ProduceNutrient @model @auth(rules: [
+  { allow: public },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
-  varietyID: ID!
-  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  varietyId: ID! @index(name: "byVariety")
   name: String!
   amount: Float!
   unit: String!
+  dailyValue: Float
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

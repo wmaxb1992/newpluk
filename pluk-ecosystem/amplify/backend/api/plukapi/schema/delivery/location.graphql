@@ -1,9 +1,14 @@
-type Location {
-  latitude: Float!
-  longitude: Float!
-  address: String
-  city: String
-  state: String
-  postalCode: String
-  country: String
+type DriverLocation @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "driverId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
+  id: ID!
+  driverId: ID! @index(name: "byDriver")
+  lat: Float!
+  lng: Float!
+  heading: Float
+  timestamp: AWSDateTime!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }

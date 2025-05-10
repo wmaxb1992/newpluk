@@ -1,40 +1,30 @@
-type ProduceListing 
-  @model 
-  @key(name: "byFarm", fields: ["farmID", "createdAt"])
-  @key(name: "byVariety", fields: ["varietyID", "createdAt"])
-  @key(name: "byInventoryBatch", fields: ["inventoryBatchID", "createdAt"])
-  @key(name: "byPreHarvestListing", fields: ["preHarvestListingID", "createdAt"])
-  @key(name: "byPrice", fields: ["pricePerUnit", "createdAt"])
-  @searchable
-  @auth(rules: [
-    { allow: public, operations: [read] },
-    { allow: owner, ownerField: "owner" },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type ProduceListing @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "farmOwnerId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
-  farmID: ID!
-  farm: Farm @belongsTo(fields: ["farmID"])
-  varietyID: ID!
-  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
-  inventoryBatchID: ID
-  inventoryBatch: InventoryBatch @belongsTo(fields: ["inventoryBatchID"])
-  preHarvestListingID: ID
-  preHarvestListing: PreHarvestListing @belongsTo(fields: ["preHarvestListingID"])
+  farmId: ID! @index(name: "byFarm")
+  farmOwnerId: ID!
+  inventoryBatchId: ID! @index(name: "byInventoryBatch")
+  produceVarietyId: ID! @index(name: "byProduceVariety")
   title: String!
   description: String
-  pricePerUnit: Float!
-  unit: String!
-  quantityAvailable: Float!
-  organic: Boolean!
+  images: [String]
+  price: Float!
+  priceUnit: String!
+  quantity: Float!
+  quantityUnit: String!
+  availableQuantity: Float!
+  isOrganic: Boolean!
   harvestDate: AWSDate
   expirationDate: AWSDate
-  freshness: Int # 1-10 scale, 10 being freshest
-  images: [String]
+  daysToExpiration: Int
+  freshness: Int
   active: Boolean!
-  reviews: [ListingReview] @hasMany(indexName: "byListing", fields: ["id"])
-  cartItems: [CartItem] @hasMany(indexName: "byListing", fields: ["id"])
-  orderItems: [OrderItem] @hasMany(indexName: "byListing", fields: ["id"])
-  owner: String
+  isInstantlyAvailable: Boolean!
+  instantDeliveryFee: Float
+  estimatedDeliveryMinutes: Int
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

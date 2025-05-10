@@ -1,22 +1,26 @@
-type Driver 
-  @model 
-  @auth(rules: [
-    { allow: owner, ownerField: "id" },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type Driver @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "userId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
-  userID: ID!
-  user: User @belongsTo(fields: ["userID"])
-  name: String!
-  licenseNumber: String!
+  userId: ID! @index(name: "byUser")
+  firstName: String!
+  lastName: String!
   phoneNumber: AWSPhone!
   email: AWSEmail!
   avatar: String
-  status: String
-  currentLocation: Location
-  activeDelivery: Delivery @hasOne
-  completedDeliveries: [Delivery] @hasMany(indexName: "byDriver", fields: ["id"])
-  ratings: [DriverRating] @hasMany(indexName: "byDriver", fields: ["id"])
+  licenseNumber: String!
+  licenseExpiry: AWSDate!
+  vehicleMake: String!
+  vehicleModel: String!
+  vehicleYear: Int!
+  vehicleColor: String!
+  vehicleLicensePlate: String!
+  active: Boolean!
+  currentLocationLat: Float
+  currentLocationLng: Float
+  lastLocationUpdateTime: AWSDateTime
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

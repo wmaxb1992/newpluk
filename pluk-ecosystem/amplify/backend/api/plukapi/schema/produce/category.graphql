@@ -1,14 +1,12 @@
-type ProduceCategory 
-  @model 
-  @auth(rules: [
-    { allow: public, operations: [read] },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type ProduceCategory @model @auth(rules: [
+  { allow: public },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
   name: String!
   description: String
   image: String
-  subcategories: [ProduceSubcategory] @hasMany(indexName: "byCategory", fields: ["id"])
+  icon: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

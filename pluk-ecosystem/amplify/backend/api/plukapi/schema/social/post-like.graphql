@@ -1,0 +1,11 @@
+type PostLike @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "userId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
+  id: ID!
+  farmPostId: ID! @index(name: "byFarmPost")
+  userId: ID! @index(name: "byUser")
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

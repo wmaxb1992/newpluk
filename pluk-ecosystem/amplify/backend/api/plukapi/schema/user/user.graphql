@@ -1,10 +1,8 @@
-type User 
-  @model 
-  @auth(rules: [
-    { allow: public, operations: [read] },
-    { allow: owner, ownerField: "id" },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type User @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "id" },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
   email: AWSEmail!
   name: String
@@ -12,17 +10,6 @@ type User
   avatar: String
   role: UserRole!
   bio: String
-  preferences: UserPreferences @hasOne
-  addresses: [Address] @hasMany(indexName: "byUser", fields: ["id"])
-  shoppingLists: [ShoppingList] @hasMany(indexName: "byUser", fields: ["id"])
-  carts: [Cart] @hasMany(indexName: "byUser", fields: ["id"])
-  orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
-  farmFollows: [FarmFollow] @hasMany(indexName: "byUser", fields: ["id"])
-  postLikes: [PostLike] @hasMany(indexName: "byUser", fields: ["id"])
-  postComments: [PostComment] @hasMany(indexName: "byUser", fields: ["id"])
-  commentLikes: [CommentLike] @hasMany(indexName: "byUser", fields: ["id"])
-  preHarvestReservations: [PreHarvestReservation] @hasMany(indexName: "byUser", fields: ["id"])
-  notifications: [Notification] @hasMany(indexName: "byUser", fields: ["id"])
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

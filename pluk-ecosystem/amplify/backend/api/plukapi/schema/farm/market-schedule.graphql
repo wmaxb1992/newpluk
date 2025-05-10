@@ -1,0 +1,20 @@
+type MarketSchedule @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "farmOwnerId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
+  id: ID!
+  farmId: ID! @index(name: "byFarm")
+  farmOwnerId: ID!
+  marketName: String!
+  address: String!
+  city: String!
+  state: String!
+  zipCode: String!
+  dayOfWeek: Int!
+  startTime: AWSTime!
+  endTime: AWSTime!
+  active: Boolean!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

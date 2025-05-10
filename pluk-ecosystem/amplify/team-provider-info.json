@@ -25,11 +25,11 @@
       "AmplifyAppId": "d1e4crb9os1yrm"
     },
     "categories": {
-      "api": {
-        "plukecosystem": {}
-      },
       "auth": {
         "plukecosystem8896845f": {}
+      },
+      "api": {
+        "plukecosystem": {}
       }
     }
   }

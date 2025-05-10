@@ -1,25 +1,18 @@
-type Order 
-  @model 
-  @key(name: "byUser", fields: ["userID", "createdAt"])
-  @key(name: "byStatus", fields: ["status", "createdAt"])
-  @auth(rules: [
-    { allow: owner, ownerField: "owner" },
-    { allow: groups, groups: ["Admins", "Drivers"] }
-  ]) {
+type Order @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "userId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
-  userID: ID!
-  user: User @belongsTo(fields: ["userID"])
-  items: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+  userId: ID! @index(name: "byUser")
+  status: OrderStatus! @index(name: "byStatus")
+  subtotal: Float!
+  tax: Float!
   total: Float!
-  status: OrderStatus!
-  paymentID: ID
-  payment: Payment @belongsTo(fields: ["paymentID"])
-  deliveryID: ID
-  delivery: Delivery @belongsTo(fields: ["deliveryID"])
-  addressID: ID!
-  address: Address @belongsTo(fields: ["addressID"])
-  notes: String
-  owner: String
+  deliveryFee: Float!
+  deliveryAddressId: ID
+  deliveryNotes: String
+  requestedDeliveryDate: AWSDate
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

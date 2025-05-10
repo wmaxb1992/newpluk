@@ -1,20 +1,15 @@
-type CartItem 
-  @model 
-  @key(name: "byCart", fields: ["cartID"])
-  @key(name: "byListing", fields: ["listingID"])
-  @auth(rules: [
-    { allow: owner, ownerField: "owner" },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type CartItem @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "userId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
-  cartID: ID!
-  cart: Cart @belongsTo(fields: ["cartID"])
-  listingID: ID!
-  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  cartId: ID! @index(name: "byCart")
+  userId: ID! @index(name: "byUser")
+  produceListingId: ID! @index(name: "byProduceListing")
   quantity: Float!
   price: Float!
   subtotal: Float!
-  owner: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

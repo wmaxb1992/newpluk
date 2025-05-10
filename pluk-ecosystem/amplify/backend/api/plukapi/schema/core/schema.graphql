@@ -1,27 +1,2 @@
-# Main schema file that imports all domain-specific schemas
-
-# Core schemas
-#import "../core/directives.graphql"
-#import "../core/enums.graphql"
-
-# Domain schemas
-#import "../produce/*.graphql"
-#import "../user/*.graphql"
-#import "../farm/*.graphql"
-#import "../inventory/*.graphql"
-#import "../social/*.graphql"
-#import "../commerce/*.graphql"
-#import "../delivery/*.graphql"
-
-# Custom queries and mutations can be defined here if needed
-type Query {
-  # Custom queries will be added here
-}
-
-type Mutation {
-  # Custom mutations will be added here
-}
-
-type Subscription {
-  # Custom subscriptions will be added here
-}
+# This is an auto generated file. DO NOT EDIT
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } }

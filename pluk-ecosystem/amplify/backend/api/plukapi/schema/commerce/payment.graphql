@@ -1,24 +1,15 @@
-type Payment 
-  @model 
-  @key(name: "byUser", fields: ["userID", "createdAt"])
-  @key(name: "byStatus", fields: ["status", "createdAt"])
-  @auth(rules: [
-    { allow: owner, ownerField: "owner" },
-    { allow: groups, groups: ["Admins"] }
-  ]) {
+type Payment @model @auth(rules: [
+  { allow: public, operations: [read] },
+  { allow: owner, ownerField: "userId" },
+  { allow: groups, groups: ["Admins"] }
+]) {
   id: ID!
-  userID: ID!
-  user: User @belongsTo(fields: ["userID"])
-  orderID: ID!
-  order: Order @belongsTo(fields: ["orderID"])
+  orderId: ID! @index(name: "byOrder")
+  userId: ID! @index(name: "byUser")
   amount: Float!
-  status: PaymentStatus!
-  method: PaymentMethodType!
-  transactionID: String
-  paymentDetails: AWSJSON
-  refundAmount: Float
-  refundReason: String
-  owner: String
+  status: PaymentStatus! @index(name: "byStatus")
+  method: PaymentMethod!
+  transactionId: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
