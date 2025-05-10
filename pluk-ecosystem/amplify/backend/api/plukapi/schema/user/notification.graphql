@@ -1,0 +1,21 @@
+type Notification 
+  @model 
+  @key(name: "byUser", fields: ["userID", "createdAt"])
+  @key(name: "byType", fields: ["type", "createdAt"])
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  type: NotificationType!
+  title: String!
+  message: String!
+  data: AWSJSON
+  read: Boolean!
+  readAt: AWSDateTime
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

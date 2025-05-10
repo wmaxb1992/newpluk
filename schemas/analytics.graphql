@@ -1,0 +1,64 @@
+type UserActivity @model
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [read] },
+    { allow: groups, groups: ["Admin", "Analytics"], operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  action: String!
+  itemID: ID
+  itemType: String
+  metadata: AWSJSON
+  sessionID: String
+  deviceInfo: String
+  ipAddress: String
+  timestamp: AWSDateTime!
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}
+
+type FarmMetrics @model 
+  @key(name: "byFarm", fields: ["farmID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "farmID", operations: [read] },
+    { allow: groups, groups: ["Admin", "Analytics"], operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  period: String!
+  totalSales: Float!
+  orderCount: Int!
+  topProducts: [ID]
+  customerRetentionRate: Float
+  averageOrderValue: Float
+  newCustomers: Int
+  repeatCustomers: Int
+  cancelRate: Float
+  refundRate: Float
+  instantDeliveryRate: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type AppMetrics @model
+  @auth(rules: [
+    { allow: groups, groups: ["Admin", "Analytics"], operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  date: AWSDate!
+  activeUsers: Int
+  newUsers: Int
+  totalOrders: Int
+  totalSales: Float
+  averageOrderValue: Float
+  topCategories: [ID]
+  topFarms: [ID]
+  topZones: [ID]
+  instantDeliveryPercentage: Float
+  userRetentionRate: Float
+  cartAbandonmentRate: Float
+  sessionDuration: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

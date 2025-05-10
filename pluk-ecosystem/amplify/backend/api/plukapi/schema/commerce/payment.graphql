@@ -1,0 +1,24 @@
+type Payment 
+  @model 
+  @key(name: "byUser", fields: ["userID", "createdAt"])
+  @key(name: "byStatus", fields: ["status", "createdAt"])
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  orderID: ID!
+  order: Order @belongsTo(fields: ["orderID"])
+  amount: Float!
+  status: PaymentStatus!
+  method: PaymentMethodType!
+  transactionID: String
+  paymentDetails: AWSJSON
+  refundAmount: Float
+  refundReason: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

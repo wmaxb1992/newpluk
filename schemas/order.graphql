@@ -1,0 +1,93 @@
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  CONFIRMED
+  READY_FOR_PICKUP
+  OUT_FOR_DELIVERY
+  DELIVERED
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  PAID
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum DeliveryMethod {
+  PICKUP
+  DELIVERY
+  SHIPPING
+}
+
+# Main order that groups multiple farm orders by zone
+type OrderGroup @model
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  orderNumber: String!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  zoneID: ID!
+  zone: Zone @belongsTo(fields: ["zoneID"])
+  orders: [Order] @hasMany(indexName: "byOrderGroup", fields: ["id"])
+  total: Float!
+  status: OrderStatus!
+  paymentStatus: PaymentStatus!
+  paymentID: ID
+  payment: Payment @hasOne
+  deliveryMethod: DeliveryMethod!
+  deliveryAddress: String
+  deliveryDate: AWSDateTime
+  deliveryNotes: String
+  contactPhone: String
+  specialInstructions: String
+  delivery: Delivery @hasOne
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+# Individual farm order
+type Order @model
+  @key(name: "byOrderGroup", fields: ["orderGroupID"])
+  @key(name: "byFarm", fields: ["farmID"])
+  @auth(rules: [
+    { allow: owner, operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  orderNumber: String!
+  orderGroupID: ID!
+  orderGroup: OrderGroup @belongsTo(fields: ["orderGroupID"])
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  items: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+  subtotal: Float!
+  status: OrderStatus!
+  specialInstructions: String
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type OrderItem @model @key(name: "byOrder", fields: ["orderID"]) {
+  id: ID!
+  orderID: ID!
+  order: Order @belongsTo(fields: ["orderID"])
+  listingID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  quantity: Int!
+  priceAtPurchase: Float!
+  unitLabel: String!
+  title: String!
+  notes: String
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

@@ -1,0 +1,64 @@
+type Farm @model 
+  @auth(rules: [
+    { allow: owner, operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  name: String!
+  description: String
+  location: String
+  address: String
+  latitude: Float
+  longitude: Float
+  contactEmail: String
+  phoneNumber: String
+  website: String
+  socialMedia: AWSJSON
+  imageUrl: String
+  coverImageUrl: String
+  gallery: [String]
+  certifications: [String]
+  badges: [String]
+  foundingYear: Int
+  story: String
+  sustainabilityPractices: [String]
+  zoneID: ID
+  zone: Zone @belongsTo(fields: ["zoneID"])
+  listings: [ProduceListing] @hasMany(indexName: "byFarm", fields: ["id"])
+  schedules: [MarketSchedule] @hasMany(indexName: "byFarm", fields: ["id"])
+  followers: [User] @manyToMany(relationName: "UserFavoriteFarms")
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type MarketSchedule @model @key(name: "byFarm", fields: ["farmID"]) {
+  id: ID!
+  dayOfWeek: String!
+  startTime: AWSTime!
+  endTime: AWSTime!
+  locationName: String!
+  locationAddress: String!
+  latitude: Float
+  longitude: Float
+  recurring: Boolean
+  notes: String
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type Zone @model {
+  id: ID!
+  name: String!
+  description: String
+  slug: String
+  latitude: Float
+  longitude: Float
+  areaKm2: Float
+  farmCount: Int
+  deliveryNotes: String
+  farms: [Farm] @hasMany(indexName: "byZone", fields: ["id"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

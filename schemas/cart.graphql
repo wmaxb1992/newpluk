@@ -1,0 +1,39 @@
+type Cart @model 
+  @auth(rules: [
+    { allow: owner, operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  farmGroups: [CartFarmGroup] @hasMany(indexName: "byCart", fields: ["id"])
+  total: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type CartFarmGroup @model @key(name: "byCart", fields: ["cartID"]) {
+  id: ID!
+  cartID: ID!
+  cart: Cart @belongsTo(fields: ["cartID"])
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  zoneID: ID!
+  zone: Zone @belongsTo(fields: ["zoneID"])
+  items: [CartItem] @hasMany(indexName: "byCartFarmGroup", fields: ["id"])
+  subtotal: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type CartItem @model 
+  @key(name: "byCartFarmGroup", fields: ["cartFarmGroupID"]) {
+  id: ID!
+  cartFarmGroupID: ID!
+  cartFarmGroup: CartFarmGroup @belongsTo(fields: ["cartFarmGroupID"])
+  listingID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  quantity: Int!
+  price: Float!
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

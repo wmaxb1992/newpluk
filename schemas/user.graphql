@@ -1,0 +1,25 @@
+type User @model 
+  @auth(rules: [
+    { allow: owner, operations: [create, read, update, delete] },
+    { allow: private, operations: [read] },
+    { allow: groups, groups: ["Admin"], operations: [read, update] }
+  ]) {
+  id: ID!
+  username: String!
+  email: String! @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admin"] }])
+  phoneNumber: String @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admin", "Support"] }])
+  profileImageUrl: String
+  bio: String
+  isProducer: Boolean
+  isFarmer: Boolean
+  isDriver: Boolean
+  location: String
+  preferences: AWSJSON @auth(rules: [{ allow: owner }, { allow: groups, groups: ["Admin"] }])
+  reviews: [ListingReview] @hasMany(indexName: "byUser", fields: ["id"])
+  orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
+  cart: Cart @hasOne
+  favoriteListings: [ProduceListing] @manyToMany(relationName: "UserFavorites")
+  favoriteFarms: [Farm] @manyToMany(relationName: "UserFavoriteFarms")
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

@@ -1,0 +1,28 @@
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  APPLE_PAY
+  GOOGLE_PAY
+  BANK_TRANSFER
+  CASH
+  OTHER
+}
+
+type Payment @model {
+  id: ID!
+  orderGroupID: ID!
+  orderGroup: OrderGroup @belongsTo(fields: ["orderGroupID"])
+  amount: Float!
+  currency: String!
+  method: PaymentMethod!
+  status: PaymentStatus!
+  transactionID: String
+  transactionDate: AWSDateTime
+  receiptUrl: String
+  refundAmount: Float
+  refundDate: AWSDateTime
+  refundNotes: String
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

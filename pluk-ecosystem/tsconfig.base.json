@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react-native",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pluk/api": ["packages/api/src"],
+      "@pluk/api/*": ["packages/api/src/*"],
+      "@pluk/ui": ["packages/ui/src"],
+      "@pluk/ui/*": ["packages/ui/src/*"],
+      "@pluk/styles": ["packages/styles/src"],
+      "@pluk/styles/*": ["packages/styles/src/*"],
+      "@pluk/animations": ["packages/animations/src"],
+      "@pluk/animations/*": ["packages/animations/src/*"],
+      "@pluk/hooks": ["packages/hooks/src"],
+      "@pluk/hooks/*": ["packages/hooks/src/*"],
+      "@pluk/services": ["packages/services/src"],
+      "@pluk/services/*": ["packages/services/src/*"],
+      "@pluk/store": ["packages/store/src"],
+      "@pluk/store/*": ["packages/store/src/*"],
+      "@pluk/types": ["packages/types/src"],
+      "@pluk/types/*": ["packages/types/src/*"],
+      "@pluk/utils": ["packages/utils/src"],
+      "@pluk/utils/*": ["packages/utils/src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,27 @@
+enum NotificationType {
+  ORDER_STATUS
+  DELIVERY_UPDATE
+  PROMOTION
+  INSTANT_AVAILABILITY
+  SYSTEM
+  PAYMENT
+}
+
+type Notification @model 
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [read, delete] },
+    { allow: private, operations: [create] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  title: String!
+  body: String!
+  type: NotificationType!
+  relatedItemID: ID
+  relatedItemType: String
+  isRead: Boolean!
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

@@ -1,0 +1,32 @@
+type Address {
+  id: ID!
+  label: String
+  street: String!
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+  latitude: Float
+  longitude: Float
+  isDefault: Boolean
+  instructions: String
+}
+
+type UserPreferences @model
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  dietaryPreferences: [String]
+  favoriteCategories: [ID]
+  deliveryAddresses: [Address]
+  defaultPaymentMethod: ID
+  notificationSettings: AWSJSON
+  privacySettings: AWSJSON
+  appSettings: AWSJSON
+  dataUsageSettings: AWSJSON
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

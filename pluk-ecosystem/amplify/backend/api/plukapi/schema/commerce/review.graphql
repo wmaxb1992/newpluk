@@ -1,0 +1,22 @@
+type ListingReview 
+  @model 
+  @key(name: "byListing", fields: ["listingID", "createdAt"])
+  @key(name: "byUser", fields: ["userID", "createdAt"])
+  @auth(rules: [
+    { allow: public, operations: [read] },
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  listingID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  rating: Int! # 1-5 scale
+  title: String
+  content: String
+  images: [String]
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

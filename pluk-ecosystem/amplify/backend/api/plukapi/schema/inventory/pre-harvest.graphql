@@ -1,0 +1,33 @@
+type PreHarvestListing 
+  @model 
+  @key(name: "byFarm", fields: ["farmID"])
+  @key(name: "byVariety", fields: ["varietyID"])
+  @key(name: "byInventoryBatch", fields: ["inventoryBatchID"])
+  @key(name: "byHarvestDate", fields: ["estimatedHarvestDate", "createdAt"])
+  @auth(rules: [
+    { allow: public, operations: [read] },
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  inventoryBatchID: ID
+  inventoryBatch: InventoryBatch @belongsTo(fields: ["inventoryBatchID"])
+  title: String!
+  description: String
+  estimatedHarvestDate: AWSDate!
+  estimatedQuantity: Float!
+  unit: String!
+  pricePerUnit: Float!
+  organic: Boolean!
+  images: [String]
+  reservations: [PreHarvestReservation] @hasMany(indexName: "byPreHarvestListing", fields: ["id"])
+  posts: [FarmPost] @hasMany(indexName: "byPreHarvestListing", fields: ["id"])
+  listings: [ProduceListing] @hasMany(indexName: "byPreHarvestListing", fields: ["id"])
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

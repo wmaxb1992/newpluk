@@ -1,0 +1,27 @@
+# Main schema file that imports all domain-specific schemas
+
+# Import core schemas
+#import "schema/core/directives.graphql"
+#import "schema/core/enums.graphql"
+
+# Import domain schemas
+#import "schema/produce/*.graphql"
+#import "schema/user/*.graphql"
+#import "schema/farm/*.graphql"
+#import "schema/inventory/*.graphql"
+#import "schema/social/*.graphql"
+#import "schema/commerce/*.graphql"
+#import "schema/delivery/*.graphql"
+
+# Additional custom queries and mutations can be defined here if needed
+type Query {
+  # Custom queries will be added here as needed
+}
+
+type Mutation {
+  # Custom mutations will be added here as needed
+}
+
+type Subscription {
+  # Custom subscriptions will be added here as needed
+}

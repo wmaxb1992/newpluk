@@ -1,0 +1,90 @@
+type ProduceCategory @model {
+  id: ID!
+  name: String!
+  description: String
+  slug: String
+  iconUrl: String
+  colorHex: String
+  displayOrder: Int
+  subcategories: [ProduceSubcategory] @hasMany(indexName: "byCategory", fields: ["id"])
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type ProduceSubcategory @model @key(name: "byCategory", fields: ["categoryID"]) {
+  id: ID!
+  name: String!
+  slug: String
+  iconUrl: String
+  categoryID: ID!
+  category: ProduceCategory @belongsTo(fields: ["categoryID"])
+  types: [ProduceType] @hasMany(indexName: "bySubcategory", fields: ["id"])
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type ProduceType @model @key(name: "bySubcategory", fields: ["subcategoryID"]) {
+  id: ID!
+  name: String!
+  slug: String
+  iconUrl: String
+  description: String
+  tasteProfile: [String]
+  commonUses: [String]
+  subcategoryID: ID
+  subcategory: ProduceSubcategory @belongsTo(fields: ["subcategoryID"])
+  varieties: [ProduceVariety] @hasMany(indexName: "byType", fields: ["id"])
+  tags: [String]
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type ProduceVariety @model @key(name: "byType", fields: ["typeID"]) {
+  id: ID!
+  name: String!
+  iconUrl: String
+  alternateNames: [String]
+  originCountry: String
+  yearBred: Int
+  tasteProfile: [String]
+  skinColor: String
+  fleshColor: String
+  shelfLifeDays: Int
+  storageTips: String
+  seasonalMonths: [String]
+  flavorNotes: String
+  nutritionFacts: AWSJSON
+  nutrients: [ProduceNutrient] @hasMany(indexName: "byVariety", fields: ["id"])
+  climateZones: [String]
+  aiTags: [String]
+  rarityScore: Int
+  isGeneric: Boolean
+  typeID: ID!
+  type: ProduceType @belongsTo(fields: ["typeID"])
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type ProduceNutrient @model @key(name: "byVariety", fields: ["varietyID"]) {
+  id: ID!
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  name: String!
+  unit: String!
+  amountPer100g: Float!
+  dailyValuePercent: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

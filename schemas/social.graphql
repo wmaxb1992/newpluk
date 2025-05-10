@@ -1,0 +1,127 @@
+enum PostType {
+  GENERAL_UPDATE
+  GROWING_UPDATE
+  HARVEST_ANNOUNCEMENT
+  FARM_EVENT
+  BEHIND_THE_SCENES
+  EDUCATIONAL
+  RECIPE
+}
+
+type FarmPost @model
+  @key(name: "byFarm", fields: ["farmID", "createdAt"])
+  @key(name: "byPreHarvestListing", fields: ["preHarvestListingID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "farmID", operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  type: PostType!
+  title: String!
+  content: String!
+  images: [String]
+  video: String
+  likes: Int!
+  preHarvestListingID: ID
+  preHarvestListing: PreHarvestListing @belongsTo(fields: ["preHarvestListingID"])
+  inventoryBatchID: ID
+  inventoryBatch: InventoryBatch @belongsTo(fields: ["inventoryBatchID"])
+  varietyID: ID
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  comments: [PostComment] @hasMany(indexName: "byPost", fields: ["id"])
+  tags: [String]
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type PostComment @model
+  @key(name: "byPost", fields: ["postID", "createdAt"])
+  @key(name: "byUser", fields: ["userID", "createdAt"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  postID: ID!
+  post: FarmPost @belongsTo(fields: ["postID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  content: String!
+  likes: Int!
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type PostLike @model
+  @key(name: "byPost", fields: ["postID"])
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  postID: ID!
+  post: FarmPost @belongsTo(fields: ["postID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}
+
+type CommentLike @model
+  @key(name: "byComment", fields: ["commentID"])
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  commentID: ID!
+  comment: PostComment @belongsTo(fields: ["commentID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}
+
+type PreHarvestReservation @model
+  @key(name: "byPreHarvestListing", fields: ["preHarvestListingID"])
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update, delete] },
+    { allow: owner, ownerField: "farmID", operations: [read, update] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  preHarvestListingID: ID!
+  preHarvestListing: PreHarvestListing @belongsTo(fields: ["preHarvestListingID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  quantity: Int!
+  depositAmount: Float
+  depositPaid: Boolean
+  status: String! # "PENDING", "CONFIRMED", "CANCELLED", "FULFILLED"
+  notes: String
+  harvestNotificationSent: Boolean
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type FarmFollow @model
+  @key(name: "byFarm", fields: ["farmID"])
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, delete] },
+    { allow: owner, ownerField: "farmID", operations: [read] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  notificationsEnabled: Boolean!
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}

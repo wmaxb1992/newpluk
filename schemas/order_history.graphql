@@ -1,0 +1,22 @@
+type OrderHistory @model
+  @key(name: "byOrder", fields: ["orderID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [read] },
+    { allow: groups, groups: ["Admin", "Support"], operations: [read] },
+    { allow: private, operations: [create] }
+  ]) {
+  id: ID!
+  orderID: ID!
+  order: Order @belongsTo(fields: ["orderID"])
+  orderGroupID: ID!
+  orderGroup: OrderGroup @belongsTo(fields: ["orderGroupID"])
+  userID: ID!
+  previousStatus: OrderStatus!
+  newStatus: OrderStatus!
+  changedBy: ID!
+  changedByRole: String!
+  changeReason: String
+  timestamp: AWSDateTime!
+  metadata: AWSJSON
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}

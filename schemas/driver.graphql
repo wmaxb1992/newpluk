@@ -1,0 +1,131 @@
+enum DriverStatus {
+  AVAILABLE
+  BUSY
+  OFFLINE
+  ON_BREAK
+}
+
+enum DeliveryStatus {
+  PENDING_ASSIGNMENT
+  DRIVER_ASSIGNED
+  EN_ROUTE_TO_PICKUP
+  AT_PICKUP
+  PICKED_UP
+  EN_ROUTE_TO_DELIVERY
+  ARRIVED_AT_DELIVERY
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+type Driver @model
+  @auth(rules: [
+    { allow: owner, operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  firstName: String!
+  lastName: String!
+  email: String!
+  phoneNumber: String!
+  profileImageUrl: String
+  licenseNumber: String!
+  licenseExpiry: AWSDate!
+  vehicleType: String!
+  vehicleMake: String!
+  vehicleModel: String!
+  vehicleYear: Int!
+  vehicleColor: String!
+  vehicleLicensePlate: String!
+  insuranceProvider: String
+  insurancePolicyNumber: String
+  insuranceExpiryDate: AWSDate
+  backgroundCheckStatus: String
+  backgroundCheckDate: AWSDate
+  rating: Float
+  activeZones: [Zone] @manyToMany(relationName: "DriverActiveZones")
+  currentLocation: Location @hasOne
+  status: DriverStatus!
+  deliveries: [Delivery] @hasMany(indexName: "byDriver", fields: ["id"])
+  completedDeliveries: Int
+  totalEarnings: Float
+  availableHours: AWSJSON # JSON object with days and hours
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type Location @model {
+  id: ID!
+  latitude: Float!
+  longitude: Float!
+  accuracy: Float
+  heading: Float
+  altitude: Float
+  speed: Float
+  timestamp: AWSDateTime!
+  driverID: ID
+  driver: Driver @belongsTo(fields: ["driverID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type Delivery @model
+  @key(name: "byDriver", fields: ["driverID"])
+  @key(name: "byOrderGroup", fields: ["orderGroupID"]) {
+  id: ID!
+  orderGroupID: ID!
+  orderGroup: OrderGroup @belongsTo(fields: ["orderGroupID"])
+  driverID: ID
+  driver: Driver @belongsTo(fields: ["driverID"])
+  status: DeliveryStatus!
+  pickupLocation: String!
+  pickupLat: Float!
+  pickupLng: Float!
+  pickupTime: AWSDateTime
+  deliveryLocation: String!
+  deliveryLat: Float!
+  deliveryLng: Float!
+  deliveryTime: AWSDateTime
+  estimatedDistance: Float
+  estimatedDuration: Int
+  actualDistance: Float
+  actualDuration: Int
+  deliveryFee: Float!
+  driverTip: Float
+  deliveryNotes: String
+  deliveryPhoto: String
+  signature: String
+  contactlessDelivery: Boolean
+  rating: Int
+  feedback: String
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type DeliveryRoute @model {
+  id: ID!
+  deliveryID: ID!
+  delivery: Delivery @belongsTo(fields: ["deliveryID"])
+  waypoints: [Waypoint] @hasMany(indexName: "byRoute", fields: ["id"])
+  polyline: String
+  estimatedDuration: Int
+  estimatedDistance: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type Waypoint @model @key(name: "byRoute", fields: ["routeID"]) {
+  id: ID!
+  routeID: ID!
+  route: DeliveryRoute @belongsTo(fields: ["routeID"])
+  latitude: Float!
+  longitude: Float!
+  order: Int!
+  stopType: String
+  arrivalTime: AWSDateTime
+  departureTime: AWSDateTime
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

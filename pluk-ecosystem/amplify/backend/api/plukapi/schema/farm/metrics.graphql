@@ -1,0 +1,24 @@
+type FarmMetrics 
+  @model 
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" },
+    { allow: groups, groups: ["Admins"] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  totalSales: Float
+  totalOrders: Int
+  averageOrderValue: Float
+  totalCustomers: Int
+  repeatCustomerRate: Float
+  topSellingProducts: [String]
+  inventoryTurnoverRate: Float
+  averageProductRating: Float
+  followerCount: Int
+  engagementRate: Float
+  lastUpdated: AWSDateTime
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

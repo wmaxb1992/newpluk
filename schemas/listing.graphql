@@ -1,0 +1,71 @@
+type ProduceListing 
+  @model 
+  @key(name: "byFarm", fields: ["farmID"]) 
+  @key(name: "byVariety", fields: ["varietyID"]) 
+  @key(name: "byInstantAvailability", fields: ["isInstantlyAvailable", "createdAt"])
+  @key(name: "byPriceRange", fields: ["pricePerUnit", "createdAt"])
+  @key(name: "byOrganic", fields: ["organic", "createdAt"])
+  @key(name: "byZone", fields: ["zoneID", "createdAt"]) {
+  id: ID!
+  title: String!
+  description: String
+  pricePerUnit: Float!
+  unitLabel: String!
+  quantityAvailable: Int!
+  minOrderQuantity: Int
+  maxOrderQuantity: Int
+  imageUrls: [String!]
+  datePicked: AWSDate!
+  daysSinceHarvested: Int
+  shelfLifeDays: Int
+  freshness: Float # 0-1 score based on harvest date and shelf life
+  storageInstructions: String
+  organic: Boolean
+  isPreparedDish: Boolean!
+  inventoryBatchID: ID
+  inventoryBatch: InventoryBatch @belongsTo(fields: ["inventoryBatchID"])
+  preHarvestListingID: ID
+  preHarvestListing: PreHarvestListing @belongsTo(fields: ["preHarvestListingID"])
+  deliveryMethods: [String]
+  expiresAt: AWSDateTime
+  isActive: Boolean!
+  isInstantlyAvailable: Boolean!
+  instantDeliveryFee: Float
+  estimatedDeliveryMinutes: Int
+  tags: [String]
+  seasonality: [String]
+  featured: Boolean
+
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  
+  zoneID: ID!
+  zone: Zone @belongsTo(fields: ["zoneID"])
+
+  reviews: [ListingReview] @hasMany(indexName: "byListing", fields: ["id"])
+  favoriteUsers: [User] @manyToMany(relationName: "UserFavorites")
+
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type ListingReview 
+  @model 
+  @key(name: "byListing", fields: ["listingID"]) 
+  @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  rating: Int!
+  comment: String
+  images: [String]
+  helpfulCount: Int
+  reportCount: Int
+  listingID: ID!
+  userID: ID!
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  user: User @belongsTo(fields: ["userID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

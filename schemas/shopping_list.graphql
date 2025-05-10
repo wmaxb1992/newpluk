@@ -1,0 +1,84 @@
+type ShoppingList @model
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  name: String!
+  description: String
+  isDefault: Boolean
+  items: [ShoppingListItem] @hasMany(indexName: "byShoppingList", fields: ["id"])
+  lastUsed: AWSDateTime
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type ShoppingListItem @model
+  @key(name: "byShoppingList", fields: ["shoppingListID"])
+  @key(name: "byVariety", fields: ["varietyID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  shoppingListID: ID!
+  shoppingList: ShoppingList @belongsTo(fields: ["shoppingListID"])
+  userID: ID!
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  quantity: Int!
+  notes: String
+  preferredFarmIDs: [ID]
+  preferredOrganicOnly: Boolean
+  preferredMaxPrice: Float
+  preferredMaxDaysSinceHarvested: Int
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type SmartCartConfig @model
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  name: String!
+  prioritizeFreshness: Boolean
+  prioritizePrice: Boolean
+  prioritizeOrganicOnly: Boolean
+  prioritizeLocalFarms: Boolean
+  maxDistanceKm: Float
+  preferredFarmIDs: [ID]
+  excludedFarmIDs: [ID]
+  maxDaysSinceHarvested: Int
+  maxPriceMultiplier: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type SmartCartGeneration @model
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [read, delete] },
+    { allow: private, operations: [create] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  shoppingListID: ID!
+  shoppingList: ShoppingList @belongsTo(fields: ["shoppingListID"])
+  configID: ID
+  config: SmartCartConfig @belongsTo(fields: ["configID"])
+  status: String! # "PROCESSING", "COMPLETED", "FAILED"
+  totalItems: Int
+  successfulItems: Int
+  failedItems: Int
+  totalPrice: Float
+  farmCount: Int
+  errorMessage: String
+  completedAt: AWSDateTime
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

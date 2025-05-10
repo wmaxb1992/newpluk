@@ -1,0 +1,98 @@
+# Main schema file that imports all individual schema files
+
+# Import produce taxonomy models
+#import "./produce.graphql"
+
+# Import user model
+#import "./user.graphql"
+
+# Import farm and zone models
+#import "./farm.graphql"
+
+# Import listing and review models
+#import "./listing.graphql"
+
+# Import order and order item models
+#import "./order.graphql"
+
+# Import order history
+#import "./order_history.graphql"
+
+# Import cart and cart item models
+#import "./cart.graphql"
+
+# Import payment models
+#import "./payment.graphql"
+
+# Import driver and delivery models
+#import "./driver.graphql"
+
+# Import notification models
+#import "./notification.graphql"
+
+# Import promotion models
+#import "./promotion.graphql"
+
+# Import user preferences models
+#import "./user_preferences.graphql"
+
+# Import analytics models
+#import "./analytics.graphql"
+
+# Import content models
+#import "./content.graphql"
+
+# Import support models
+#import "./support.graphql"
+
+# Import seasonal models
+#import "./seasonal.graphql"
+
+# Import inventory and pre-harvest models
+#import "./inventory.graphql"
+
+# Import shopping list and smart cart models
+#import "./shopping_list.graphql"
+
+# Import social and community models
+#import "./social.graphql"
+
+# Add any custom queries or mutations here if needed
+type Query {
+  # Custom queries can be added here
+  getListingsByFarm(farmID: ID!, limit: Int, nextToken: String): ProduceListingConnection @function(name: "getListingsByFarmFunction")
+  searchListings(searchTerm: String!, limit: Int, nextToken: String): ProduceListingConnection @function(name: "searchListingsFunction")
+  getNearbyFarms(latitude: Float!, longitude: Float!, radiusKm: Float!, limit: Int, nextToken: String): FarmConnection @function(name: "getNearbyFarmsFunction")
+}
+
+type Mutation {
+  # Custom mutations can be added here
+  createOrder(input: CreateOrderInput!): Order @function(name: "createOrderFunction")
+  processPayment(input: ProcessPaymentInput!): Payment @function(name: "processPaymentFunction")
+}
+
+# Custom input types for mutations
+input CreateOrderInput {
+  userID: ID!
+  farmID: ID!
+  items: [OrderItemInput]!
+  deliveryMethod: DeliveryMethod!
+  deliveryAddress: String
+  deliveryDate: AWSDateTime
+  deliveryNotes: String
+  contactPhone: String
+  specialInstructions: String
+}
+
+input OrderItemInput {
+  listingID: ID!
+  quantity: Int!
+}
+
+input ProcessPaymentInput {
+  orderID: ID!
+  amount: Float!
+  currency: String!
+  method: PaymentMethod!
+  paymentDetails: AWSJSON
+}

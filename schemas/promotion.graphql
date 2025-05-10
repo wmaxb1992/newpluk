@@ -1,0 +1,49 @@
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  FREE_DELIVERY
+}
+
+type Promotion @model 
+  @auth(rules: [
+    { allow: groups, groups: ["Admin"], operations: [create, read, update, delete] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  code: String!
+  description: String!
+  discountType: DiscountType!
+  discountValue: Float!
+  minimumOrderValue: Float
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  isActive: Boolean!
+  usageLimit: Int
+  usageCount: Int
+  applicableProducts: [ID]
+  applicableFarms: [ID]
+  applicableZones: [ID]
+  maxDiscountAmount: Float
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type UserPromotion @model
+  @key(name: "byUser", fields: ["userID"])
+  @key(name: "byPromotion", fields: ["promotionID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [read] },
+    { allow: groups, groups: ["Admin"], operations: [create, read, update, delete] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  promotionID: ID!
+  promotion: Promotion @belongsTo(fields: ["promotionID"])
+  usedCount: Int!
+  isRedeemed: Boolean!
+  redeemedAt: AWSDateTime
+  expiresAt: AWSDateTime
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}

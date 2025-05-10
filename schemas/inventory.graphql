@@ -1,0 +1,109 @@
+enum InventoryStatus {
+  GROWING
+  HARVESTED
+  PROCESSING
+  AVAILABLE
+  RESERVED
+  SOLD_OUT
+}
+
+enum HarvestPredictionAccuracy {
+  LOW
+  MEDIUM
+  HIGH
+  EXACT
+}
+
+type InventoryBatch @model
+  @key(name: "byFarm", fields: ["farmID"])
+  @key(name: "byVariety", fields: ["varietyID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "farmID", operations: [create, read, update, delete] },
+    { allow: groups, groups: ["Admin"], operations: [read, update] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  status: InventoryStatus!
+  quantity: Float!
+  quantityUnit: String!
+  plantedDate: AWSDate
+  predictedHarvestDate: AWSDate
+  harvestDate: AWSDate
+  expirationDate: AWSDate
+  harvestPredictionAccuracy: HarvestPredictionAccuracy
+  pricePerUnit: Float
+  organicCertified: Boolean
+  storageLocation: String
+  storageConditions: String
+  notes: String
+  images: [String]
+  listingID: ID
+  listing: ProduceListing @belongsTo(fields: ["listingID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type PreHarvestListing @model
+  @key(name: "byFarm", fields: ["farmID"])
+  @key(name: "byVariety", fields: ["varietyID"])
+  @key(name: "byPredictedHarvestDate", fields: ["predictedHarvestDate"])
+  @auth(rules: [
+    { allow: owner, ownerField: "farmID", operations: [create, read, update, delete] },
+    { allow: groups, groups: ["Admin"], operations: [read, update] },
+    { allow: private, operations: [read] }
+  ]) {
+  id: ID!
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  varietyID: ID!
+  variety: ProduceVariety @belongsTo(fields: ["varietyID"])
+  title: String!
+  description: String
+  predictedHarvestDate: AWSDate!
+  predictedQuantity: Float!
+  quantityUnit: String!
+  pricePerUnit: Float!
+  organicCertified: Boolean
+  harvestPredictionAccuracy: HarvestPredictionAccuracy!
+  plantedDate: AWSDate
+  growingConditions: String
+  images: [String]
+  allowPreorders: Boolean!
+  preorderLimit: Int
+  preorderCount: Int
+  preorderDeadline: AWSDate
+  preorderDepositAmount: Float
+  zoneID: ID!
+  zone: Zone @belongsTo(fields: ["zoneID"])
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type InventoryTransaction @model
+  @key(name: "byBatch", fields: ["batchID"])
+  @key(name: "byFarm", fields: ["farmID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "farmID", operations: [create, read] },
+    { allow: groups, groups: ["Admin"], operations: [read] }
+  ]) {
+  id: ID!
+  batchID: ID!
+  batch: InventoryBatch @belongsTo(fields: ["batchID"])
+  farmID: ID!
+  farm: Farm @belongsTo(fields: ["farmID"])
+  type: String! # "HARVEST", "ADJUSTMENT", "SALE", "WASTE", "TRANSFER"
+  quantity: Float!
+  previousQuantity: Float!
+  newQuantity: Float!
+  reason: String
+  orderID: ID
+  listingID: ID
+  performedBy: ID!
+  performedByName: String!
+  timestamp: AWSDateTime!
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}

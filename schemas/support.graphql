@@ -1,0 +1,64 @@
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+type TicketResponse {
+  id: ID!
+  body: String!
+  isFromStaff: Boolean!
+  staffID: ID
+  staffName: String
+  attachments: [String]
+  createdAt: AWSDateTime
+}
+
+type SupportTicket @model 
+  @key(name: "byUser", fields: ["userID"])
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read, update] },
+    { allow: groups, groups: ["Admin", "Support"], operations: [read, update] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  subject: String!
+  description: String!
+  category: String!
+  priority: TicketPriority!
+  status: TicketStatus!
+  attachments: [String]
+  responses: [TicketResponse]
+  relatedOrderID: ID
+  relatedFarmID: ID
+  relatedDeliveryID: ID
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+  updatedAt: AWSDateTime @timestamp(updatedAt: true)
+}
+
+type FeedbackSubmission @model
+  @auth(rules: [
+    { allow: owner, ownerField: "userID", operations: [create, read] },
+    { allow: groups, groups: ["Admin", "Support"], operations: [read] }
+  ]) {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo(fields: ["userID"])
+  category: String!
+  rating: Int!
+  feedback: String!
+  isAnonymous: Boolean!
+  appVersion: String
+  deviceInfo: String
+  createdAt: AWSDateTime @timestamp(createdAt: true)
+}
