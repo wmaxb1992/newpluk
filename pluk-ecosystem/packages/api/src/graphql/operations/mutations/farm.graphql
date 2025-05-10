@@ -1,0 +1,56 @@
+mutation CreateFarm($input: CreateFarmInput!) {
+  createFarm(input: $input) {
+    id
+    name
+    description
+    ownerId
+    location
+    website
+    phone
+    email
+    address
+    city
+    state
+    zipCode
+    profileImage
+    coverImage
+    active
+    certified
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateFarm($input: UpdateFarmInput!) {
+  updateFarm(input: $input) {
+    id
+    name
+    description
+    ownerId
+    location
+    website
+    phone
+    email
+    address
+    city
+    state
+    zipCode
+    profileImage
+    coverImage
+    active
+    certified
+    createdAt
+    updatedAt
+  }
+}
+
+mutation DeleteFarm($input: DeleteFarmInput!) {
+  deleteFarm(input: $input) {
+    id
+    name
+    description
+    ownerId
+    createdAt
+    updatedAt
+  }
+}

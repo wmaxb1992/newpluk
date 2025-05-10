@@ -95,6 +95,11 @@ pluk-ecosystem/
    yarn start
    ```
 
+   **Important Note:** For the consumer app specifically, always use:
+   ```
+   npm start
+   ```
+
 ## Documentation
 
 - [Project Structure and Rules](./project-structure-and-rules.md)

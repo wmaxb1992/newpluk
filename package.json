@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@aws-amplify/react-native": "^1.1.9",
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0-0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0-0",
+    "@babel/plugin-transform-arrow-functions": "^7.0.0-0",
+    "@babel/plugin-transform-shorthand-properties": "^7.0.0-0",
+    "@babel/plugin-transform-template-literals": "^7.0.0-0",
+    "@babel/preset-env": "^7.1.6",
+    "expo": "~49.0.15",
+    "expo-splash-screen": "~0.20.5",
+    "expo-status-bar": "~1.6.0",
+    "react": "18.2.0",
+    "react-native": "0.72.10"
+  },
+  "devDependencies": {
+    "@tamagui/babel-plugin": "^1.126.9",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
+    "@babel/core": "^7.20.0"
+  },
+  "name": "Pluk-App",
+  "version": "1.0.0",
+  "scripts": {
+    "android": "expo run:android",
+    "ios": "expo run:ios"
+  }
+}

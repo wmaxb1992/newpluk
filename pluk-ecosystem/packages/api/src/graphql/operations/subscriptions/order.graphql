@@ -1,0 +1,63 @@
+subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput, $userId: String) {
+  onCreateOrder(filter: $filter, userId: $userId) {
+    id
+    userId
+    status
+    subtotal
+    tax
+    total
+    deliveryFee
+    deliveryAddressId
+    deliveryNotes
+    requestedDeliveryDate
+    createdAt
+    updatedAt
+  }
+}
+
+subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput, $userId: String) {
+  onUpdateOrder(filter: $filter, userId: $userId) {
+    id
+    userId
+    status
+    subtotal
+    tax
+    total
+    deliveryFee
+    deliveryAddressId
+    deliveryNotes
+    requestedDeliveryDate
+    createdAt
+    updatedAt
+  }
+}
+
+subscription OnCreateOrderItem($filter: ModelSubscriptionOrderItemFilterInput, $userId: String) {
+  onCreateOrderItem(filter: $filter, userId: $userId) {
+    id
+    orderId
+    userId
+    farmId
+    produceListingId
+    quantity
+    price
+    subtotal
+    createdAt
+    updatedAt
+  }
+}
+
+subscription OnUpdateOrderItem($filter: ModelSubscriptionOrderItemFilterInput, $userId: String) {
+  onUpdateOrderItem(filter: $filter, userId: $userId) {
+    id
+    orderId
+    userId
+    farmId
+    produceListingId
+    quantity
+    price
+    subtotal
+    createdAt
+    updatedAt
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Pluk-App",
+    "slug": "pluk-app",
+    "version": "1.0.0",
+    "sdkVersion": "49.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "android": {
+      "package": "com.wmaxb.plukapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.wmaxb.plukapp"
+    }
+  }
+}
