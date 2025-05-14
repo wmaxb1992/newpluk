@@ -18,8 +18,11 @@
 
 ## Frontend Development 🚀
 
-### Consumer App
-- [ ] Set up app navigation structure
+### Consumer App (fresh-pluk)
+- [x] Set up app navigation structure
+- [x] Configure AWS Amplify and AppSync
+- [x] Establish DynamoDB connection
+- [x] Implement GraphQL queries for data fetching
 - [ ] Implement authentication screens (sign up, sign in)
 - [ ] Create home screen with featured listings
 - [ ] Implement listing detail screen

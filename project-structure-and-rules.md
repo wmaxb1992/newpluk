@@ -17,38 +17,28 @@ The project has been transitioned from a monorepo to a polyrepo structure. Each 
 
 ```
 /
-├── consumer-app/             # Consumer mobile app
-│   ├── .expo/                # Expo configuration
+├── fresh-pluk/              # Consumer mobile app (new implementation)
 │   ├── assets/               # App-specific assets
-│   │   ├── fonts/
-│   │   ├── images/
-│   │   └── animations/
-│   │
-│   ├── shared/               # Local copies of shared components
-│   │   ├── api/              # GraphQL operations
-│   │   │   ├── graphql/      # Generated GraphQL types and hooks
-│   │   │   ├── mutations/    # Custom mutation hooks
-│   │   │   ├── queries/      # Custom query hooks
-│   │   │   └── subscriptions/# Custom subscription hooks
-│   │   │
-│   │   ├── ui/               # UI components
-│   │   │   ├── common/       # Generic UI components
-│   │   │   ├── produce/      # Produce-specific components
-│   │   │   ├── farm/         # Farm-specific components
-│   │   │   ├── cart/         # Cart-related components
-│   │   │   └── forms/        # Form components
-│   │   │
-│   │   ├── styles/           # Styling system
-│   │   ├── animations/       # Animation utilities
-│   │   ├── hooks/            # Custom hooks
-│   │   ├── services/         # Business logic
-│   │   ├── store/            # State management
-│   │   ├── types/            # TypeScript definitions
-│   │   └── utils/            # Utility functions
+│   │   ├── adaptive-icon.png
+│   │   ├── favicon.png
+│   │   ├── icon.png
+│   │   └── splash.png
 │   │
 │   ├── src/                  # App-specific code
-│   │   ├── components/       # App-specific components
+│   │   ├── config/           # Configuration (Amplify, etc.)
+│   │   ├── graphql/          # GraphQL operations
 │   │   ├── navigation/       # Navigation structure
+│   │   ├── screens/          # App screens
+│   │   ├── store/            # State management
+│   │   └── utils/            # Utility functions
+│   │
+│   ├── App.tsx              # Root component
+│   ├── index.ts             # Entry point
+│   └── package.json         # Dependencies and scripts
+│
+├── driver-dashboard/        # Driver mobile app
+├── farmer-dashboard/        # Farmer mobile and web app
+└── pluk-ecosystem/         # Shared infrastructure and backend
 │   │   │   └── AppNavigator.tsx
 │   │   ├── screens/          # App screens
 │   │   │   ├── auth/
