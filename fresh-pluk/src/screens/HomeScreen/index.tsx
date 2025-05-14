@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -63,13 +63,19 @@ const subcategories: SubcategoryMap = {
   ],
 };
 
+import { useCategoryStore } from '../../store/categoryStore';
+
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const { 
+    selectedCategory, 
+    searchQuery, 
+    setSelectedCategory, 
+    setSearchQuery 
+  } = useCategoryStore();
 
   const handleCategoryPress = (categoryId: string) => {
-    setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
+    setSelectedCategory(categoryId);
   };
 
   const handleSubcategorySelect = (subcategoryId: string) => {
@@ -88,7 +94,7 @@ export default function HomeScreen() {
           style={styles.searchInput}
           placeholder="Search Produce & Farms"
           value={searchQuery}
-          onChangeText={setSearchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
         />
       </View>
 
