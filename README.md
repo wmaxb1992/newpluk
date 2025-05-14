@@ -6,7 +6,7 @@ A comprehensive farm-to-consumer marketplace platform built with React Native, E
 
 The Pluk ecosystem consists of four interconnected applications:
 
-1. **Consumer App** - Mobile app for end users to browse and purchase produce.
+1. **Consumer App (fresh-pluk)** - Mobile app for end users to browse and purchase produce, built with Expo and AWS Amplify.
 2. **Farmer Portal** - Mobile and web dashboard for farmers to manage inventory and orders.
 3. **Driver App** - Mobile app for delivery drivers.
 4. **Admin Portal** - Web dashboard for Pluk administrators.
@@ -30,12 +30,13 @@ The project has been transitioned from a monorepo to a polyrepo structure. Each 
 
 ```
 /
-├── consumer-app/       # Consumer mobile app
-│   ├── shared/         # Local copies of shared components
-│   │   ├── api/        # GraphQL operations
-│   │   ├── ui/         # UI components
-│   │   └── ...         # Other shared modules
+├── fresh-pluk/        # Consumer mobile app (new implementation)
 │   ├── src/            # App-specific code
+│   │   ├── config/     # Amplify and other configuration
+│   │   ├── graphql/    # GraphQL operations
+│   │   ├── screens/    # App screens
+│   │   └── utils/      # Utility functions
+│   ├── App.tsx         # Root component
 │   └── package.json    # App-specific dependencies
 │
 ├── farmer-dashboard/   # Farmer portal (mobile & web)
@@ -48,7 +49,7 @@ The project has been transitioned from a monorepo to a polyrepo structure. Each 
 │   ├── src/            # App-specific code
 │   └── package.json    # App-specific dependencies
 │
-└── pluk-ecosystem/     # Legacy shared code (for reference only)
+└── pluk-ecosystem/     # Shared infrastructure and backend
     ├── packages/       # Original shared packages
     └── amplify/        # AWS Amplify configuration
 ```
