@@ -1,0 +1,63 @@
+mutation CreateOrder($input: CreateOrderInput!, $condition: ModelOrderConditionInput) {
+  createOrder(input: $input, condition: $condition) {
+    id
+    userId
+    status
+    subtotal
+    tax
+    total
+    deliveryFee
+    deliveryAddressId
+    deliveryNotes
+    requestedDeliveryDate
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateOrder($input: UpdateOrderInput!, $condition: ModelOrderConditionInput) {
+  updateOrder(input: $input, condition: $condition) {
+    id
+    userId
+    status
+    subtotal
+    tax
+    total
+    deliveryFee
+    deliveryAddressId
+    deliveryNotes
+    requestedDeliveryDate
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CreateOrderItem($input: CreateOrderItemInput!, $condition: ModelOrderItemConditionInput) {
+  createOrderItem(input: $input, condition: $condition) {
+    id
+    orderId
+    userId
+    farmId
+    produceListingId
+    quantity
+    price
+    subtotal
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateOrderItem($input: UpdateOrderItemInput!, $condition: ModelOrderItemConditionInput) {
+  updateOrderItem(input: $input, condition: $condition) {
+    id
+    orderId
+    userId
+    farmId
+    produceListingId
+    quantity
+    price
+    subtotal
+    createdAt
+    updatedAt
+  }
+}

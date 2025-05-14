@@ -11,169 +11,207 @@ The Pluk ecosystem consists of four distinct but interconnected applications:
 
 ## Folder Structure
 
+The project has been transitioned from a monorepo to a polyrepo structure. Each application is now a standalone repository with its own dependencies and shared components.
+
+### Current Polyrepo Structure
+
 ```
-/pluk-ecosystem
-├── amplify/                  # Shared AWS Amplify configuration
-│   └── backend/
-│       └── api/
-│           └── plukapi/
-│               └── schema/   # GraphQL schemas organized by domain
-│
-├── packages/                 # Shared packages and libraries
-│   ├── api/                  # Shared API layer
-│   │   ├── graphql/          # Generated GraphQL types and hooks
-│   │   ├── mutations/        # Custom mutation hooks
-│   │   ├── queries/          # Custom query hooks
-│   │   └── subscriptions/    # Custom subscription hooks
+/
+├── consumer-app/             # Consumer mobile app
+│   ├── .expo/                # Expo configuration
+│   ├── assets/               # App-specific assets
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── animations/
 │   │
-│   ├── ui/                   # Shared UI components
-│   │   ├── common/           # Generic UI components
-│   │   ├── produce/          # Produce-specific components
-│   │   ├── farm/             # Farm-specific components
-│   │   ├── cart/             # Cart-related components
-│   │   └── forms/            # Form components
-│   │
-│   ├── styles/               # Shared styling system
-│   │   ├── theme.ts          # Global theme configuration
-│   │   ├── tokens.ts         # Design tokens (spacing, colors, etc.)
-│   │   └── typography.ts     # Typography styles
-│   │
-│   ├── animations/           # Shared animation utilities
-│   │   ├── transitions.ts    # Common transitions
-│   │   ├── gestures.ts       # Gesture animations
-│   │   └── lottie/           # Lottie animation files
-│   │
-│   ├── hooks/                # Shared custom hooks
-│   │   ├── useLocation.ts
-│   │   ├── useAuth.ts
-│   │   └── useFreshness.ts
-│   │
-│   ├── services/             # Shared business logic
-│   │   ├── auth.ts
-│   │   ├── analytics.ts
-│   │   └── notifications.ts
-│   │
-│   ├── store/                # Shared state management
-│   │   ├── produceStore.ts
-│   │   └── authStore.ts
-│   │
-│   ├── types/                # Shared TypeScript definitions
-│   │   ├── api.ts
-│   │   └── models.ts
-│   │
-│   └── utils/                # Shared utility functions
-│       ├── date.ts
-│       ├── format.ts
-│       ├── validation.ts
-│       └── sync.ts
-│
-├── apps/                     # Application-specific code
-│   ├── consumer/             # Consumer mobile app
-│   │   ├── .expo/            # Expo configuration
-│   │   ├── assets/           # App-specific assets
-│   │   │   ├── fonts/
-│   │   │   ├── images/
-│   │   │   └── animations/
+│   ├── shared/               # Local copies of shared components
+│   │   ├── api/              # GraphQL operations
+│   │   │   ├── graphql/      # Generated GraphQL types and hooks
+│   │   │   ├── mutations/    # Custom mutation hooks
+│   │   │   ├── queries/      # Custom query hooks
+│   │   │   └── subscriptions/# Custom subscription hooks
 │   │   │
-│   │   ├── src/
-│   │   │   ├── components/   # App-specific components
-│   │   │   ├── navigation/   # Navigation structure
-│   │   │   │   └── AppNavigator.tsx
-│   │   │   ├── screens/      # App screens
-│   │   │   │   ├── auth/
-│   │   │   │   ├── home/
-│   │   │   │   ├── explore/
-│   │   │   │   ├── farm/
-│   │   │   │   ├── product/
-│   │   │   │   ├── cart/
-│   │   │   │   ├── orders/
-│   │   │   │   └── profile/
-│   │   │   ├── services/     # App-specific services
-│   │   │   │   ├── smartCart.ts
-│   │   │   │   └── userPreferences.ts
-│   │   │   └── store/        # App-specific state
-│   │   │       ├── cartStore.ts
-│   │   │       └── userStore.ts
+│   │   ├── ui/               # UI components
+│   │   │   ├── common/       # Generic UI components
+│   │   │   ├── produce/      # Produce-specific components
+│   │   │   ├── farm/         # Farm-specific components
+│   │   │   ├── cart/         # Cart-related components
+│   │   │   └── forms/        # Form components
 │   │   │
-│   │   ├── App.tsx           # Entry point
-│   │   ├── app.json          # Expo configuration
-│   │   └── package.json      # Dependencies
+│   │   ├── styles/           # Styling system
+│   │   ├── animations/       # Animation utilities
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── services/         # Business logic
+│   │   ├── store/            # State management
+│   │   ├── types/            # TypeScript definitions
+│   │   └── utils/            # Utility functions
 │   │
-│   ├── farmer-portal/        # Farmer portal (mobile and web)
-│   │   ├── mobile/           # Mobile version
-│   │   │   ├── .expo/
-│   │   │   ├── assets/
-│   │   │   ├── src/
-│   │   │   │   ├── components/
-│   │   │   │   ├── navigation/
-│   │   │   │   ├── screens/
-│   │   │   │   │   ├── auth/
-│   │   │   │   │   ├── dashboard/
-│   │   │   │   │   ├── inventory/
-│   │   │   │   │   ├── listings/
-│   │   │   │   │   ├── social/
-│   │   │   │   │   └── orders/
-│   │   │   │   ├── services/
-│   │   │   │   └── store/
-│   │   │   ├── App.tsx
-│   │   │   └── package.json
+│   ├── src/                  # App-specific code
+│   │   ├── components/       # App-specific components
+│   │   ├── navigation/       # Navigation structure
+│   │   │   └── AppNavigator.tsx
+│   │   ├── screens/          # App screens
+│   │   │   ├── auth/
+│   │   │   ├── home/
+│   │   │   ├── explore/
+│   │   │   ├── farm/
+│   │   │   ├── product/
+│   │   │   ├── cart/
+│   │   │   ├── orders/
+│   │   │   └── profile/
+│   │   ├── services/         # App-specific services
+│   │   │   ├── smartCart.ts
+│   │   │   └── userPreferences.ts
+│   │   └── store/            # App-specific state
+│   │       ├── cartStore.ts
+│   │       └── userStore.ts
+│   │
+│   ├── App.tsx               # Entry point
+│   ├── app.json              # Expo configuration
+│   ├── metro.config.js       # Metro bundler configuration
+│   ├── babel.config.js       # Babel configuration
+│   ├── tsconfig.json         # TypeScript configuration
+│   └── package.json          # Dependencies
+│
+├── farmer-dashboard/         # Farmer portal
+│   ├── .expo/                # Expo configuration
+│   ├── assets/               # App-specific assets
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── animations/
+│   │
+│   ├── shared/               # Local copies of shared components
+│   │   ├── api/              # GraphQL operations
+│   │   │   ├── graphql/      # Generated GraphQL types and hooks
+│   │   │   ├── mutations/    # Custom mutation hooks
+│   │   │   ├── queries/      # Custom query hooks
+│   │   │   └── subscriptions/# Custom subscription hooks
 │   │   │
-│   │   └── web/              # Web version
-│   │       ├── public/
-│   │       ├── src/
-│   │       │   ├── components/
-│   │       │   ├── pages/
-│   │       │   ├── services/
-│   │       │   └── store/
-│   │       ├── index.html
-│   │       └── package.json
+│   │   ├── ui/               # UI components
+│   │   │   ├── common/       # Generic UI components
+│   │   │   ├── produce/      # Produce-specific components
+│   │   │   ├── farm/         # Farm-specific components
+│   │   │   ├── inventory/    # Inventory-related components
+│   │   │   └── forms/        # Form components
+│   │   │
+│   │   ├── styles/           # Styling system
+│   │   ├── animations/       # Animation utilities
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── services/         # Business logic
+│   │   ├── store/            # State management
+│   │   ├── types/            # TypeScript definitions
+│   │   └── utils/            # Utility functions
 │   │
-│   ├── driver/               # Driver mobile app
-│   │   ├── .expo/
-│   │   ├── assets/
-│   │   ├── src/
-│   │   │   ├── components/
-│   │   │   ├── navigation/
-│   │   │   ├── screens/
-│   │   │   │   ├── auth/
-│   │   │   │   ├── dashboard/
-│   │   │   │   ├── delivery/
-│   │   │   │   └── earnings/
-│   │   │   ├── services/
-│   │   │   └── store/
-│   │   ├── App.tsx
-│   │   └── package.json
+│   ├── src/                  # App-specific code
+│   │   ├── components/       # App-specific components
+│   │   ├── navigation/       # Navigation structure
+│   │   │   └── AppNavigator.tsx
+│   │   ├── screens/          # App screens
+│   │   │   ├── auth/
+│   │   │   ├── dashboard/
+│   │   │   ├── inventory/
+│   │   │   ├── listings/
+│   │   │   ├── social/
+│   │   │   └── orders/
+│   │   ├── services/         # App-specific services
+│   │   │   ├── inventoryService.ts
+│   │   │   └── farmMetrics.ts
+│   │   └── store/            # App-specific state
+│   │       ├── inventoryStore.ts
+│   │       └── farmStore.ts
 │   │
-│   └── admin-portal/         # Admin web dashboard
-│       ├── public/
-│       ├── src/
-│       │   ├── components/
-│       │   ├── pages/
-│       │   │   ├── dashboard/
-│       │   │   ├── users/
-│       │   │   ├── farms/
-│       │   │   ├── drivers/
-│       │   │   ├── orders/
-│       │   │   └── analytics/
-│       │   ├── services/
-│       │   └── store/
-│       ├── index.html
-│       └── package.json
+│   ├── App.tsx               # Entry point
+│   ├── app.json              # Expo configuration
+│   ├── metro.config.js       # Metro bundler configuration
+│   ├── babel.config.js       # Babel configuration
+│   ├── tsconfig.json         # TypeScript configuration
+│   └── package.json          # Dependencies
 │
-├── tools/                    # Development and build tools
-│   ├── scripts/              # Build and deployment scripts
-│   ├── generators/           # Code generators
-│   └── mock-data/            # Mock data for development
+├── driver-dashboard/         # Driver mobile app
+│   ├── .expo/                # Expo configuration
+│   ├── assets/               # App-specific assets
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── animations/
+│   │
+│   ├── shared/               # Local copies of shared components
+│   │   ├── api/              # GraphQL operations
+│   │   │   ├── graphql/      # Generated GraphQL types and hooks
+│   │   │   ├── mutations/    # Custom mutation hooks
+│   │   │   ├── queries/      # Custom query hooks
+│   │   │   └── subscriptions/# Custom subscription hooks
+│   │   │
+│   │   ├── ui/               # UI components
+│   │   │   ├── common/       # Generic UI components
+│   │   │   ├── delivery/     # Delivery-specific components
+│   │   │   ├── map/          # Map-related components
+│   │   │   ├── earnings/     # Earnings-related components
+│   │   │   └── forms/        # Form components
+│   │   │
+│   │   ├── styles/           # Styling system
+│   │   ├── animations/       # Animation utilities
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── services/         # Business logic
+│   │   ├── store/            # State management
+│   │   ├── types/            # TypeScript definitions
+│   │   └── utils/            # Utility functions
+│   │
+│   ├── src/                  # App-specific code
+│   │   ├── components/       # App-specific components
+│   │   ├── navigation/       # Navigation structure
+│   │   │   └── AppNavigator.tsx
+│   │   ├── screens/          # App screens
+│   │   │   ├── auth/
+│   │   │   ├── dashboard/
+│   │   │   ├── delivery/
+│   │   │   ├── route/
+│   │   │   ├── earnings/
+│   │   │   └── profile/
+│   │   ├── services/         # App-specific services
+│   │   │   ├── deliveryService.ts
+│   │   │   └── locationService.ts
+│   │   └── store/            # App-specific state
+│   │       ├── deliveryStore.ts
+│   │       └── earningsStore.ts
+│   │
+│   ├── App.tsx               # Entry point
+│   ├── app.json              # Expo configuration
+│   ├── metro.config.js       # Metro bundler configuration
+│   ├── babel.config.js       # Babel configuration
+│   ├── tsconfig.json         # TypeScript configuration
+│   └── package.json          # Dependencies
 │
-├── docs/                     # Documentation
-│   ├── architecture/
-│   ├── api/
-│   └── user-guides/
+├── pluk-ecosystem/           # Legacy shared code (for reference only)
+│   ├── packages/             # Original shared packages
+│   └── amplify/              # AWS Amplify configuration
 │
-├── tsconfig.base.json        # Base TypeScript configuration
-├── package.json              # Root dependencies and scripts
-└── README.md                 # Project documentation
+└── scripts/                  # Polyrepo management scripts
+    ├── complete-polyrepo-transition.js
+    ├── extract-shared-deps.js
+    ├── update-app-dependencies.js
+    ├── update-metro-config.js
+    ├── update-babel-config.js
+    ├── create-separate-repos.sh
+    └── README.md             # Documentation for scripts
 ```
+
+### Polyrepo Structure Benefits
+
+- **Independent Development**: Each app can be developed, versioned, and deployed independently
+- **Simplified Dependencies**: Each app manages its own dependencies
+- **Clearer Ownership**: Clear boundaries between different applications
+- **Faster Builds**: Build only what you need for a specific app
+- **Technology Flexibility**: Freedom to use different technologies in each app as needed
+
+### Shared Code Management
+
+Shared code is now managed through local copies in each app's `shared/` directory. This approach:
+
+1. Makes each app self-contained and independently deployable
+2. Eliminates complex workspace dependencies
+3. Allows for app-specific customization of shared components when needed
+
+When updates to shared components are needed across all apps, changes should be made in each app's shared directory to maintain consistency.
 
 ## Schema Organization
 

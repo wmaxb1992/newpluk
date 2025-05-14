@@ -1,0 +1,19 @@
+overwrite: true
+schema:
+  - "../../src/graphql/schema.json"
+documents:
+  - "./src/graphql/operations/**/*.graphql"
+generates:
+  src/graphql/generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      skipTypename: false
+      dedupeFragments: true
+      exportFragmentSpreadSubTypes: true
+      preResolveTypes: true

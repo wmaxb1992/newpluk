@@ -1,0 +1,67 @@
+subscription OnCreateProduceListing {
+  onCreateProduceListing {
+    id
+    title
+    description
+    price
+    priceUnit
+    quantity
+    quantityUnit
+    availableQuantity
+    farmId
+    farmOwnerId
+    produceVarietyId
+    isOrganic
+    harvestDate
+    expirationDate
+    daysToExpiration
+    freshness
+    active
+    isInstantlyAvailable
+    instantDeliveryFee
+    estimatedDeliveryMinutes
+    images
+    createdAt
+    updatedAt
+  }
+}
+
+subscription OnUpdateProduceListing {
+  onUpdateProduceListing {
+    id
+    title
+    description
+    price
+    priceUnit
+    quantity
+    quantityUnit
+    availableQuantity
+    farmId
+    farmOwnerId
+    produceVarietyId
+    isOrganic
+    harvestDate
+    expirationDate
+    daysToExpiration
+    freshness
+    active
+    isInstantlyAvailable
+    instantDeliveryFee
+    estimatedDeliveryMinutes
+    images
+    createdAt
+    updatedAt
+  }
+}
+
+subscription OnDeleteProduceListing {
+  onDeleteProduceListing {
+    id
+    title
+    farmId
+    farmOwnerId
+    produceVarietyId
+    createdAt
+    updatedAt
+  }
+}

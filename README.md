@@ -26,27 +26,40 @@ The Pluk ecosystem consists of four interconnected applications:
 
 ## Project Structure
 
-The project follows a monorepo structure with shared packages:
+The project has been transitioned from a monorepo to a polyrepo structure. Each application is now a standalone repository with its own dependencies and shared components.
 
 ```
-pluk-ecosystem/
-├── apps/
-│   ├── consumer/       # Consumer mobile app
-│   ├── farmer/         # Farmer portal (mobile & web)
-│   ├── driver/         # Driver mobile app
-│   └── admin/          # Admin web dashboard
-├── packages/
-│   ├── api/            # GraphQL operations
-│   ├── ui/             # Shared UI components
-│   ├── styles/         # Tamagui theme and styles
-│   ├── animations/     # Shared animations
-│   ├── hooks/          # React hooks
-│   ├── services/       # Shared services
-│   ├── store/          # Zustand stores
-│   ├── types/          # TypeScript types
-│   └── utils/          # Utility functions
-└── amplify/            # AWS Amplify configuration
+/
+├── consumer-app/       # Consumer mobile app
+│   ├── shared/         # Local copies of shared components
+│   │   ├── api/        # GraphQL operations
+│   │   ├── ui/         # UI components
+│   │   └── ...         # Other shared modules
+│   ├── src/            # App-specific code
+│   └── package.json    # App-specific dependencies
+│
+├── farmer-dashboard/   # Farmer portal (mobile & web)
+│   ├── shared/         # Local copies of shared components
+│   ├── src/            # App-specific code
+│   └── package.json    # App-specific dependencies
+│
+├── driver-dashboard/   # Driver mobile app
+│   ├── shared/         # Local copies of shared components
+│   ├── src/            # App-specific code
+│   └── package.json    # App-specific dependencies
+│
+└── pluk-ecosystem/     # Legacy shared code (for reference only)
+    ├── packages/       # Original shared packages
+    └── amplify/        # AWS Amplify configuration
 ```
+
+### Polyrepo Structure Benefits
+
+- **Independent Development**: Each app can be developed, versioned, and deployed independently
+- **Simplified Dependencies**: Each app manages its own dependencies
+- **Clearer Ownership**: Clear boundaries between different applications
+- **Faster Builds**: Build only what you need for a specific app
+- **Technology Flexibility**: Freedom to use different technologies in each app as needed
 
 ## Key Features
 
@@ -62,50 +75,91 @@ pluk-ecosystem/
 ### Prerequisites
 
 - Node.js (v16 or later)
-- Yarn
+- npm or Yarn
 - Expo CLI
 - AWS Account
 - Amplify CLI
 
-### Installation
+### Running Individual Apps
 
-1. Clone the repository
+Each app is now a standalone application with its own dependencies and configuration.
+
+#### Consumer App
+
+1. Navigate to the consumer app directory
    ```
-   git clone https://github.com/your-username/pluk-ecosystem.git
-   cd pluk-ecosystem
+   cd consumer-app
    ```
 
 2. Install dependencies
    ```
-   yarn install
+   npm install
    ```
 
-3. Initialize Amplify
-   ```
-   amplify init
-   ```
-
-4. Push the backend resources
-   ```
-   amplify push
-   ```
-
-5. Start the development server
-   ```
-   yarn start
-   ```
-
-   **Important Note:** For the consumer app specifically, always use:
+3. Start the development server
    ```
    npm start
    ```
 
+#### Farmer Dashboard
+
+1. Navigate to the farmer dashboard directory
+   ```
+   cd farmer-dashboard
+   ```
+
+2. Install dependencies
+   ```
+   npm install
+   ```
+
+3. Start the development server
+   ```
+   npm start
+   ```
+
+#### Driver Dashboard
+
+1. Navigate to the driver dashboard directory
+   ```
+   cd driver-dashboard
+   ```
+
+2. Install dependencies
+   ```
+   npm install
+   ```
+
+3. Start the development server
+   ```
+   npm start
+   ```
+
+### Quick Start Script
+
+You can also use the provided script to run any app:
+
+```
+./run-app.sh consumer|farmer|driver
+```
+
 ## Documentation
 
+### General Documentation
 - [Project Structure and Rules](./project-structure-and-rules.md)
 - [Implementation Plan](./implementation-plan.md)
 - [Data Management Strategy](./data-management-strategy.md)
+
+### App-Specific Documentation
+- [Consumer App](./consumer-app/README.md)
+- [Farmer Dashboard](./farmer-dashboard/README.md)
+- [Driver Dashboard](./driver-dashboard/README.md)
+
+### Backend Documentation
 - [GraphQL Schema Documentation](./pluk-ecosystem/amplify/backend/api/plukapi/README.md)
+
+### Polyrepo Transition
+- [Scripts for Polyrepo Management](./scripts/README.md)
 
 ## License
 

@@ -1,0 +1,119 @@
+query GetProduceCategory($id: ID!) {
+  getProduceCategory(id: $id) {
+    id
+    name
+    description
+    image
+    icon
+    createdAt
+    updatedAt
+  }
+}
+
+query ListProduceCategories($filter: ModelProduceCategoryFilterInput, $limit: Int, $nextToken: String) {
+  listProduceCategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      image
+      icon
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+
+query GetProduceSubcategory($id: ID!) {
+  getProduceSubcategory(id: $id) {
+    id
+    name
+    description
+    image
+    icon
+    categoryId
+    createdAt
+    updatedAt
+  }
+}
+
+query ListProduceSubcategories($filter: ModelProduceSubcategoryFilterInput, $limit: Int, $nextToken: String) {
+  listProduceSubcategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      image
+      icon
+      categoryId
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+
+query GetProduceType($id: ID!) {
+  getProduceType(id: $id) {
+    id
+    name
+    description
+    image
+    icon
+    subcategoryId
+    createdAt
+    updatedAt
+  }
+}
+
+query ListProduceTypes($filter: ModelProduceTypeFilterInput, $limit: Int, $nextToken: String) {
+  listProduceTypes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      image
+      icon
+      subcategoryId
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+
+query GetProduceVariety($id: ID!) {
+  getProduceVariety(id: $id) {
+    id
+    name
+    description
+    image
+    typeId
+    season
+    harvestInstructions
+    storageInstructions
+    averageShelfLife
+    averageWeight
+    weightUnit
+    createdAt
+    updatedAt
+  }
+}
+
+query ListProduceVarieties($filter: ModelProduceVarietyFilterInput, $limit: Int, $nextToken: String) {
+  listProduceVarieties(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      image
+      typeId
+      season
+      averageShelfLife
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}

@@ -1,0 +1,69 @@
+mutation CreateProduceListing($input: CreateProduceListingInput!) {
+  createProduceListing(input: $input) {
+    id
+    title
+    description
+    price
+    priceUnit
+    quantity
+    quantityUnit
+    availableQuantity
+    farmId
+    farmOwnerId
+    produceVarietyId
+    inventoryBatchId
+    isOrganic
+    harvestDate
+    expirationDate
+    daysToExpiration
+    freshness
+    active
+    isInstantlyAvailable
+    instantDeliveryFee
+    estimatedDeliveryMinutes
+    images
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateProduceListing($input: UpdateProduceListingInput!) {
+  updateProduceListing(input: $input) {
+    id
+    title
+    description
+    price
+    priceUnit
+    quantity
+    quantityUnit
+    availableQuantity
+    farmId
+    farmOwnerId
+    produceVarietyId
+    inventoryBatchId
+    isOrganic
+    harvestDate
+    expirationDate
+    daysToExpiration
+    freshness
+    active
+    isInstantlyAvailable
+    instantDeliveryFee
+    estimatedDeliveryMinutes
+    images
+    createdAt
+    updatedAt
+  }
+}
+
+mutation DeleteProduceListing($input: DeleteProduceListingInput!) {
+  deleteProduceListing(input: $input) {
+    id
+    title
+    farmId
+    farmOwnerId
+    produceVarietyId
+    createdAt
+    updatedAt
+  }
+}

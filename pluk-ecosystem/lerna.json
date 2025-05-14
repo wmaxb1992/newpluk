@@ -1,0 +1,20 @@
+{
+  "version": "independent",
+  "npmClient": "npm",
+  "packages": [
+    "packages/*",
+    "apps/*",
+    "apps/farmer-portal/*"
+  ],
+  "command": {
+    "bootstrap": {
+      "hoist": true,
+      "npmClientArgs": ["--no-package-lock"]
+    },
+    "version": {
+      "allowBranch": "main",
+      "conventionalCommits": true,
+      "message": "chore(release): publish"
+    }
+  }
+}

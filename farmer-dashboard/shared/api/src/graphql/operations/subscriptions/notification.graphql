@@ -1,0 +1,27 @@
+subscription OnCreateNotification($filter: ModelSubscriptionNotificationFilterInput, $userId: String) {
+  onCreateNotification(filter: $filter, userId: $userId) {
+    id
+    userId
+    title
+    message
+    read
+    actionLink
+    imageLink
+    createdAt
+    updatedAt
+  }
+}
+
+subscription OnUpdateNotification($filter: ModelSubscriptionNotificationFilterInput, $userId: String) {
+  onUpdateNotification(filter: $filter, userId: $userId) {
+    id
+    userId
+    title
+    message
+    read
+    actionLink
+    imageLink
+    createdAt
+    updatedAt
+  }
+}

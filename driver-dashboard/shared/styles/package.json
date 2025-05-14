@@ -1,0 +1,23 @@
+{
+  "name": "@driver-dashboard/styles",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.0.0",
+    "@tamagui/shorthands": "^1.0.0",
+    "@tamagui/theme-base": "^1.0.0",
+    "tamagui": "^1.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.0"
+  }
+}

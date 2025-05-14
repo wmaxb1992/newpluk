@@ -1,0 +1,86 @@
+query GetFarm($id: ID!) {
+  getFarm(id: $id) {
+    id
+    name
+    description
+    ownerId
+    location
+    website
+    phone
+    email
+    address
+    city
+    state
+    zipCode
+    profileImage
+    coverImage
+    active
+    certified
+    createdAt
+    updatedAt
+  }
+}
+
+query ListFarms($filter: ModelFarmFilterInput, $limit: Int, $nextToken: String) {
+  listFarms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      ownerId
+      location
+      website
+      phone
+      email
+      address
+      city
+      state
+      zipCode
+      profileImage
+      coverImage
+      active
+      certified
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+
+query FarmsByOwnerId(
+  $ownerId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelFarmFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  farmsByOwnerId(
+    ownerId: $ownerId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      description
+      ownerId
+      location
+      website
+      phone
+      email
+      address
+      city
+      state
+      zipCode
+      profileImage
+      coverImage
+      active
+      certified
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}

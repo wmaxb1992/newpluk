@@ -1,0 +1,117 @@
+query GetProduceListing($id: ID!) {
+  getProduceListing(id: $id) {
+    id
+    title
+    description
+    price
+    priceUnit
+    quantity
+    quantityUnit
+    availableQuantity
+    farmId
+    farmOwnerId
+    produceVarietyId
+    inventoryBatchId
+    isOrganic
+    harvestDate
+    expirationDate
+    daysToExpiration
+    freshness
+    active
+    isInstantlyAvailable
+    instantDeliveryFee
+    estimatedDeliveryMinutes
+    images
+    createdAt
+    updatedAt
+  }
+}
+
+query ListProduceListings($filter: ModelProduceListingFilterInput, $limit: Int, $nextToken: String) {
+  listProduceListings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+      price
+      priceUnit
+      quantity
+      quantityUnit
+      availableQuantity
+      farmId
+      farmOwnerId
+      produceVarietyId
+      isOrganic
+      harvestDate
+      expirationDate
+      daysToExpiration
+      freshness
+      active
+      isInstantlyAvailable
+      instantDeliveryFee
+      estimatedDeliveryMinutes
+      images
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+
+query ListProduceListingsByFarm($farmId: ID!, $limit: Int, $nextToken: String) {
+  produceListingsByFarmId(farmId: $farmId, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+      price
+      priceUnit
+      quantity
+      quantityUnit
+      availableQuantity
+      farmId
+      farmOwnerId
+      produceVarietyId
+      isOrganic
+      harvestDate
+      expirationDate
+      daysToExpiration
+      freshness
+      active
+      isInstantlyAvailable
+      images
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+
+query ListProduceListingsByVariety($produceVarietyId: ID!, $limit: Int, $nextToken: String) {
+  produceListingsByProduceVarietyId(produceVarietyId: $produceVarietyId, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+      price
+      priceUnit
+      quantity
+      quantityUnit
+      availableQuantity
+      farmId
+      farmOwnerId
+      produceVarietyId
+      isOrganic
+      harvestDate
+      expirationDate
+      daysToExpiration
+      freshness
+      active
+      isInstantlyAvailable
+      images
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}

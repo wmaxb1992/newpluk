@@ -1,0 +1,13 @@
+{
+  "presets": ["babel-preset-expo"],
+  "plugins": [
+    ["@babel/plugin-proposal-export-namespace-from"],
+    ["@babel/plugin-transform-modules-commonjs"],
+    ["@babel/plugin-transform-runtime"],
+    ["@tamagui/babel-plugin", {
+      "components": ["tamagui"],
+      "config": "./tamagui.config.ts"
+    }],
+    ["transform-inline-environment-variables"]
+  ]
+}
