@@ -47,46 +47,6 @@ export const useProduceVarietyStore = create<ProduceVarietyStore>((set, get): Pr
     console.log(`[ProduceVarietyStore] Setting loading state and fetching varieties for type ID: ${typeId}`);
     set({ loading: true, error: null, selectedTypeId: typeId });
     
-    // TEMPORARY: Always use mock data for testing UI
-    const mockVarieties = [
-      {
-        id: `mock-${typeId}-1`,
-        name: "Sample Variety 1 for " + typeId,
-        typeId: typeId,
-        description: "This is a sample variety for testing",
-        averageShelfLife: 14,
-        farmCountInApp: 5
-      },
-      {
-        id: `mock-${typeId}-2`,
-        name: "Sample Variety 2 for " + typeId,
-        typeId: typeId,
-        description: "Another sample variety for testing",
-        averageShelfLife: 7,
-        farmCountInApp: 3
-      },
-      {
-        id: `mock-${typeId}-3`,
-        name: "Sample Variety 3 for " + typeId,
-        typeId: typeId,
-        description: "A third sample variety for testing",
-        averageShelfLife: 10,
-        farmCountInApp: 8
-      }
-    ];
-    
-    console.log(`[ProduceVarietyStore] Added ${mockVarieties.length} mock varieties for testing`);
-    
-    // Set mock data after a short delay to simulate loading
-    setTimeout(() => {
-      set({ 
-        varieties: mockVarieties as ProduceVariety[],
-        loading: false
-      });
-    }, 500);
-    
-    // NOTE: API code is commented out for now to ensure UI works correctly
-    /* Original API call code
     try {
       // Create a more specific filter to ensure we only get varieties for this type
       const filter = {
@@ -254,7 +214,6 @@ export const useProduceVarietyStore = create<ProduceVarietyStore>((set, get): Pr
         varieties: mockVarieties as ProduceVariety[] // Add mock data for testing
       });
     }
-    */
   },
   
   clearVarieties: () => {

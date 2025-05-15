@@ -125,7 +125,6 @@ export const ProduceVarietyList: React.FC<ProduceVarietyListProps> = ({
     <View style={[styles.container, { backgroundColor: '#f9f9f9', borderRadius: 8, marginHorizontal: 16, padding: 8, borderWidth: 1, borderColor: '#e0e0e0' }]}>
       <Text style={[styles.header, { color: colors.primary }]}>{typeName} Varieties</Text>
       
-      {/* Show mock data if no varieties are found */}
       {varieties.length > 0 ? (
         <FlatList
           data={varieties}
@@ -138,22 +137,9 @@ export const ProduceVarietyList: React.FC<ProduceVarietyListProps> = ({
         />
       ) : (
         <View>
-          <Text style={[styles.empty, { marginBottom: 10 }]}>
-            {loading ? 'Loading varieties...' : 'No varieties found from API.'}
+          <Text style={styles.empty}>
+            No varieties found for this produce type.
           </Text>
-          
-          {/* Always show mock varieties for testing */}
-          <Text style={{ marginHorizontal: 16, fontWeight: 'bold', marginBottom: 8 }}>Mock Varieties (For Testing)</Text>
-          <FlatList
-            data={[
-              { id: 'mock1', name: 'Meyer Lemon', description: 'Sweet with thin skin', averageShelfLife: 14, typeId },
-              { id: 'mock2', name: 'Eureka Lemon', description: 'Classic tart lemon', averageShelfLife: 10, typeId },
-              { id: 'mock3', name: 'Lisbon Lemon', description: 'Smooth skin, few seeds', averageShelfLife: 12, typeId }
-            ]}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            style={{ maxHeight: 250 }}
-          />
         </View>
       )}
     </View>
