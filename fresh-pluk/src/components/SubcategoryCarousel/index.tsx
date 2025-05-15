@@ -1,7 +1,10 @@
 import React from 'react';
-import { ScrollView, Animated } from 'react-native';
+import { View, Dimensions, ScrollView, StyleSheet } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { SubcategoryButton } from '../SubcategoryButton';
 import { styles } from './styles';
+
+const PAGE_WIDTH = Dimensions.get('window').width;
 
 interface SubcategoryCarouselProps {
   subcategories: Array<{
@@ -18,37 +21,30 @@ export const SubcategoryCarousel: React.FC<SubcategoryCarouselProps> = ({
   selectedSubcategoryId,
   onSelectSubcategory,
 }) => {
-  const fadeAnim = React.useRef(new Animated.Value(0)).current;
-
-  React.useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   return (
-    <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: fadeAnim.interpolate({
-      inputRange: [0, 1],
-      outputRange: [20, 0]
-    })}] }}>
+    <View style={[styles.container, { height: 30 }]}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={styles.scrollContent}
       >
-        {subcategories.map((subcategory) => (
-          <SubcategoryButton
-            key={subcategory.id}
-            title={subcategory.name}
-            icon={subcategory.iconUrl}
-            isSelected={subcategory.id === selectedSubcategoryId}
-            onPress={() => onSelectSubcategory(subcategory.id)}
-          />
+        {subcategories.map((item) => (
+          <TouchableWithoutFeedback
+            key={item.id}
+            onPress={() => onSelectSubcategory(item.id)}
+            containerStyle={{ flex: 1, paddingHorizontal: 2, paddingVertical: 0 }}
+          >
+            <View style={styles.cardContainer}>
+              <SubcategoryButton
+                title={item.name}
+                isSelected={item.id === selectedSubcategoryId}
+                onPress={() => onSelectSubcategory(item.id)}
+              />
+            </View>
+          </TouchableWithoutFeedback>
         ))}
       </ScrollView>
-    </Animated.View>
+    </View>
   );
 };
 

@@ -3,11 +3,26 @@ import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { View, ActivityIndicator, Text } from 'react-native';
+import { View, ActivityIndicator, Text, Platform } from 'react-native';
 import MainNavigator from './src/navigation/MainNavigator';
 import { configureAmplify } from './src/config/amplify';
 import { testDatabaseConnection } from './src/utils/testConnection';
 import { checkAllTables } from './src/utils/checkTables';
+
+// Enable debugging in development
+if (__DEV__) {
+  // Enable React DevTools
+  import('react-devtools-core')
+    .then(({ connectToDevTools }) => {
+      connectToDevTools({
+        host: 'localhost',
+        port: 8097,
+      });
+    })
+    .catch(err => {
+      console.error('Could not connect to React DevTools: ', err);
+    });
+}
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);

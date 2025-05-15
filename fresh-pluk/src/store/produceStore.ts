@@ -20,6 +20,8 @@ interface ProduceType {
   name: string;
   description?: string;
   iconUrl?: string;
+  icon?: string;
+  image?: string;
   slug?: string;
   subcategoryId: string;
   tasteProfile?: string[];
@@ -57,8 +59,19 @@ export const useProduceStore = create<ProduceStore>((set, get): ProduceStore => 
         authMode: 'apiKey'
       });
       const result = response as { data?: { listProduceTypes?: { items: ProduceType[] } } };
-      const produceTypes = result.data?.listProduceTypes?.items || [];
+      
+      // Map the produce types to include iconUrl from icon field
+      const produceTypes = (result.data?.listProduceTypes?.items || []).map(type => ({
+        ...type,
+        // Use icon field for iconUrl if iconUrl is missing but icon exists
+        iconUrl: type.iconUrl || type.icon || undefined
+      }));
+      
       console.log('Produce types found:', produceTypes.length);
+      // Log first few types to verify data
+      produceTypes.slice(0, 5).forEach(pt => {
+        console.log(`Produce Type: ${pt.name}, subcategoryId: ${pt.subcategoryId}, icon: ${pt.icon}, iconUrl: ${pt.iconUrl}`);
+      });
       set({ produceTypes, loading: false });
     } catch (error: any) {
       console.error('Error fetching produce types:', error);
@@ -68,25 +81,42 @@ export const useProduceStore = create<ProduceStore>((set, get): ProduceStore => 
   getFilteredProduceTypes: (categoryId: string | null, subcategoryId: string | null) => {
     const { produceTypes } = get();
     console.log('Filtering produce types - category:', categoryId, 'subcategory:', subcategoryId);
+    console.log('Total produceTypes available for filtering:', produceTypes.length);
     
     // If no category is selected, return no produce types
     if (!categoryId) {
+      console.log('No category selected, returning empty array');
       return [];
     }
     
     // Get subcategories for the selected category
     const subcategories = useCategoryDataStore.getState().getSubcategoriesForCategory(categoryId);
     const subcategoryIds = subcategories.map(sub => sub.id);
+    console.log('Available subcategory IDs for this category:', subcategoryIds);
+    
+    // Log produce types to see their subcategory IDs
+    console.log('Sample of available produce types:');
+    produceTypes.slice(0, 10).forEach(pt => {
+      console.log(`Produce Type: ${pt.name}, subcategoryId: ${pt.subcategoryId}`);
+    });
     
     // Filter and deduplicate produce types
     const filtered = produceTypes
       .filter(type => {
         // If a subcategory is selected, only show produce types from that subcategory
         if (subcategoryId) {
-          return type.subcategoryId === subcategoryId;
+          const match = type.subcategoryId === subcategoryId;
+          if (match) {
+            console.log(`Match for subcategory ${subcategoryId}: ${type.name}`);
+          }
+          return match;
         }
         // If no subcategory is selected, show all produce types from any subcategory in the current category
-        return subcategoryIds.includes(type.subcategoryId);
+        const match = subcategoryIds.includes(type.subcategoryId);
+        if (match) {
+          console.log(`Match for category ${categoryId} via subcategory ${type.subcategoryId}: ${type.name}`);
+        }
+        return match;
       })
       // Deduplicate by name (case-insensitive)
       .reduce((unique: ProduceType[], current) => {
@@ -101,6 +131,9 @@ export const useProduceStore = create<ProduceStore>((set, get): ProduceStore => 
       .sort((a, b) => a.name.localeCompare(b.name));
     
     console.log('Filtered and deduplicated produce types:', filtered.length);
+    if (filtered.length === 0) {
+      console.log('WARNING: No produce types matched the filter criteria!');
+    }
     return filtered;
   },
 }));

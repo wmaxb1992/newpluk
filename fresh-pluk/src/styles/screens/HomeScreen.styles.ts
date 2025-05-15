@@ -1,5 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { colors, spacing, typography, borderRadius, shadows } from '../theme';
+import { carouselStyles } from '../components/CarouselStyles';
+
+const PAGE_WIDTH = Dimensions.get('window').width;
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,23 +10,37 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    padding: spacing.sm,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  compactHeader: {
+    paddingTop: spacing.md,
+    paddingBottom: spacing.xs,
+    marginBottom: 0,
   },
   title: {
-    ...typography.title,
     color: colors.text.primary,
-    fontSize: 20,
+    fontSize: 28,
+    fontWeight: '700',
+    textAlign: 'center',
   },
   subtitle: {
-    ...typography.subtitle,
+    color: colors.text.primary,
+    fontSize: 20,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginTop: spacing.sm,
+  },
+  subheading: {
     color: colors.text.secondary,
+    fontSize: 16,
+    textAlign: 'center',
     marginTop: spacing.xs,
-    fontSize: 14,
   },
   searchContainer: {
     marginTop: spacing.xs,
     marginHorizontal: spacing.md,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
   },
   searchInput: {
     backgroundColor: colors.background,
@@ -35,6 +52,21 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.text.primary,
     ...shadows.small,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
+  },
+  compactSearchInput: {
+    backgroundColor: colors.background,
+    padding: spacing.sm,
+    height: 36,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    fontSize: 14,
+    color: colors.text.primary,
+    ...shadows.small,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.sm,
   },
   sectionTitle: {
     ...typography.subtitle,
@@ -44,7 +76,14 @@ export const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   categoriesSection: {
+    marginTop: 0,
+    marginBottom: spacing.xs,
+  },
+  carouselButtonSection: {
     marginTop: spacing.xs,
+    marginBottom: spacing.xs,
+    padding: 0,
+    height: 40,
   },
   emptyMessage: {
     textAlign: 'center',
@@ -57,8 +96,16 @@ export const styles = StyleSheet.create({
   categoryContainer: {
     paddingHorizontal: spacing.sm,
   },
+  subcategoriesSection: {
+    marginTop: spacing.xs,
+    marginBottom: spacing.xs,
+  },
+  subcategoriesNoTitleSection: {
+    marginTop: 0,
+    marginBottom: 0,
+  },
   subcategoriesContainer: {
-    marginTop: spacing.sm,
+    marginBottom: 0,
   },
   subsectionTitle: {
     ...typography.body,
@@ -69,7 +116,62 @@ export const styles = StyleSheet.create({
     color: colors.text.secondary,
   },
   produceTypesContainer: {
-    marginTop: spacing.sm,
+    marginTop: 0,
+    marginBottom: spacing.sm,
+  },
+  carouselContainer: {
+    height: 75,
+    marginBottom: 0,
+    paddingVertical: 0,
+  },
+  scrollContent: {
+    paddingHorizontal: spacing.sm,
+    alignItems: 'center',
+    paddingVertical: 0,
+  },
+  produceCardContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 4,
+  },
+  produceCardTouchable: {
+    backgroundColor: colors.background,
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 2,
+    minWidth: 90,
+    height: 90,
+  },
+  produceCardInner: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  produceIcon: {
+    width: 40,
+    height: 40,
+    marginBottom: 8,
+  },
+  produceIconPlaceholder: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.background,
+    marginBottom: 8,
+  },
+  produceTypeName: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: colors.text.primary,
+    fontWeight: '500',
   },
   produceTypeGrid: {
     flexDirection: 'row',

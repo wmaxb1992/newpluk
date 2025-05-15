@@ -1,35 +1,43 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, typography, borderRadius, shadows } from '../theme';
+import theme from '../theme';
 
 export const styles = StyleSheet.create({
   container: {
-    width: 80,
-    height: 80,
-    marginHorizontal: spacing.xs,
-    padding: spacing.xs,
-    backgroundColor: colors.background,
-    borderRadius: borderRadius.md,
+    width: 90,
+    height: 70,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.md,
+    padding: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    ...shadows.small,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: theme.colors.border,
   },
   selected: {
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+  iconContainer: {
+    width: 36,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
   },
   icon: {
-    width: 30,
-    height: 30,
-    marginBottom: spacing.xs,
+    width: 32,
+    height: 32,
+    alignSelf: 'center',
   },
   title: {
-    fontSize: 11,
-    color: colors.text.primary,
+    fontSize: 9,
+    fontWeight: '500',
+    color: theme.colors.text.primary,
     textAlign: 'center',
-    paddingHorizontal: spacing.xs,
+    width: '100%',
+    paddingHorizontal: 2,
   },
   selectedTitle: {
-    color: colors.background,
+    color: theme.colors.background,
   },
 });

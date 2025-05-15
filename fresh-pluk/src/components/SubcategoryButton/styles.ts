@@ -1,32 +1,32 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing, borderRadius } from '../../styles/theme';
+import theme from '../../styles/theme';
 
+// Override the theme's subcategory button styles with a more compact version
 export const styles = StyleSheet.create({
   button: {
-    flexDirection: 'row',
+    minWidth: 70, // Reduced width
+    height: 26, // Reduced height
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.sm,
+    paddingHorizontal: 2, // Minimal horizontal padding
+    paddingVertical: 0, // No vertical padding
     alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    marginRight: spacing.sm,
-    borderRadius: borderRadius.round,
-    backgroundColor: colors.background,
+    justifyContent: 'center',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: theme.colors.border,
+    marginHorizontal: 2,
   },
   selectedButton: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
   },
-  icon: {
-    width: 20,
-    height: 20,
-    marginRight: spacing.xs,
+  title: {
+    fontSize: theme.typography.sizes.xs, // Smaller font size
+    fontWeight: '500',
+    color: theme.colors.text.primary,
+    textAlign: 'center',
   },
-  text: {
-    fontSize: 14,
-    color: colors.text.primary,
+  selectedTitle: {
+    color: theme.colors.text.inverse,
   },
-  selectedText: {
-    color: colors.text.light,
-  },
-}); 
+});

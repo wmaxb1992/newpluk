@@ -30,6 +30,32 @@ export const LIST_PRODUCE_TYPES = /* GraphQL */ `
         id
         name
         subcategoryId
+        icon
+        image
+      }
+      nextToken
+    }
+  }
+`;
+
+export const LIST_PRODUCE_VARIETIES = /* GraphQL */ `
+  query ListProduceVarieties($typeId: ID, $filter: ModelProduceVarietyFilterInput, $limit: Int, $nextToken: String) {
+    listProduceVarieties(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        typeId
+        description
+        farmCountInApp
+        farmCountInZone
+        farmCountNearby
+        iconUrl
+        icon
+        image
+        season
+        averageShelfLife
+        averageWeight
+        weightUnit
       }
       nextToken
     }

@@ -1,12 +1,23 @@
-import React, { useCallback } from 'react';
-import { View, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import Carousel, { TAnimationStyle } from 'react-native-reanimated-carousel';
-import { interpolate } from 'react-native-reanimated';
 import CategoryCard from '../CategoryCard';
 import { styles } from './styles';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
+
+// Custom category order by name - add or remove categories to reorder
+const CUSTOM_CATEGORY_ORDER = [
+  "Vegetables",
+  "Fruits",
+  "Herbs",
+  "Dairy",
+  "Eggs",
+  "Meat",
+  "Pantry",
+  "Bakery",
+  // Add other categories in the order you want them to appear
+];
 
 interface CategoryCarouselProps {
   categories: Array<{
@@ -23,77 +34,51 @@ export const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   selectedCategoryId,
   onSelectCategory,
 }) => {
-  const itemSize = 80;
-  const centerOffset = PAGE_WIDTH / 2 - itemSize / 2;
+  // Default icon to use if a category doesn't have one
+  const defaultIcon = "https://cdn-icons-png.flaticon.com/512/2153/2153788.png";
 
-  const animationStyle: TAnimationStyle = useCallback(
-    (value: number) => {
-      'worklet';
-
-      const itemGap = interpolate(
-        value,
-        [-3, -2, -1, 0, 1, 2, 3],
-        [-30, -15, 0, 0, 0, 15, 30],
-      );
-
-      const translateX =
-        interpolate(value, [-1, 0, 1], [-itemSize, 0, itemSize]) +
-        centerOffset -
-        itemGap;
-
-      const translateY = interpolate(
-        value,
-        [-1, -0.5, 0, 0.5, 1],
-        [30, 25, 20, 25, 30],
-      );
-
-      const scale = interpolate(
-        value,
-        [-1, -0.5, 0, 0.5, 1],
-        [0.8, 0.85, 1.1, 0.85, 0.8],
-      );
-
-      return {
-        transform: [
-          { translateX },
-          { translateY },
-          { scale },
-        ],
-      };
-    },
-    [centerOffset],
-  );
+  // Sort categories based on the custom order
+  const sortedCategories = [...categories].sort((a, b) => {
+    const indexA = CUSTOM_CATEGORY_ORDER.indexOf(a.name);
+    const indexB = CUSTOM_CATEGORY_ORDER.indexOf(b.name);
+    
+    // If both categories are in the custom order list
+    if (indexA >= 0 && indexB >= 0) {
+      return indexA - indexB;
+    }
+    
+    // If only one category is in the custom order list
+    if (indexA >= 0) return -1;
+    if (indexB >= 0) return 1;
+    
+    // If neither category is in the list, maintain alphabetical sorting
+    return a.name.localeCompare(b.name);
+  });
 
   return (
     <View style={styles.container}>
-      <Carousel
-        width={itemSize}
-        height={itemSize}
-        style={{
-          width: PAGE_WIDTH,
-          height: PAGE_WIDTH / 2,
-        }}
-        loop
-        data={categories}
-        renderItem={({ item, index }) => (
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {sortedCategories.map((item) => (
           <TouchableWithoutFeedback
             key={item.id}
             onPress={() => onSelectCategory(item.id)}
-            containerStyle={{ flex: 1 }}
-            style={{ flex: 1 }}
+            containerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 2 }}
           >
             <View style={styles.cardContainer}>
               <CategoryCard
                 title={item.name}
-                icon={item.iconUrl || 'https://cdn-icons-png.flaticon.com/512/2153/2153788.png'}
+                icon={item.iconUrl || defaultIcon}
                 isSelected={item.id === selectedCategoryId}
                 onPress={() => onSelectCategory(item.id)}
               />
             </View>
           </TouchableWithoutFeedback>
-        )}
-        customAnimation={animationStyle}
-      />
+        ))}
+      </ScrollView>
     </View>
   );
 }; 

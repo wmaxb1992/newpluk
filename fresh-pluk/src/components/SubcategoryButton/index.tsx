@@ -1,17 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, Text, Image } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import { styles } from './styles';
 
 interface SubcategoryButtonProps {
   title: string;
-  icon?: string;
   isSelected: boolean;
   onPress: () => void;
 }
 
 export const SubcategoryButton: React.FC<SubcategoryButtonProps> = ({
   title,
-  icon,
   isSelected,
   onPress,
 }) => {
@@ -19,15 +17,13 @@ export const SubcategoryButton: React.FC<SubcategoryButtonProps> = ({
     <TouchableOpacity
       style={[styles.button, isSelected && styles.selectedButton]}
       onPress={onPress}
+      activeOpacity={0.7}
     >
-      {icon && (
-        <Image
-          source={{ uri: icon }}
-          style={styles.icon}
-          resizeMode="contain"
-        />
-      )}
-      <Text style={[styles.text, isSelected && styles.selectedText]}>
+      <Text 
+        style={[styles.title, isSelected && styles.selectedTitle]}
+        numberOfLines={1}
+        ellipsizeMode="tail"
+      >
         {title}
       </Text>
     </TouchableOpacity>
