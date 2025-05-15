@@ -1,0 +1,4084 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Address @aws_api_key @aws_cognito_user_pools {
+  city: String!
+  country: String!
+  createdAt: AWSDateTime
+  id: ID!
+  isDefault: Boolean!
+  label: String
+  postalCode: String!
+  state: String!
+  street: String!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type Cart @aws_api_key @aws_cognito_user_pools {
+  active: Boolean!
+  createdAt: AWSDateTime
+  id: ID!
+  subtotal: Float!
+  tax: Float!
+  total: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type CartItem @aws_api_key @aws_cognito_user_pools {
+  cartId: ID!
+  createdAt: AWSDateTime
+  id: ID!
+  price: Float!
+  produceListingId: ID!
+  quantity: Float!
+  subtotal: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type Delivery @aws_api_key @aws_cognito_user_pools {
+  actualDeliveryTime: AWSDateTime
+  createdAt: AWSDateTime
+  deliveryRouteId: ID
+  deliveryTime: AWSDateTime
+  driverId: ID
+  dropoffAddress: String!
+  dropoffLocationLat: Float!
+  dropoffLocationLng: Float!
+  estimatedDeliveryTime: AWSDateTime
+  id: ID!
+  notes: String
+  orderId: ID!
+  pickupAddress: String!
+  pickupLocationLat: Float!
+  pickupLocationLng: Float!
+  pickupTime: AWSDateTime
+  status: DeliveryStatus!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type DeliveryRating @aws_api_key @aws_cognito_user_pools {
+  comment: String
+  createdAt: AWSDateTime
+  deliveryId: ID!
+  driverId: ID!
+  id: ID!
+  rating: Int!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type DeliveryRoute @aws_api_key @aws_cognito_user_pools {
+  actualDistance: Float
+  actualDuration: Int
+  createdAt: AWSDateTime
+  driverId: ID!
+  endLocationLat: Float!
+  endLocationLng: Float!
+  endTime: AWSDateTime
+  estimatedDistance: Float!
+  estimatedDuration: Int!
+  id: ID!
+  startLocationLat: Float!
+  startLocationLng: Float!
+  startTime: AWSDateTime!
+  updatedAt: AWSDateTime
+}
+
+type Driver @aws_api_key @aws_cognito_user_pools {
+  active: Boolean!
+  avatar: String
+  createdAt: AWSDateTime
+  currentLocationLat: Float
+  currentLocationLng: Float
+  email: AWSEmail!
+  firstName: String!
+  id: ID!
+  lastLocationUpdateTime: AWSDateTime
+  lastName: String!
+  licenseExpiry: AWSDate!
+  licenseNumber: String!
+  phoneNumber: AWSPhone!
+  updatedAt: AWSDateTime
+  userId: ID!
+  vehicleColor: String!
+  vehicleLicensePlate: String!
+  vehicleMake: String!
+  vehicleModel: String!
+  vehicleYear: Int!
+}
+
+type DriverLocation @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  driverId: ID!
+  heading: Float
+  id: ID!
+  lat: Float!
+  lng: Float!
+  timestamp: AWSDateTime!
+  updatedAt: AWSDateTime
+}
+
+type Farm @aws_api_key @aws_cognito_user_pools {
+  active: Boolean!
+  address: String!
+  certifications: [String]
+  certified: Boolean!
+  city: String!
+  coverImage: String
+  createdAt: AWSDateTime
+  description: String
+  email: AWSEmail
+  id: ID!
+  location: String!
+  name: String!
+  ownerId: ID!
+  phone: AWSPhone
+  profileImage: String
+  state: String!
+  updatedAt: AWSDateTime
+  website: AWSURL
+  yearEstablished: Int
+  zipCode: String!
+}
+
+type FarmFollow @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  farmId: ID!
+  id: ID!
+  receiveNotifications: Boolean!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type FarmMetrics @aws_api_key @aws_cognito_user_pools {
+  averageOrderValue: Float!
+  createdAt: AWSDateTime
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID!
+  totalCustomers: Int!
+  totalOrders: Int!
+  totalSales: Float!
+  updatedAt: AWSDateTime
+}
+
+type FarmPost @aws_api_key @aws_cognito_user_pools {
+  content: String!
+  createdAt: AWSDateTime
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID!
+  images: [String]
+  preHarvestListingId: ID
+  title: String!
+  type: PostType!
+  updatedAt: AWSDateTime
+  videos: [String]
+}
+
+type InventoryBatch @aws_api_key @aws_cognito_user_pools {
+  actualQuantity: Float
+  createdAt: AWSDateTime
+  estimatedHarvestDate: AWSDate
+  estimatedQuantity: Float
+  expirationDate: AWSDate
+  farmId: ID!
+  farmOwnerId: ID!
+  harvestDate: AWSDate
+  id: ID!
+  isOrganic: Boolean!
+  notes: String
+  plantingDate: AWSDate
+  price: Float
+  priceUnit: String
+  produceVarietyId: ID!
+  quantityUnit: String
+  remainingQuantity: Float
+  status: InventoryStatus!
+  storageConditions: String
+  storageLocation: String
+  updatedAt: AWSDateTime
+  zoneId: ID
+}
+
+type ListingReview @aws_api_key @aws_cognito_user_pools {
+  comment: String
+  createdAt: AWSDateTime
+  id: ID!
+  images: [String]
+  produceListingId: ID!
+  rating: Int!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type MarketSchedule @aws_api_key @aws_cognito_user_pools {
+  active: Boolean!
+  address: String!
+  city: String!
+  createdAt: AWSDateTime
+  dayOfWeek: Int!
+  endTime: AWSTime!
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID!
+  marketName: String!
+  startTime: AWSTime!
+  state: String!
+  updatedAt: AWSDateTime
+  zipCode: String!
+}
+
+type ModelAddressConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Address]!
+  nextToken: String
+}
+
+type ModelCartConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Cart]!
+  nextToken: String
+}
+
+type ModelCartItemConnection @aws_api_key @aws_cognito_user_pools {
+  items: [CartItem]!
+  nextToken: String
+}
+
+type ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Delivery]!
+  nextToken: String
+}
+
+type ModelDeliveryRatingConnection @aws_api_key @aws_cognito_user_pools {
+  items: [DeliveryRating]!
+  nextToken: String
+}
+
+type ModelDeliveryRouteConnection @aws_api_key @aws_cognito_user_pools {
+  items: [DeliveryRoute]!
+  nextToken: String
+}
+
+type ModelDriverConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Driver]!
+  nextToken: String
+}
+
+type ModelDriverLocationConnection @aws_api_key @aws_cognito_user_pools {
+  items: [DriverLocation]!
+  nextToken: String
+}
+
+type ModelFarmConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Farm]!
+  nextToken: String
+}
+
+type ModelFarmFollowConnection @aws_api_key @aws_cognito_user_pools {
+  items: [FarmFollow]!
+  nextToken: String
+}
+
+type ModelFarmMetricsConnection @aws_api_key @aws_cognito_user_pools {
+  items: [FarmMetrics]!
+  nextToken: String
+}
+
+type ModelFarmPostConnection @aws_api_key @aws_cognito_user_pools {
+  items: [FarmPost]!
+  nextToken: String
+}
+
+type ModelInventoryBatchConnection @aws_api_key @aws_cognito_user_pools {
+  items: [InventoryBatch]!
+  nextToken: String
+}
+
+type ModelListingReviewConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ListingReview]!
+  nextToken: String
+}
+
+type ModelMarketScheduleConnection @aws_api_key @aws_cognito_user_pools {
+  items: [MarketSchedule]!
+  nextToken: String
+}
+
+type ModelNotificationConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Notification]!
+  nextToken: String
+}
+
+type ModelOrderConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Order]!
+  nextToken: String
+}
+
+type ModelOrderItemConnection @aws_api_key @aws_cognito_user_pools {
+  items: [OrderItem]!
+  nextToken: String
+}
+
+type ModelPaymentConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Payment]!
+  nextToken: String
+}
+
+type ModelPostCommentConnection @aws_api_key @aws_cognito_user_pools {
+  items: [PostComment]!
+  nextToken: String
+}
+
+type ModelPostLikeConnection @aws_api_key @aws_cognito_user_pools {
+  items: [PostLike]!
+  nextToken: String
+}
+
+type ModelPreHarvestListingConnection @aws_api_key @aws_cognito_user_pools {
+  items: [PreHarvestListing]!
+  nextToken: String
+}
+
+type ModelPreHarvestReservationConnection @aws_api_key @aws_cognito_user_pools {
+  items: [PreHarvestReservation]!
+  nextToken: String
+}
+
+type ModelProduceCategoryConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ProduceCategory]!
+  nextToken: String
+}
+
+type ModelProduceListingConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ProduceListing]!
+  nextToken: String
+}
+
+type ModelProduceNutrientConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ProduceNutrient]!
+  nextToken: String
+}
+
+type ModelProduceSubcategoryConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ProduceSubcategory]!
+  nextToken: String
+}
+
+type ModelProduceTypeConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ProduceType]!
+  nextToken: String
+}
+
+type ModelProduceVarietyConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ProduceVariety]!
+  nextToken: String
+}
+
+type ModelShoppingListConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ShoppingList]!
+  nextToken: String
+}
+
+type ModelShoppingListItemConnection @aws_api_key @aws_cognito_user_pools {
+  items: [ShoppingListItem]!
+  nextToken: String
+}
+
+type ModelUserConnection @aws_api_key @aws_cognito_user_pools {
+  items: [User]!
+  nextToken: String
+}
+
+type ModelUserPreferencesConnection @aws_api_key @aws_cognito_user_pools {
+  items: [UserPreferences]!
+  nextToken: String
+}
+
+type ModelZoneConnection @aws_api_key @aws_cognito_user_pools {
+  items: [Zone]!
+  nextToken: String
+}
+
+type Mutation {
+  createAddress(condition: ModelAddressConditionInput, input: CreateAddressInput!): Address @aws_cognito_user_pools
+  createCart(condition: ModelCartConditionInput, input: CreateCartInput!): Cart @aws_cognito_user_pools
+  createCartItem(condition: ModelCartItemConditionInput, input: CreateCartItemInput!): CartItem @aws_cognito_user_pools
+  createDelivery(condition: ModelDeliveryConditionInput, input: CreateDeliveryInput!): Delivery @aws_cognito_user_pools
+  createDeliveryRating(condition: ModelDeliveryRatingConditionInput, input: CreateDeliveryRatingInput!): DeliveryRating @aws_cognito_user_pools
+  createDeliveryRoute(condition: ModelDeliveryRouteConditionInput, input: CreateDeliveryRouteInput!): DeliveryRoute @aws_cognito_user_pools
+  createDriver(condition: ModelDriverConditionInput, input: CreateDriverInput!): Driver @aws_cognito_user_pools
+  createDriverLocation(condition: ModelDriverLocationConditionInput, input: CreateDriverLocationInput!): DriverLocation @aws_cognito_user_pools
+  createFarm(condition: ModelFarmConditionInput, input: CreateFarmInput!): Farm @aws_cognito_user_pools
+  createFarmFollow(condition: ModelFarmFollowConditionInput, input: CreateFarmFollowInput!): FarmFollow @aws_cognito_user_pools
+  createFarmMetrics(condition: ModelFarmMetricsConditionInput, input: CreateFarmMetricsInput!): FarmMetrics @aws_cognito_user_pools
+  createFarmPost(condition: ModelFarmPostConditionInput, input: CreateFarmPostInput!): FarmPost @aws_cognito_user_pools
+  createInventoryBatch(condition: ModelInventoryBatchConditionInput, input: CreateInventoryBatchInput!): InventoryBatch @aws_cognito_user_pools
+  createListingReview(condition: ModelListingReviewConditionInput, input: CreateListingReviewInput!): ListingReview @aws_cognito_user_pools
+  createMarketSchedule(condition: ModelMarketScheduleConditionInput, input: CreateMarketScheduleInput!): MarketSchedule @aws_cognito_user_pools
+  createNotification(condition: ModelNotificationConditionInput, input: CreateNotificationInput!): Notification @aws_cognito_user_pools
+  createOrder(condition: ModelOrderConditionInput, input: CreateOrderInput!): Order @aws_cognito_user_pools
+  createOrderItem(condition: ModelOrderItemConditionInput, input: CreateOrderItemInput!): OrderItem @aws_cognito_user_pools
+  createPayment(condition: ModelPaymentConditionInput, input: CreatePaymentInput!): Payment @aws_cognito_user_pools
+  createPostComment(condition: ModelPostCommentConditionInput, input: CreatePostCommentInput!): PostComment @aws_cognito_user_pools
+  createPostLike(condition: ModelPostLikeConditionInput, input: CreatePostLikeInput!): PostLike @aws_cognito_user_pools
+  createPreHarvestListing(condition: ModelPreHarvestListingConditionInput, input: CreatePreHarvestListingInput!): PreHarvestListing @aws_cognito_user_pools
+  createPreHarvestReservation(condition: ModelPreHarvestReservationConditionInput, input: CreatePreHarvestReservationInput!): PreHarvestReservation @aws_cognito_user_pools
+  createProduceCategory(condition: ModelProduceCategoryConditionInput, input: CreateProduceCategoryInput!): ProduceCategory @aws_api_key @aws_cognito_user_pools
+  createProduceListing(condition: ModelProduceListingConditionInput, input: CreateProduceListingInput!): ProduceListing @aws_cognito_user_pools
+  createProduceNutrient(condition: ModelProduceNutrientConditionInput, input: CreateProduceNutrientInput!): ProduceNutrient @aws_api_key @aws_cognito_user_pools
+  createProduceSubcategory(condition: ModelProduceSubcategoryConditionInput, input: CreateProduceSubcategoryInput!): ProduceSubcategory @aws_api_key @aws_cognito_user_pools
+  createProduceType(condition: ModelProduceTypeConditionInput, input: CreateProduceTypeInput!): ProduceType @aws_api_key @aws_cognito_user_pools
+  createProduceVariety(condition: ModelProduceVarietyConditionInput, input: CreateProduceVarietyInput!): ProduceVariety @aws_api_key @aws_cognito_user_pools
+  createShoppingList(condition: ModelShoppingListConditionInput, input: CreateShoppingListInput!): ShoppingList @aws_cognito_user_pools
+  createShoppingListItem(condition: ModelShoppingListItemConditionInput, input: CreateShoppingListItemInput!): ShoppingListItem @aws_cognito_user_pools
+  createUser(condition: ModelUserConditionInput, input: CreateUserInput!): User @aws_cognito_user_pools
+  createUserPreferences(condition: ModelUserPreferencesConditionInput, input: CreateUserPreferencesInput!): UserPreferences @aws_cognito_user_pools
+  createZone(condition: ModelZoneConditionInput, input: CreateZoneInput!): Zone @aws_cognito_user_pools
+  deleteAddress(condition: ModelAddressConditionInput, input: DeleteAddressInput!): Address @aws_cognito_user_pools
+  deleteCart(condition: ModelCartConditionInput, input: DeleteCartInput!): Cart @aws_cognito_user_pools
+  deleteCartItem(condition: ModelCartItemConditionInput, input: DeleteCartItemInput!): CartItem @aws_cognito_user_pools
+  deleteDelivery(condition: ModelDeliveryConditionInput, input: DeleteDeliveryInput!): Delivery @aws_cognito_user_pools
+  deleteDeliveryRating(condition: ModelDeliveryRatingConditionInput, input: DeleteDeliveryRatingInput!): DeliveryRating @aws_cognito_user_pools
+  deleteDeliveryRoute(condition: ModelDeliveryRouteConditionInput, input: DeleteDeliveryRouteInput!): DeliveryRoute @aws_cognito_user_pools
+  deleteDriver(condition: ModelDriverConditionInput, input: DeleteDriverInput!): Driver @aws_cognito_user_pools
+  deleteDriverLocation(condition: ModelDriverLocationConditionInput, input: DeleteDriverLocationInput!): DriverLocation @aws_cognito_user_pools
+  deleteFarm(condition: ModelFarmConditionInput, input: DeleteFarmInput!): Farm @aws_cognito_user_pools
+  deleteFarmFollow(condition: ModelFarmFollowConditionInput, input: DeleteFarmFollowInput!): FarmFollow @aws_cognito_user_pools
+  deleteFarmMetrics(condition: ModelFarmMetricsConditionInput, input: DeleteFarmMetricsInput!): FarmMetrics @aws_cognito_user_pools
+  deleteFarmPost(condition: ModelFarmPostConditionInput, input: DeleteFarmPostInput!): FarmPost @aws_cognito_user_pools
+  deleteInventoryBatch(condition: ModelInventoryBatchConditionInput, input: DeleteInventoryBatchInput!): InventoryBatch @aws_cognito_user_pools
+  deleteListingReview(condition: ModelListingReviewConditionInput, input: DeleteListingReviewInput!): ListingReview @aws_cognito_user_pools
+  deleteMarketSchedule(condition: ModelMarketScheduleConditionInput, input: DeleteMarketScheduleInput!): MarketSchedule @aws_cognito_user_pools
+  deleteNotification(condition: ModelNotificationConditionInput, input: DeleteNotificationInput!): Notification @aws_cognito_user_pools
+  deleteOrder(condition: ModelOrderConditionInput, input: DeleteOrderInput!): Order @aws_cognito_user_pools
+  deleteOrderItem(condition: ModelOrderItemConditionInput, input: DeleteOrderItemInput!): OrderItem @aws_cognito_user_pools
+  deletePayment(condition: ModelPaymentConditionInput, input: DeletePaymentInput!): Payment @aws_cognito_user_pools
+  deletePostComment(condition: ModelPostCommentConditionInput, input: DeletePostCommentInput!): PostComment @aws_cognito_user_pools
+  deletePostLike(condition: ModelPostLikeConditionInput, input: DeletePostLikeInput!): PostLike @aws_cognito_user_pools
+  deletePreHarvestListing(condition: ModelPreHarvestListingConditionInput, input: DeletePreHarvestListingInput!): PreHarvestListing @aws_cognito_user_pools
+  deletePreHarvestReservation(condition: ModelPreHarvestReservationConditionInput, input: DeletePreHarvestReservationInput!): PreHarvestReservation @aws_cognito_user_pools
+  deleteProduceCategory(condition: ModelProduceCategoryConditionInput, input: DeleteProduceCategoryInput!): ProduceCategory @aws_api_key @aws_cognito_user_pools
+  deleteProduceListing(condition: ModelProduceListingConditionInput, input: DeleteProduceListingInput!): ProduceListing @aws_cognito_user_pools
+  deleteProduceNutrient(condition: ModelProduceNutrientConditionInput, input: DeleteProduceNutrientInput!): ProduceNutrient @aws_api_key @aws_cognito_user_pools
+  deleteProduceSubcategory(condition: ModelProduceSubcategoryConditionInput, input: DeleteProduceSubcategoryInput!): ProduceSubcategory @aws_api_key @aws_cognito_user_pools
+  deleteProduceType(condition: ModelProduceTypeConditionInput, input: DeleteProduceTypeInput!): ProduceType @aws_api_key @aws_cognito_user_pools
+  deleteProduceVariety(condition: ModelProduceVarietyConditionInput, input: DeleteProduceVarietyInput!): ProduceVariety @aws_api_key @aws_cognito_user_pools
+  deleteShoppingList(condition: ModelShoppingListConditionInput, input: DeleteShoppingListInput!): ShoppingList @aws_cognito_user_pools
+  deleteShoppingListItem(condition: ModelShoppingListItemConditionInput, input: DeleteShoppingListItemInput!): ShoppingListItem @aws_cognito_user_pools
+  deleteUser(condition: ModelUserConditionInput, input: DeleteUserInput!): User @aws_cognito_user_pools
+  deleteUserPreferences(condition: ModelUserPreferencesConditionInput, input: DeleteUserPreferencesInput!): UserPreferences @aws_cognito_user_pools
+  deleteZone(condition: ModelZoneConditionInput, input: DeleteZoneInput!): Zone @aws_cognito_user_pools
+  updateAddress(condition: ModelAddressConditionInput, input: UpdateAddressInput!): Address @aws_cognito_user_pools
+  updateCart(condition: ModelCartConditionInput, input: UpdateCartInput!): Cart @aws_cognito_user_pools
+  updateCartItem(condition: ModelCartItemConditionInput, input: UpdateCartItemInput!): CartItem @aws_cognito_user_pools
+  updateDelivery(condition: ModelDeliveryConditionInput, input: UpdateDeliveryInput!): Delivery @aws_cognito_user_pools
+  updateDeliveryRating(condition: ModelDeliveryRatingConditionInput, input: UpdateDeliveryRatingInput!): DeliveryRating @aws_cognito_user_pools
+  updateDeliveryRoute(condition: ModelDeliveryRouteConditionInput, input: UpdateDeliveryRouteInput!): DeliveryRoute @aws_cognito_user_pools
+  updateDriver(condition: ModelDriverConditionInput, input: UpdateDriverInput!): Driver @aws_cognito_user_pools
+  updateDriverLocation(condition: ModelDriverLocationConditionInput, input: UpdateDriverLocationInput!): DriverLocation @aws_cognito_user_pools
+  updateFarm(condition: ModelFarmConditionInput, input: UpdateFarmInput!): Farm @aws_cognito_user_pools
+  updateFarmFollow(condition: ModelFarmFollowConditionInput, input: UpdateFarmFollowInput!): FarmFollow @aws_cognito_user_pools
+  updateFarmMetrics(condition: ModelFarmMetricsConditionInput, input: UpdateFarmMetricsInput!): FarmMetrics @aws_cognito_user_pools
+  updateFarmPost(condition: ModelFarmPostConditionInput, input: UpdateFarmPostInput!): FarmPost @aws_cognito_user_pools
+  updateInventoryBatch(condition: ModelInventoryBatchConditionInput, input: UpdateInventoryBatchInput!): InventoryBatch @aws_cognito_user_pools
+  updateListingReview(condition: ModelListingReviewConditionInput, input: UpdateListingReviewInput!): ListingReview @aws_cognito_user_pools
+  updateMarketSchedule(condition: ModelMarketScheduleConditionInput, input: UpdateMarketScheduleInput!): MarketSchedule @aws_cognito_user_pools
+  updateNotification(condition: ModelNotificationConditionInput, input: UpdateNotificationInput!): Notification @aws_cognito_user_pools
+  updateOrder(condition: ModelOrderConditionInput, input: UpdateOrderInput!): Order @aws_cognito_user_pools
+  updateOrderItem(condition: ModelOrderItemConditionInput, input: UpdateOrderItemInput!): OrderItem @aws_cognito_user_pools
+  updatePayment(condition: ModelPaymentConditionInput, input: UpdatePaymentInput!): Payment @aws_cognito_user_pools
+  updatePostComment(condition: ModelPostCommentConditionInput, input: UpdatePostCommentInput!): PostComment @aws_cognito_user_pools
+  updatePostLike(condition: ModelPostLikeConditionInput, input: UpdatePostLikeInput!): PostLike @aws_cognito_user_pools
+  updatePreHarvestListing(condition: ModelPreHarvestListingConditionInput, input: UpdatePreHarvestListingInput!): PreHarvestListing @aws_cognito_user_pools
+  updatePreHarvestReservation(condition: ModelPreHarvestReservationConditionInput, input: UpdatePreHarvestReservationInput!): PreHarvestReservation @aws_cognito_user_pools
+  updateProduceCategory(condition: ModelProduceCategoryConditionInput, input: UpdateProduceCategoryInput!): ProduceCategory @aws_api_key @aws_cognito_user_pools
+  updateProduceListing(condition: ModelProduceListingConditionInput, input: UpdateProduceListingInput!): ProduceListing @aws_cognito_user_pools
+  updateProduceNutrient(condition: ModelProduceNutrientConditionInput, input: UpdateProduceNutrientInput!): ProduceNutrient @aws_api_key @aws_cognito_user_pools
+  updateProduceSubcategory(condition: ModelProduceSubcategoryConditionInput, input: UpdateProduceSubcategoryInput!): ProduceSubcategory @aws_api_key @aws_cognito_user_pools
+  updateProduceType(condition: ModelProduceTypeConditionInput, input: UpdateProduceTypeInput!): ProduceType @aws_api_key @aws_cognito_user_pools
+  updateProduceVariety(condition: ModelProduceVarietyConditionInput, input: UpdateProduceVarietyInput!): ProduceVariety @aws_api_key @aws_cognito_user_pools
+  updateShoppingList(condition: ModelShoppingListConditionInput, input: UpdateShoppingListInput!): ShoppingList @aws_cognito_user_pools
+  updateShoppingListItem(condition: ModelShoppingListItemConditionInput, input: UpdateShoppingListItemInput!): ShoppingListItem @aws_cognito_user_pools
+  updateUser(condition: ModelUserConditionInput, input: UpdateUserInput!): User @aws_cognito_user_pools
+  updateUserPreferences(condition: ModelUserPreferencesConditionInput, input: UpdateUserPreferencesInput!): UserPreferences @aws_cognito_user_pools
+  updateZone(condition: ModelZoneConditionInput, input: UpdateZoneInput!): Zone @aws_cognito_user_pools
+}
+
+type Notification @aws_api_key @aws_cognito_user_pools {
+  actionLink: String
+  createdAt: AWSDateTime
+  id: ID!
+  imageLink: String
+  message: String!
+  read: Boolean!
+  title: String!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type Order @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  deliveryAddressId: ID
+  deliveryFee: Float!
+  deliveryNotes: String
+  id: ID!
+  requestedDeliveryDate: AWSDate
+  status: OrderStatus!
+  subtotal: Float!
+  tax: Float!
+  total: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type OrderItem @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  farmId: ID!
+  id: ID!
+  orderId: ID!
+  price: Float!
+  produceListingId: ID!
+  quantity: Float!
+  subtotal: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type Payment @aws_api_key @aws_cognito_user_pools {
+  amount: Float!
+  createdAt: AWSDateTime
+  id: ID!
+  method: PaymentMethod!
+  orderId: ID!
+  status: PaymentStatus!
+  transactionId: String
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type PostComment @aws_api_key @aws_cognito_user_pools {
+  content: String!
+  createdAt: AWSDateTime
+  farmPostId: ID!
+  id: ID!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type PostLike @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  farmPostId: ID!
+  id: ID!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type PreHarvestListing @aws_api_key @aws_cognito_user_pools {
+  availableForReservation: Boolean!
+  createdAt: AWSDateTime
+  description: String
+  estimatedHarvestDate: AWSDate!
+  estimatedQuantity: Float!
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID!
+  image: String
+  inventoryBatchId: ID!
+  isOrganic: Boolean!
+  price: Float!
+  priceUnit: String!
+  produceVarietyId: ID!
+  quantityUnit: String!
+  title: String!
+  updatedAt: AWSDateTime
+}
+
+type PreHarvestReservation @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  farmId: ID!
+  id: ID!
+  notes: String
+  preHarvestListingId: ID!
+  quantity: Float!
+  quantityUnit: String!
+  requestedPickupDate: AWSDate
+  status: ReservationStatus!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type ProduceCategory @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  description: String
+  icon: String
+  id: ID!
+  image: String
+  name: String!
+  updatedAt: AWSDateTime
+}
+
+type ProduceListing @aws_api_key @aws_cognito_user_pools {
+  active: Boolean!
+  availableQuantity: Float!
+  createdAt: AWSDateTime
+  daysToExpiration: Int
+  description: String
+  estimatedDeliveryMinutes: Int
+  expirationDate: AWSDate
+  farmId: ID!
+  farmOwnerId: ID!
+  freshness: Int
+  harvestDate: AWSDate
+  id: ID!
+  images: [String]
+  instantDeliveryFee: Float
+  inventoryBatchId: ID!
+  isInstantlyAvailable: Boolean!
+  isOrganic: Boolean!
+  price: Float!
+  priceUnit: String!
+  produceVarietyId: ID!
+  quantity: Float!
+  quantityUnit: String!
+  title: String!
+  updatedAt: AWSDateTime
+}
+
+type ProduceNutrient @aws_api_key @aws_cognito_user_pools {
+  amount: Float!
+  createdAt: AWSDateTime
+  dailyValue: Float
+  id: ID!
+  name: String!
+  unit: String!
+  updatedAt: AWSDateTime
+  varietyId: ID!
+}
+
+type ProduceSubcategory @aws_api_key @aws_cognito_user_pools {
+  categoryId: ID!
+  createdAt: AWSDateTime
+  description: String
+  icon: String
+  id: ID!
+  image: String
+  name: String!
+  updatedAt: AWSDateTime
+}
+
+type ProduceType @aws_api_key @aws_cognito_user_pools {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String
+  iconUrl: String!
+  tasteProfile: String!
+  commonUses: [String!]!
+  subcategoryID: ID!
+  tags: [String!]!
+  farmCountInApp: Int!
+  farmCountInZone: Int!
+  farmCountNearby: Int!
+  seasonalMonths: [Int!]!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type ProduceVariety @aws_api_key @aws_cognito_user_pools {
+  averageShelfLife: Int
+  averageWeight: Float
+  createdAt: AWSDateTime
+  description: String
+  harvestInstructions: String
+  icon: String
+  id: ID!
+  image: String
+  name: String!
+  season: [String]
+  storageInstructions: String
+  typeId: ID!
+  updatedAt: AWSDateTime
+  weightUnit: String
+}
+
+type Query {
+  addressesByUserId(filter: ModelAddressFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelAddressConnection @aws_api_key @aws_cognito_user_pools
+  cartItemsByCartId(cartId: ID!, filter: ModelCartItemFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCartItemConnection @aws_api_key @aws_cognito_user_pools
+  cartItemsByProduceListingId(filter: ModelCartItemFilterInput, limit: Int, nextToken: String, produceListingId: ID!, sortDirection: ModelSortDirection): ModelCartItemConnection @aws_api_key @aws_cognito_user_pools
+  cartItemsByUserId(filter: ModelCartItemFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelCartItemConnection @aws_api_key @aws_cognito_user_pools
+  cartsByUserId(filter: ModelCartFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelCartConnection @aws_api_key @aws_cognito_user_pools
+  deliveriesByDeliveryRouteId(deliveryRouteId: ID!, filter: ModelDeliveryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools
+  deliveriesByDriverId(driverId: ID!, filter: ModelDeliveryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools
+  deliveriesByOrderId(filter: ModelDeliveryFilterInput, limit: Int, nextToken: String, orderId: ID!, sortDirection: ModelSortDirection): ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools
+  deliveriesByStatus(filter: ModelDeliveryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, status: DeliveryStatus!): ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools
+  deliveriesByUserId(filter: ModelDeliveryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools
+  deliveryRatingsByDeliveryId(deliveryId: ID!, filter: ModelDeliveryRatingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDeliveryRatingConnection @aws_api_key @aws_cognito_user_pools
+  deliveryRatingsByDriverId(driverId: ID!, filter: ModelDeliveryRatingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDeliveryRatingConnection @aws_api_key @aws_cognito_user_pools
+  deliveryRatingsByUserId(filter: ModelDeliveryRatingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelDeliveryRatingConnection @aws_api_key @aws_cognito_user_pools
+  deliveryRoutesByDriverId(driverId: ID!, filter: ModelDeliveryRouteFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDeliveryRouteConnection @aws_api_key @aws_cognito_user_pools
+  driverLocationsByDriverId(driverId: ID!, filter: ModelDriverLocationFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDriverLocationConnection @aws_api_key @aws_cognito_user_pools
+  driversByUserId(filter: ModelDriverFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelDriverConnection @aws_api_key @aws_cognito_user_pools
+  farmFollowsByFarmId(farmId: ID!, filter: ModelFarmFollowFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelFarmFollowConnection @aws_api_key @aws_cognito_user_pools
+  farmFollowsByUserId(filter: ModelFarmFollowFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelFarmFollowConnection @aws_api_key @aws_cognito_user_pools
+  farmMetricsByFarmId(farmId: ID!, filter: ModelFarmMetricsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelFarmMetricsConnection @aws_api_key @aws_cognito_user_pools
+  farmPostsByFarmId(farmId: ID!, filter: ModelFarmPostFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelFarmPostConnection @aws_api_key @aws_cognito_user_pools
+  farmPostsByPreHarvestListingId(filter: ModelFarmPostFilterInput, limit: Int, nextToken: String, preHarvestListingId: ID!, sortDirection: ModelSortDirection): ModelFarmPostConnection @aws_api_key @aws_cognito_user_pools
+  farmsByOwnerId(filter: ModelFarmFilterInput, limit: Int, nextToken: String, ownerId: ID!, sortDirection: ModelSortDirection): ModelFarmConnection @aws_api_key @aws_cognito_user_pools
+  getAddress(id: ID!): Address @aws_api_key @aws_cognito_user_pools
+  getCart(id: ID!): Cart @aws_api_key @aws_cognito_user_pools
+  getCartItem(id: ID!): CartItem @aws_api_key @aws_cognito_user_pools
+  getDelivery(id: ID!): Delivery @aws_api_key @aws_cognito_user_pools
+  getDeliveryRating(id: ID!): DeliveryRating @aws_api_key @aws_cognito_user_pools
+  getDeliveryRoute(id: ID!): DeliveryRoute @aws_api_key @aws_cognito_user_pools
+  getDriver(id: ID!): Driver @aws_api_key @aws_cognito_user_pools
+  getDriverLocation(id: ID!): DriverLocation @aws_api_key @aws_cognito_user_pools
+  getFarm(id: ID!): Farm @aws_api_key @aws_cognito_user_pools
+  getFarmFollow(id: ID!): FarmFollow @aws_api_key @aws_cognito_user_pools
+  getFarmMetrics(id: ID!): FarmMetrics @aws_api_key @aws_cognito_user_pools
+  getFarmPost(id: ID!): FarmPost @aws_api_key @aws_cognito_user_pools
+  getInventoryBatch(id: ID!): InventoryBatch @aws_api_key @aws_cognito_user_pools
+  getListingReview(id: ID!): ListingReview @aws_api_key @aws_cognito_user_pools
+  getMarketSchedule(id: ID!): MarketSchedule @aws_api_key @aws_cognito_user_pools
+  getNotification(id: ID!): Notification @aws_api_key @aws_cognito_user_pools
+  getOrder(id: ID!): Order @aws_api_key @aws_cognito_user_pools
+  getOrderItem(id: ID!): OrderItem @aws_api_key @aws_cognito_user_pools
+  getPayment(id: ID!): Payment @aws_api_key @aws_cognito_user_pools
+  getPostComment(id: ID!): PostComment @aws_api_key @aws_cognito_user_pools
+  getPostLike(id: ID!): PostLike @aws_api_key @aws_cognito_user_pools
+  getPreHarvestListing(id: ID!): PreHarvestListing @aws_api_key @aws_cognito_user_pools
+  getPreHarvestReservation(id: ID!): PreHarvestReservation @aws_api_key @aws_cognito_user_pools
+  getProduceCategory(id: ID!): ProduceCategory @aws_api_key @aws_cognito_user_pools
+  getProduceListing(id: ID!): ProduceListing @aws_api_key @aws_cognito_user_pools
+  getProduceNutrient(id: ID!): ProduceNutrient @aws_api_key @aws_cognito_user_pools
+  getProduceSubcategory(id: ID!): ProduceSubcategory @aws_api_key @aws_cognito_user_pools
+  getProduceType(id: ID!): ProduceType @aws_api_key @aws_cognito_user_pools
+  getProduceVariety(id: ID!): ProduceVariety @aws_api_key @aws_cognito_user_pools
+  getShoppingList(id: ID!): ShoppingList @aws_api_key @aws_cognito_user_pools
+  getShoppingListItem(id: ID!): ShoppingListItem @aws_api_key @aws_cognito_user_pools
+  getUser(id: ID!): User @aws_api_key @aws_cognito_user_pools
+  getUserPreferences(id: ID!): UserPreferences @aws_api_key @aws_cognito_user_pools
+  getZone(id: ID!): Zone @aws_api_key @aws_cognito_user_pools
+  inventoryBatchesByFarmId(farmId: ID!, filter: ModelInventoryBatchFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelInventoryBatchConnection @aws_api_key @aws_cognito_user_pools
+  inventoryBatchesByProduceVarietyId(filter: ModelInventoryBatchFilterInput, limit: Int, nextToken: String, produceVarietyId: ID!, sortDirection: ModelSortDirection): ModelInventoryBatchConnection @aws_api_key @aws_cognito_user_pools
+  inventoryBatchesByZoneId(filter: ModelInventoryBatchFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, zoneId: ID!): ModelInventoryBatchConnection @aws_api_key @aws_cognito_user_pools
+  listAddresses(filter: ModelAddressFilterInput, limit: Int, nextToken: String): ModelAddressConnection @aws_api_key @aws_cognito_user_pools
+  listCartItems(filter: ModelCartItemFilterInput, limit: Int, nextToken: String): ModelCartItemConnection @aws_api_key @aws_cognito_user_pools
+  listCarts(filter: ModelCartFilterInput, limit: Int, nextToken: String): ModelCartConnection @aws_api_key @aws_cognito_user_pools
+  listDeliveries(filter: ModelDeliveryFilterInput, limit: Int, nextToken: String): ModelDeliveryConnection @aws_api_key @aws_cognito_user_pools
+  listDeliveryRatings(filter: ModelDeliveryRatingFilterInput, limit: Int, nextToken: String): ModelDeliveryRatingConnection @aws_api_key @aws_cognito_user_pools
+  listDeliveryRoutes(filter: ModelDeliveryRouteFilterInput, limit: Int, nextToken: String): ModelDeliveryRouteConnection @aws_api_key @aws_cognito_user_pools
+  listDriverLocations(filter: ModelDriverLocationFilterInput, limit: Int, nextToken: String): ModelDriverLocationConnection @aws_api_key @aws_cognito_user_pools
+  listDrivers(filter: ModelDriverFilterInput, limit: Int, nextToken: String): ModelDriverConnection @aws_api_key @aws_cognito_user_pools
+  listFarmFollows(filter: ModelFarmFollowFilterInput, limit: Int, nextToken: String): ModelFarmFollowConnection @aws_api_key @aws_cognito_user_pools
+  listFarmMetrics(filter: ModelFarmMetricsFilterInput, limit: Int, nextToken: String): ModelFarmMetricsConnection @aws_api_key @aws_cognito_user_pools
+  listFarmPosts(filter: ModelFarmPostFilterInput, limit: Int, nextToken: String): ModelFarmPostConnection @aws_api_key @aws_cognito_user_pools
+  listFarms(filter: ModelFarmFilterInput, limit: Int, nextToken: String): ModelFarmConnection @aws_api_key @aws_cognito_user_pools
+  listInventoryBatches(filter: ModelInventoryBatchFilterInput, limit: Int, nextToken: String): ModelInventoryBatchConnection @aws_api_key @aws_cognito_user_pools
+  listListingReviews(filter: ModelListingReviewFilterInput, limit: Int, nextToken: String): ModelListingReviewConnection @aws_api_key @aws_cognito_user_pools
+  listMarketSchedules(filter: ModelMarketScheduleFilterInput, limit: Int, nextToken: String): ModelMarketScheduleConnection @aws_api_key @aws_cognito_user_pools
+  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_api_key @aws_cognito_user_pools
+  listOrderItems(filter: ModelOrderItemFilterInput, limit: Int, nextToken: String): ModelOrderItemConnection @aws_api_key @aws_cognito_user_pools
+  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection @aws_api_key @aws_cognito_user_pools
+  listPayments(filter: ModelPaymentFilterInput, limit: Int, nextToken: String): ModelPaymentConnection @aws_api_key @aws_cognito_user_pools
+  listPostComments(filter: ModelPostCommentFilterInput, limit: Int, nextToken: String): ModelPostCommentConnection @aws_api_key @aws_cognito_user_pools
+  listPostLikes(filter: ModelPostLikeFilterInput, limit: Int, nextToken: String): ModelPostLikeConnection @aws_api_key @aws_cognito_user_pools
+  listPreHarvestListings(filter: ModelPreHarvestListingFilterInput, limit: Int, nextToken: String): ModelPreHarvestListingConnection @aws_api_key @aws_cognito_user_pools
+  listPreHarvestReservations(filter: ModelPreHarvestReservationFilterInput, limit: Int, nextToken: String): ModelPreHarvestReservationConnection @aws_api_key @aws_cognito_user_pools
+  listProduceCategories(filter: ModelProduceCategoryFilterInput, limit: Int, nextToken: String): ModelProduceCategoryConnection @aws_api_key @aws_cognito_user_pools
+  listProduceListings(filter: ModelProduceListingFilterInput, limit: Int, nextToken: String): ModelProduceListingConnection @aws_api_key @aws_cognito_user_pools
+  listProduceNutrients(filter: ModelProduceNutrientFilterInput, limit: Int, nextToken: String): ModelProduceNutrientConnection @aws_api_key @aws_cognito_user_pools
+  listProduceSubcategories(filter: ModelProduceSubcategoryFilterInput, limit: Int, nextToken: String): ModelProduceSubcategoryConnection @aws_api_key @aws_cognito_user_pools
+  listProduceTypes(filter: ModelProduceTypeFilterInput, limit: Int, nextToken: String): ModelProduceTypeConnection @aws_api_key @aws_cognito_user_pools
+  listProduceVarieties(filter: ModelProduceVarietyFilterInput, limit: Int, nextToken: String): ModelProduceVarietyConnection @aws_api_key @aws_cognito_user_pools
+  listShoppingListItems(filter: ModelShoppingListItemFilterInput, limit: Int, nextToken: String): ModelShoppingListItemConnection @aws_api_key @aws_cognito_user_pools
+  listShoppingLists(filter: ModelShoppingListFilterInput, limit: Int, nextToken: String): ModelShoppingListConnection @aws_api_key @aws_cognito_user_pools
+  listUserPreferences(filter: ModelUserPreferencesFilterInput, limit: Int, nextToken: String): ModelUserPreferencesConnection @aws_api_key @aws_cognito_user_pools
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_api_key @aws_cognito_user_pools
+  listZones(filter: ModelZoneFilterInput, limit: Int, nextToken: String): ModelZoneConnection @aws_api_key @aws_cognito_user_pools
+  listingReviewsByProduceListingId(filter: ModelListingReviewFilterInput, limit: Int, nextToken: String, produceListingId: ID!, sortDirection: ModelSortDirection): ModelListingReviewConnection @aws_api_key @aws_cognito_user_pools
+  listingReviewsByUserId(filter: ModelListingReviewFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelListingReviewConnection @aws_api_key @aws_cognito_user_pools
+  marketSchedulesByFarmId(farmId: ID!, filter: ModelMarketScheduleFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelMarketScheduleConnection @aws_api_key @aws_cognito_user_pools
+  notificationsByUserId(filter: ModelNotificationFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelNotificationConnection @aws_api_key @aws_cognito_user_pools
+  orderItemsByFarmId(farmId: ID!, filter: ModelOrderItemFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelOrderItemConnection @aws_api_key @aws_cognito_user_pools
+  orderItemsByOrderId(filter: ModelOrderItemFilterInput, limit: Int, nextToken: String, orderId: ID!, sortDirection: ModelSortDirection): ModelOrderItemConnection @aws_api_key @aws_cognito_user_pools
+  orderItemsByProduceListingId(filter: ModelOrderItemFilterInput, limit: Int, nextToken: String, produceListingId: ID!, sortDirection: ModelSortDirection): ModelOrderItemConnection @aws_api_key @aws_cognito_user_pools
+  orderItemsByUserId(filter: ModelOrderItemFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelOrderItemConnection @aws_api_key @aws_cognito_user_pools
+  ordersByStatus(filter: ModelOrderFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, status: OrderStatus!): ModelOrderConnection @aws_api_key @aws_cognito_user_pools
+  ordersByUserId(filter: ModelOrderFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelOrderConnection @aws_api_key @aws_cognito_user_pools
+  paymentsByOrderId(filter: ModelPaymentFilterInput, limit: Int, nextToken: String, orderId: ID!, sortDirection: ModelSortDirection): ModelPaymentConnection @aws_api_key @aws_cognito_user_pools
+  paymentsByStatus(filter: ModelPaymentFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, status: PaymentStatus!): ModelPaymentConnection @aws_api_key @aws_cognito_user_pools
+  paymentsByUserId(filter: ModelPaymentFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelPaymentConnection @aws_api_key @aws_cognito_user_pools
+  postCommentsByFarmPostId(farmPostId: ID!, filter: ModelPostCommentFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostCommentConnection @aws_api_key @aws_cognito_user_pools
+  postCommentsByUserId(filter: ModelPostCommentFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelPostCommentConnection @aws_api_key @aws_cognito_user_pools
+  postLikesByFarmPostId(farmPostId: ID!, filter: ModelPostLikeFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostLikeConnection @aws_api_key @aws_cognito_user_pools
+  postLikesByUserId(filter: ModelPostLikeFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelPostLikeConnection @aws_api_key @aws_cognito_user_pools
+  preHarvestListingsByFarmId(farmId: ID!, filter: ModelPreHarvestListingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPreHarvestListingConnection @aws_api_key @aws_cognito_user_pools
+  preHarvestListingsByInventoryBatchId(filter: ModelPreHarvestListingFilterInput, inventoryBatchId: ID!, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPreHarvestListingConnection @aws_api_key @aws_cognito_user_pools
+  preHarvestListingsByProduceVarietyId(filter: ModelPreHarvestListingFilterInput, limit: Int, nextToken: String, produceVarietyId: ID!, sortDirection: ModelSortDirection): ModelPreHarvestListingConnection @aws_api_key @aws_cognito_user_pools
+  preHarvestReservationsByFarmId(farmId: ID!, filter: ModelPreHarvestReservationFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPreHarvestReservationConnection @aws_api_key @aws_cognito_user_pools
+  preHarvestReservationsByPreHarvestListingId(filter: ModelPreHarvestReservationFilterInput, limit: Int, nextToken: String, preHarvestListingId: ID!, sortDirection: ModelSortDirection): ModelPreHarvestReservationConnection @aws_api_key @aws_cognito_user_pools
+  preHarvestReservationsByUserId(filter: ModelPreHarvestReservationFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelPreHarvestReservationConnection @aws_api_key @aws_cognito_user_pools
+  produceListingsByFarmId(farmId: ID!, filter: ModelProduceListingFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelProduceListingConnection @aws_api_key @aws_cognito_user_pools
+  produceListingsByInventoryBatchId(filter: ModelProduceListingFilterInput, inventoryBatchId: ID!, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelProduceListingConnection @aws_api_key @aws_cognito_user_pools
+  produceListingsByProduceVarietyId(filter: ModelProduceListingFilterInput, limit: Int, nextToken: String, produceVarietyId: ID!, sortDirection: ModelSortDirection): ModelProduceListingConnection @aws_api_key @aws_cognito_user_pools
+  produceNutrientsByVarietyId(filter: ModelProduceNutrientFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, varietyId: ID!): ModelProduceNutrientConnection @aws_api_key @aws_cognito_user_pools
+  produceSubcategoriesByCategoryId(categoryId: ID!, filter: ModelProduceSubcategoryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelProduceSubcategoryConnection @aws_api_key @aws_cognito_user_pools
+  produceTypesBySubcategoryId(filter: ModelProduceTypeFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, subcategoryId: ID!): ModelProduceTypeConnection @aws_api_key @aws_cognito_user_pools
+  produceVarietiesByTypeId(filter: ModelProduceVarietyFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, typeId: ID!): ModelProduceVarietyConnection @aws_api_key @aws_cognito_user_pools
+  shoppingListItemsByProduceVarietyId(filter: ModelShoppingListItemFilterInput, limit: Int, nextToken: String, produceVarietyId: ID!, sortDirection: ModelSortDirection): ModelShoppingListItemConnection @aws_api_key @aws_cognito_user_pools
+  shoppingListItemsByShoppingListId(filter: ModelShoppingListItemFilterInput, limit: Int, nextToken: String, shoppingListId: ID!, sortDirection: ModelSortDirection): ModelShoppingListItemConnection @aws_api_key @aws_cognito_user_pools
+  shoppingListItemsByUserId(filter: ModelShoppingListItemFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelShoppingListItemConnection @aws_api_key @aws_cognito_user_pools
+  shoppingListsByUserId(filter: ModelShoppingListFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelShoppingListConnection @aws_api_key @aws_cognito_user_pools
+  userPreferencesByUserId(filter: ModelUserPreferencesFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection, userId: ID!): ModelUserPreferencesConnection @aws_api_key @aws_cognito_user_pools
+  zonesByFarmId(farmId: ID!, filter: ModelZoneFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelZoneConnection @aws_api_key @aws_cognito_user_pools
+}
+
+type ShoppingList @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  description: String
+  id: ID!
+  isDefault: Boolean!
+  name: String!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type ShoppingListItem @aws_api_key @aws_cognito_user_pools {
+  completed: Boolean!
+  createdAt: AWSDateTime
+  id: ID!
+  notes: String
+  produceVarietyId: ID
+  quantity: Int!
+  shoppingListId: ID!
+  unit: String
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type Subscription {
+  onCreateAddress(filter: ModelSubscriptionAddressFilterInput, userId: String): Address @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createAddress"])
+  onCreateCart(filter: ModelSubscriptionCartFilterInput, userId: String): Cart @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createCart"])
+  onCreateCartItem(filter: ModelSubscriptionCartItemFilterInput, userId: String): CartItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createCartItem"])
+  onCreateDelivery(filter: ModelSubscriptionDeliveryFilterInput, userId: String): Delivery @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createDelivery"])
+  onCreateDeliveryRating(filter: ModelSubscriptionDeliveryRatingFilterInput, userId: String): DeliveryRating @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createDeliveryRating"])
+  onCreateDeliveryRoute(driverId: String, filter: ModelSubscriptionDeliveryRouteFilterInput): DeliveryRoute @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createDeliveryRoute"])
+  onCreateDriver(filter: ModelSubscriptionDriverFilterInput, userId: String): Driver @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createDriver"])
+  onCreateDriverLocation(driverId: String, filter: ModelSubscriptionDriverLocationFilterInput): DriverLocation @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createDriverLocation"])
+  onCreateFarm(filter: ModelSubscriptionFarmFilterInput, ownerId: String): Farm @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createFarm"])
+  onCreateFarmFollow(filter: ModelSubscriptionFarmFollowFilterInput, userId: String): FarmFollow @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createFarmFollow"])
+  onCreateFarmMetrics(farmOwnerId: String, filter: ModelSubscriptionFarmMetricsFilterInput): FarmMetrics @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createFarmMetrics"])
+  onCreateFarmPost(farmOwnerId: String, filter: ModelSubscriptionFarmPostFilterInput): FarmPost @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createFarmPost"])
+  onCreateInventoryBatch(farmOwnerId: String, filter: ModelSubscriptionInventoryBatchFilterInput): InventoryBatch @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createInventoryBatch"])
+  onCreateListingReview(filter: ModelSubscriptionListingReviewFilterInput, userId: String): ListingReview @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createListingReview"])
+  onCreateMarketSchedule(farmOwnerId: String, filter: ModelSubscriptionMarketScheduleFilterInput): MarketSchedule @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createMarketSchedule"])
+  onCreateNotification(filter: ModelSubscriptionNotificationFilterInput, userId: String): Notification @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createNotification"])
+  onCreateOrder(filter: ModelSubscriptionOrderFilterInput, userId: String): Order @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createOrder"])
+  onCreateOrderItem(filter: ModelSubscriptionOrderItemFilterInput, userId: String): OrderItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createOrderItem"])
+  onCreatePayment(filter: ModelSubscriptionPaymentFilterInput, userId: String): Payment @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createPayment"])
+  onCreatePostComment(filter: ModelSubscriptionPostCommentFilterInput, userId: String): PostComment @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createPostComment"])
+  onCreatePostLike(filter: ModelSubscriptionPostLikeFilterInput, userId: String): PostLike @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createPostLike"])
+  onCreatePreHarvestListing(farmOwnerId: String, filter: ModelSubscriptionPreHarvestListingFilterInput): PreHarvestListing @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createPreHarvestListing"])
+  onCreatePreHarvestReservation(filter: ModelSubscriptionPreHarvestReservationFilterInput, userId: String): PreHarvestReservation @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createPreHarvestReservation"])
+  onCreateProduceCategory(filter: ModelSubscriptionProduceCategoryFilterInput): ProduceCategory @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createProduceCategory"])
+  onCreateProduceListing(farmOwnerId: String, filter: ModelSubscriptionProduceListingFilterInput): ProduceListing @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createProduceListing"])
+  onCreateProduceNutrient(filter: ModelSubscriptionProduceNutrientFilterInput): ProduceNutrient @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createProduceNutrient"])
+  onCreateProduceSubcategory(filter: ModelSubscriptionProduceSubcategoryFilterInput): ProduceSubcategory @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createProduceSubcategory"])
+  onCreateProduceType(filter: ModelSubscriptionProduceTypeFilterInput): ProduceType @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createProduceType"])
+  onCreateProduceVariety(filter: ModelSubscriptionProduceVarietyFilterInput): ProduceVariety @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createProduceVariety"])
+  onCreateShoppingList(filter: ModelSubscriptionShoppingListFilterInput, userId: String): ShoppingList @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createShoppingList"])
+  onCreateShoppingListItem(filter: ModelSubscriptionShoppingListItemFilterInput, userId: String): ShoppingListItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createShoppingListItem"])
+  onCreateUser(filter: ModelSubscriptionUserFilterInput, id: String): User @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createUser"])
+  onCreateUserPreferences(filter: ModelSubscriptionUserPreferencesFilterInput, userId: String): UserPreferences @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createUserPreferences"])
+  onCreateZone(farmOwnerId: String, filter: ModelSubscriptionZoneFilterInput): Zone @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["createZone"])
+  onDeleteAddress(filter: ModelSubscriptionAddressFilterInput, userId: String): Address @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteAddress"])
+  onDeleteCart(filter: ModelSubscriptionCartFilterInput, userId: String): Cart @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteCart"])
+  onDeleteCartItem(filter: ModelSubscriptionCartItemFilterInput, userId: String): CartItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteCartItem"])
+  onDeleteDelivery(filter: ModelSubscriptionDeliveryFilterInput, userId: String): Delivery @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteDelivery"])
+  onDeleteDeliveryRating(filter: ModelSubscriptionDeliveryRatingFilterInput, userId: String): DeliveryRating @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteDeliveryRating"])
+  onDeleteDeliveryRoute(driverId: String, filter: ModelSubscriptionDeliveryRouteFilterInput): DeliveryRoute @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteDeliveryRoute"])
+  onDeleteDriver(filter: ModelSubscriptionDriverFilterInput, userId: String): Driver @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteDriver"])
+  onDeleteDriverLocation(driverId: String, filter: ModelSubscriptionDriverLocationFilterInput): DriverLocation @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteDriverLocation"])
+  onDeleteFarm(filter: ModelSubscriptionFarmFilterInput, ownerId: String): Farm @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteFarm"])
+  onDeleteFarmFollow(filter: ModelSubscriptionFarmFollowFilterInput, userId: String): FarmFollow @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteFarmFollow"])
+  onDeleteFarmMetrics(farmOwnerId: String, filter: ModelSubscriptionFarmMetricsFilterInput): FarmMetrics @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteFarmMetrics"])
+  onDeleteFarmPost(farmOwnerId: String, filter: ModelSubscriptionFarmPostFilterInput): FarmPost @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteFarmPost"])
+  onDeleteInventoryBatch(farmOwnerId: String, filter: ModelSubscriptionInventoryBatchFilterInput): InventoryBatch @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteInventoryBatch"])
+  onDeleteListingReview(filter: ModelSubscriptionListingReviewFilterInput, userId: String): ListingReview @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteListingReview"])
+  onDeleteMarketSchedule(farmOwnerId: String, filter: ModelSubscriptionMarketScheduleFilterInput): MarketSchedule @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteMarketSchedule"])
+  onDeleteNotification(filter: ModelSubscriptionNotificationFilterInput, userId: String): Notification @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteNotification"])
+  onDeleteOrder(filter: ModelSubscriptionOrderFilterInput, userId: String): Order @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteOrder"])
+  onDeleteOrderItem(filter: ModelSubscriptionOrderItemFilterInput, userId: String): OrderItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteOrderItem"])
+  onDeletePayment(filter: ModelSubscriptionPaymentFilterInput, userId: String): Payment @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deletePayment"])
+  onDeletePostComment(filter: ModelSubscriptionPostCommentFilterInput, userId: String): PostComment @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deletePostComment"])
+  onDeletePostLike(filter: ModelSubscriptionPostLikeFilterInput, userId: String): PostLike @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deletePostLike"])
+  onDeletePreHarvestListing(farmOwnerId: String, filter: ModelSubscriptionPreHarvestListingFilterInput): PreHarvestListing @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deletePreHarvestListing"])
+  onDeletePreHarvestReservation(filter: ModelSubscriptionPreHarvestReservationFilterInput, userId: String): PreHarvestReservation @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deletePreHarvestReservation"])
+  onDeleteProduceCategory(filter: ModelSubscriptionProduceCategoryFilterInput): ProduceCategory @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteProduceCategory"])
+  onDeleteProduceListing(farmOwnerId: String, filter: ModelSubscriptionProduceListingFilterInput): ProduceListing @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteProduceListing"])
+  onDeleteProduceNutrient(filter: ModelSubscriptionProduceNutrientFilterInput): ProduceNutrient @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteProduceNutrient"])
+  onDeleteProduceSubcategory(filter: ModelSubscriptionProduceSubcategoryFilterInput): ProduceSubcategory @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteProduceSubcategory"])
+  onDeleteProduceType(filter: ModelSubscriptionProduceTypeFilterInput): ProduceType @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteProduceType"])
+  onDeleteProduceVariety(filter: ModelSubscriptionProduceVarietyFilterInput): ProduceVariety @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteProduceVariety"])
+  onDeleteShoppingList(filter: ModelSubscriptionShoppingListFilterInput, userId: String): ShoppingList @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteShoppingList"])
+  onDeleteShoppingListItem(filter: ModelSubscriptionShoppingListItemFilterInput, userId: String): ShoppingListItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteShoppingListItem"])
+  onDeleteUser(filter: ModelSubscriptionUserFilterInput, id: String): User @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteUser"])
+  onDeleteUserPreferences(filter: ModelSubscriptionUserPreferencesFilterInput, userId: String): UserPreferences @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteUserPreferences"])
+  onDeleteZone(farmOwnerId: String, filter: ModelSubscriptionZoneFilterInput): Zone @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["deleteZone"])
+  onUpdateAddress(filter: ModelSubscriptionAddressFilterInput, userId: String): Address @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateAddress"])
+  onUpdateCart(filter: ModelSubscriptionCartFilterInput, userId: String): Cart @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateCart"])
+  onUpdateCartItem(filter: ModelSubscriptionCartItemFilterInput, userId: String): CartItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateCartItem"])
+  onUpdateDelivery(filter: ModelSubscriptionDeliveryFilterInput, userId: String): Delivery @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateDelivery"])
+  onUpdateDeliveryRating(filter: ModelSubscriptionDeliveryRatingFilterInput, userId: String): DeliveryRating @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateDeliveryRating"])
+  onUpdateDeliveryRoute(driverId: String, filter: ModelSubscriptionDeliveryRouteFilterInput): DeliveryRoute @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateDeliveryRoute"])
+  onUpdateDriver(filter: ModelSubscriptionDriverFilterInput, userId: String): Driver @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateDriver"])
+  onUpdateDriverLocation(driverId: String, filter: ModelSubscriptionDriverLocationFilterInput): DriverLocation @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateDriverLocation"])
+  onUpdateFarm(filter: ModelSubscriptionFarmFilterInput, ownerId: String): Farm @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateFarm"])
+  onUpdateFarmFollow(filter: ModelSubscriptionFarmFollowFilterInput, userId: String): FarmFollow @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateFarmFollow"])
+  onUpdateFarmMetrics(farmOwnerId: String, filter: ModelSubscriptionFarmMetricsFilterInput): FarmMetrics @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateFarmMetrics"])
+  onUpdateFarmPost(farmOwnerId: String, filter: ModelSubscriptionFarmPostFilterInput): FarmPost @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateFarmPost"])
+  onUpdateInventoryBatch(farmOwnerId: String, filter: ModelSubscriptionInventoryBatchFilterInput): InventoryBatch @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateInventoryBatch"])
+  onUpdateListingReview(filter: ModelSubscriptionListingReviewFilterInput, userId: String): ListingReview @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateListingReview"])
+  onUpdateMarketSchedule(farmOwnerId: String, filter: ModelSubscriptionMarketScheduleFilterInput): MarketSchedule @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateMarketSchedule"])
+  onUpdateNotification(filter: ModelSubscriptionNotificationFilterInput, userId: String): Notification @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateNotification"])
+  onUpdateOrder(filter: ModelSubscriptionOrderFilterInput, userId: String): Order @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateOrder"])
+  onUpdateOrderItem(filter: ModelSubscriptionOrderItemFilterInput, userId: String): OrderItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateOrderItem"])
+  onUpdatePayment(filter: ModelSubscriptionPaymentFilterInput, userId: String): Payment @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updatePayment"])
+  onUpdatePostComment(filter: ModelSubscriptionPostCommentFilterInput, userId: String): PostComment @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updatePostComment"])
+  onUpdatePostLike(filter: ModelSubscriptionPostLikeFilterInput, userId: String): PostLike @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updatePostLike"])
+  onUpdatePreHarvestListing(farmOwnerId: String, filter: ModelSubscriptionPreHarvestListingFilterInput): PreHarvestListing @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updatePreHarvestListing"])
+  onUpdatePreHarvestReservation(filter: ModelSubscriptionPreHarvestReservationFilterInput, userId: String): PreHarvestReservation @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updatePreHarvestReservation"])
+  onUpdateProduceCategory(filter: ModelSubscriptionProduceCategoryFilterInput): ProduceCategory @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateProduceCategory"])
+  onUpdateProduceListing(farmOwnerId: String, filter: ModelSubscriptionProduceListingFilterInput): ProduceListing @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateProduceListing"])
+  onUpdateProduceNutrient(filter: ModelSubscriptionProduceNutrientFilterInput): ProduceNutrient @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateProduceNutrient"])
+  onUpdateProduceSubcategory(filter: ModelSubscriptionProduceSubcategoryFilterInput): ProduceSubcategory @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateProduceSubcategory"])
+  onUpdateProduceType(filter: ModelSubscriptionProduceTypeFilterInput): ProduceType @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateProduceType"])
+  onUpdateProduceVariety(filter: ModelSubscriptionProduceVarietyFilterInput): ProduceVariety @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateProduceVariety"])
+  onUpdateShoppingList(filter: ModelSubscriptionShoppingListFilterInput, userId: String): ShoppingList @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateShoppingList"])
+  onUpdateShoppingListItem(filter: ModelSubscriptionShoppingListItemFilterInput, userId: String): ShoppingListItem @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateShoppingListItem"])
+  onUpdateUser(filter: ModelSubscriptionUserFilterInput, id: String): User @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateUser"])
+  onUpdateUserPreferences(filter: ModelSubscriptionUserPreferencesFilterInput, userId: String): UserPreferences @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateUserPreferences"])
+  onUpdateZone(farmOwnerId: String, filter: ModelSubscriptionZoneFilterInput): Zone @aws_api_key @aws_cognito_user_pools @aws_subscribe(mutations : ["updateZone"])
+}
+
+type User @aws_api_key @aws_cognito_user_pools {
+  avatar: String
+  bio: String
+  createdAt: AWSDateTime
+  email: AWSEmail!
+  id: ID!
+  name: String
+  phoneNumber: AWSPhone
+  role: UserRole!
+  updatedAt: AWSDateTime
+}
+
+type UserPreferences @aws_api_key @aws_cognito_user_pools {
+  createdAt: AWSDateTime
+  emailNotificationsEnabled: Boolean!
+  farmUpdates: Boolean!
+  id: ID!
+  marketingCommunications: Boolean!
+  orderUpdates: Boolean!
+  preferredPaymentMethod: PaymentMethod
+  pushNotificationsEnabled: Boolean!
+  smsNotificationsEnabled: Boolean!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+type Zone @aws_api_key @aws_cognito_user_pools {
+  active: Boolean!
+  createdAt: AWSDateTime
+  description: String
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID!
+  location: String
+  name: String!
+  size: Float
+  sizeUnit: String
+  updatedAt: AWSDateTime
+}
+
+enum DeliveryStatus {
+  ASSIGNED
+  CANCELLED
+  DELIVERED
+  FAILED
+  IN_TRANSIT
+  PICKING_UP
+}
+
+enum InventoryStatus {
+  EXPIRED
+  GROWING
+  HARVESTED
+  PLANNED
+  PLANTED
+  SOLD_OUT
+}
+
+enum ModelAttributeTypes {
+  _null
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+enum OrderStatus {
+  CANCELLED
+  DELIVERED
+  OUT_FOR_DELIVERY
+  PENDING
+  PROCESSING
+  READY_FOR_PICKUP
+  REFUNDED
+}
+
+enum PaymentMethod {
+  APPLE_PAY
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  GOOGLE_PAY
+  PAYPAL
+}
+
+enum PaymentStatus {
+  COMPLETED
+  FAILED
+  PENDING
+  REFUNDED
+}
+
+enum PostType {
+  EDUCATIONAL
+  GENERAL
+  GROWING_UPDATE
+  HARVEST_ANNOUNCEMENT
+}
+
+enum ReservationStatus {
+  CANCELLED
+  COMPLETED
+  CONFIRMED
+  PENDING
+  READY_FOR_PICKUP
+}
+
+enum UserRole {
+  ADMIN
+  CONSUMER
+  DRIVER
+  FARMER
+}
+
+input CreateAddressInput {
+  city: String!
+  country: String!
+  createdAt: AWSDateTime
+  id: ID
+  isDefault: Boolean!
+  label: String
+  postalCode: String!
+  state: String!
+  street: String!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateCartInput {
+  active: Boolean!
+  createdAt: AWSDateTime
+  id: ID
+  subtotal: Float!
+  tax: Float!
+  total: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateCartItemInput {
+  cartId: ID!
+  createdAt: AWSDateTime
+  id: ID
+  price: Float!
+  produceListingId: ID!
+  quantity: Float!
+  subtotal: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateDeliveryInput {
+  actualDeliveryTime: AWSDateTime
+  createdAt: AWSDateTime
+  deliveryRouteId: ID
+  deliveryTime: AWSDateTime
+  driverId: ID
+  dropoffAddress: String!
+  dropoffLocationLat: Float!
+  dropoffLocationLng: Float!
+  estimatedDeliveryTime: AWSDateTime
+  id: ID
+  notes: String
+  orderId: ID!
+  pickupAddress: String!
+  pickupLocationLat: Float!
+  pickupLocationLng: Float!
+  pickupTime: AWSDateTime
+  status: DeliveryStatus!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateDeliveryRatingInput {
+  comment: String
+  createdAt: AWSDateTime
+  deliveryId: ID!
+  driverId: ID!
+  id: ID
+  rating: Int!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateDeliveryRouteInput {
+  actualDistance: Float
+  actualDuration: Int
+  createdAt: AWSDateTime
+  driverId: ID!
+  endLocationLat: Float!
+  endLocationLng: Float!
+  endTime: AWSDateTime
+  estimatedDistance: Float!
+  estimatedDuration: Int!
+  id: ID
+  startLocationLat: Float!
+  startLocationLng: Float!
+  startTime: AWSDateTime!
+  updatedAt: AWSDateTime
+}
+
+input CreateDriverInput {
+  active: Boolean!
+  avatar: String
+  createdAt: AWSDateTime
+  currentLocationLat: Float
+  currentLocationLng: Float
+  email: AWSEmail!
+  firstName: String!
+  id: ID
+  lastLocationUpdateTime: AWSDateTime
+  lastName: String!
+  licenseExpiry: AWSDate!
+  licenseNumber: String!
+  phoneNumber: AWSPhone!
+  updatedAt: AWSDateTime
+  userId: ID!
+  vehicleColor: String!
+  vehicleLicensePlate: String!
+  vehicleMake: String!
+  vehicleModel: String!
+  vehicleYear: Int!
+}
+
+input CreateDriverLocationInput {
+  createdAt: AWSDateTime
+  driverId: ID!
+  heading: Float
+  id: ID
+  lat: Float!
+  lng: Float!
+  timestamp: AWSDateTime!
+  updatedAt: AWSDateTime
+}
+
+input CreateFarmFollowInput {
+  createdAt: AWSDateTime
+  farmId: ID!
+  id: ID
+  receiveNotifications: Boolean!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateFarmInput {
+  active: Boolean!
+  address: String!
+  certifications: [String]
+  certified: Boolean!
+  city: String!
+  coverImage: String
+  createdAt: AWSDateTime
+  description: String
+  email: AWSEmail
+  id: ID
+  location: String!
+  name: String!
+  ownerId: ID!
+  phone: AWSPhone
+  profileImage: String
+  state: String!
+  updatedAt: AWSDateTime
+  website: AWSURL
+  yearEstablished: Int
+  zipCode: String!
+}
+
+input CreateFarmMetricsInput {
+  averageOrderValue: Float!
+  createdAt: AWSDateTime
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID
+  totalCustomers: Int!
+  totalOrders: Int!
+  totalSales: Float!
+  updatedAt: AWSDateTime
+}
+
+input CreateFarmPostInput {
+  content: String!
+  createdAt: AWSDateTime
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID
+  images: [String]
+  preHarvestListingId: ID
+  title: String!
+  type: PostType!
+  updatedAt: AWSDateTime
+  videos: [String]
+}
+
+input CreateInventoryBatchInput {
+  actualQuantity: Float
+  createdAt: AWSDateTime
+  estimatedHarvestDate: AWSDate
+  estimatedQuantity: Float
+  expirationDate: AWSDate
+  farmId: ID!
+  farmOwnerId: ID!
+  harvestDate: AWSDate
+  id: ID
+  isOrganic: Boolean!
+  notes: String
+  plantingDate: AWSDate
+  price: Float
+  priceUnit: String
+  produceVarietyId: ID!
+  quantityUnit: String
+  remainingQuantity: Float
+  status: InventoryStatus!
+  storageConditions: String
+  storageLocation: String
+  updatedAt: AWSDateTime
+  zoneId: ID
+}
+
+input CreateListingReviewInput {
+  comment: String
+  createdAt: AWSDateTime
+  id: ID
+  images: [String]
+  produceListingId: ID!
+  rating: Int!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateMarketScheduleInput {
+  active: Boolean!
+  address: String!
+  city: String!
+  createdAt: AWSDateTime
+  dayOfWeek: Int!
+  endTime: AWSTime!
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID
+  marketName: String!
+  startTime: AWSTime!
+  state: String!
+  updatedAt: AWSDateTime
+  zipCode: String!
+}
+
+input CreateNotificationInput {
+  actionLink: String
+  createdAt: AWSDateTime
+  id: ID
+  imageLink: String
+  message: String!
+  read: Boolean!
+  title: String!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateOrderInput {
+  createdAt: AWSDateTime
+  deliveryAddressId: ID
+  deliveryFee: Float!
+  deliveryNotes: String
+  id: ID
+  requestedDeliveryDate: AWSDate
+  status: OrderStatus!
+  subtotal: Float!
+  tax: Float!
+  total: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateOrderItemInput {
+  createdAt: AWSDateTime
+  farmId: ID!
+  id: ID
+  orderId: ID!
+  price: Float!
+  produceListingId: ID!
+  quantity: Float!
+  subtotal: Float!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreatePaymentInput {
+  amount: Float!
+  createdAt: AWSDateTime
+  id: ID
+  method: PaymentMethod!
+  orderId: ID!
+  status: PaymentStatus!
+  transactionId: String
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreatePostCommentInput {
+  content: String!
+  createdAt: AWSDateTime
+  farmPostId: ID!
+  id: ID
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreatePostLikeInput {
+  createdAt: AWSDateTime
+  farmPostId: ID!
+  id: ID
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreatePreHarvestListingInput {
+  availableForReservation: Boolean!
+  createdAt: AWSDateTime
+  description: String
+  estimatedHarvestDate: AWSDate!
+  estimatedQuantity: Float!
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID
+  image: String
+  inventoryBatchId: ID!
+  isOrganic: Boolean!
+  price: Float!
+  priceUnit: String!
+  produceVarietyId: ID!
+  quantityUnit: String!
+  title: String!
+  updatedAt: AWSDateTime
+}
+
+input CreatePreHarvestReservationInput {
+  createdAt: AWSDateTime
+  farmId: ID!
+  id: ID
+  notes: String
+  preHarvestListingId: ID!
+  quantity: Float!
+  quantityUnit: String!
+  requestedPickupDate: AWSDate
+  status: ReservationStatus!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateProduceCategoryInput {
+  colorHex: String
+  description: String
+  displayOrder: Int
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  icon: String
+  iconUrl: String
+  id: ID!
+  image: String
+  name: String!
+  slug: String
+}
+
+input CreateProduceListingInput {
+  active: Boolean!
+  availableQuantity: Float!
+  createdAt: AWSDateTime
+  daysToExpiration: Int
+  description: String
+  estimatedDeliveryMinutes: Int
+  expirationDate: AWSDate
+  farmId: ID!
+  farmOwnerId: ID!
+  freshness: Int
+  harvestDate: AWSDate
+  id: ID
+  images: [String]
+  instantDeliveryFee: Float
+  inventoryBatchId: ID!
+  isInstantlyAvailable: Boolean!
+  isOrganic: Boolean!
+  price: Float!
+  priceUnit: String!
+  produceVarietyId: ID!
+  quantity: Float!
+  quantityUnit: String!
+  title: String!
+  updatedAt: AWSDateTime
+}
+
+input CreateProduceNutrientInput {
+  amount: Float!
+  createdAt: AWSDateTime
+  dailyValue: Float
+  id: ID
+  name: String!
+  unit: String!
+  updatedAt: AWSDateTime
+  varietyId: ID!
+}
+
+input CreateProduceSubcategoryInput {
+  categoryId: ID!
+  createdAt: AWSDateTime
+  description: String
+  icon: String
+  id: ID
+  image: String
+  name: String!
+  updatedAt: AWSDateTime
+}
+
+input CreateProduceTypeInput {
+  id: ID
+  name: String!
+  slug: String!
+  description: String
+  iconUrl: String!
+  tasteProfile: String!
+  commonUses: [String!]!
+  subcategoryID: ID!
+  tags: [String!]!
+  farmCountInApp: Int!
+  farmCountInZone: Int!
+  farmCountNearby: Int!
+  seasonalMonths: [Int!]!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input CreateProduceVarietyInput {
+  averageShelfLife: Int
+  averageWeight: Float
+  createdAt: AWSDateTime
+  description: String
+  harvestInstructions: String
+  icon: String
+  id: ID
+  image: String
+  name: String!
+  season: [String]
+  storageInstructions: String
+  typeId: ID!
+  updatedAt: AWSDateTime
+  weightUnit: String
+}
+
+input CreateShoppingListInput {
+  createdAt: AWSDateTime
+  description: String
+  id: ID
+  isDefault: Boolean!
+  name: String!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateShoppingListItemInput {
+  completed: Boolean!
+  createdAt: AWSDateTime
+  id: ID
+  notes: String
+  produceVarietyId: ID
+  quantity: Int!
+  shoppingListId: ID!
+  unit: String
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateUserInput {
+  avatar: String
+  bio: String
+  createdAt: AWSDateTime
+  email: AWSEmail!
+  id: ID
+  name: String
+  phoneNumber: AWSPhone
+  role: UserRole!
+  updatedAt: AWSDateTime
+}
+
+input CreateUserPreferencesInput {
+  createdAt: AWSDateTime
+  emailNotificationsEnabled: Boolean!
+  farmUpdates: Boolean!
+  id: ID
+  marketingCommunications: Boolean!
+  orderUpdates: Boolean!
+  preferredPaymentMethod: PaymentMethod
+  pushNotificationsEnabled: Boolean!
+  smsNotificationsEnabled: Boolean!
+  updatedAt: AWSDateTime
+  userId: ID!
+}
+
+input CreateZoneInput {
+  active: Boolean!
+  createdAt: AWSDateTime
+  description: String
+  farmId: ID!
+  farmOwnerId: ID!
+  id: ID
+  location: String
+  name: String!
+  size: Float
+  sizeUnit: String
+  updatedAt: AWSDateTime
+}
+
+input DeleteAddressInput {
+  id: ID!
+}
+
+input DeleteCartInput {
+  id: ID!
+}
+
+input DeleteCartItemInput {
+  id: ID!
+}
+
+input DeleteDeliveryInput {
+  id: ID!
+}
+
+input DeleteDeliveryRatingInput {
+  id: ID!
+}
+
+input DeleteDeliveryRouteInput {
+  id: ID!
+}
+
+input DeleteDriverInput {
+  id: ID!
+}
+
+input DeleteDriverLocationInput {
+  id: ID!
+}
+
+input DeleteFarmFollowInput {
+  id: ID!
+}
+
+input DeleteFarmInput {
+  id: ID!
+}
+
+input DeleteFarmMetricsInput {
+  id: ID!
+}
+
+input DeleteFarmPostInput {
+  id: ID!
+}
+
+input DeleteInventoryBatchInput {
+  id: ID!
+}
+
+input DeleteListingReviewInput {
+  id: ID!
+}
+
+input DeleteMarketScheduleInput {
+  id: ID!
+}
+
+input DeleteNotificationInput {
+  id: ID!
+}
+
+input DeleteOrderInput {
+  id: ID!
+}
+
+input DeleteOrderItemInput {
+  id: ID!
+}
+
+input DeletePaymentInput {
+  id: ID!
+}
+
+input DeletePostCommentInput {
+  id: ID!
+}
+
+input DeletePostLikeInput {
+  id: ID!
+}
+
+input DeletePreHarvestListingInput {
+  id: ID!
+}
+
+input DeletePreHarvestReservationInput {
+  id: ID!
+}
+
+input DeleteProduceCategoryInput {
+  id: ID!
+}
+
+input DeleteProduceListingInput {
+  id: ID!
+}
+
+input DeleteProduceNutrientInput {
+  id: ID!
+}
+
+input DeleteProduceSubcategoryInput {
+  id: ID!
+}
+
+input DeleteProduceTypeInput {
+  id: ID!
+}
+
+input DeleteProduceVarietyInput {
+  id: ID!
+}
+
+input DeleteShoppingListInput {
+  id: ID!
+}
+
+input DeleteShoppingListItemInput {
+  id: ID!
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input DeleteUserPreferencesInput {
+  id: ID!
+}
+
+input DeleteZoneInput {
+  id: ID!
+}
+
+input ModelAddressConditionInput {
+  and: [ModelAddressConditionInput]
+  city: ModelStringInput
+  country: ModelStringInput
+  createdAt: ModelStringInput
+  isDefault: ModelBooleanInput
+  label: ModelStringInput
+  not: ModelAddressConditionInput
+  or: [ModelAddressConditionInput]
+  postalCode: ModelStringInput
+  state: ModelStringInput
+  street: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelAddressFilterInput {
+  and: [ModelAddressFilterInput]
+  city: ModelStringInput
+  country: ModelStringInput
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  isDefault: ModelBooleanInput
+  label: ModelStringInput
+  not: ModelAddressFilterInput
+  or: [ModelAddressFilterInput]
+  postalCode: ModelStringInput
+  state: ModelStringInput
+  street: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelBooleanInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelCartConditionInput {
+  active: ModelBooleanInput
+  and: [ModelCartConditionInput]
+  createdAt: ModelStringInput
+  not: ModelCartConditionInput
+  or: [ModelCartConditionInput]
+  subtotal: ModelFloatInput
+  tax: ModelFloatInput
+  total: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelCartFilterInput {
+  active: ModelBooleanInput
+  and: [ModelCartFilterInput]
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  not: ModelCartFilterInput
+  or: [ModelCartFilterInput]
+  subtotal: ModelFloatInput
+  tax: ModelFloatInput
+  total: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelCartItemConditionInput {
+  and: [ModelCartItemConditionInput]
+  cartId: ModelIDInput
+  createdAt: ModelStringInput
+  not: ModelCartItemConditionInput
+  or: [ModelCartItemConditionInput]
+  price: ModelFloatInput
+  produceListingId: ModelIDInput
+  quantity: ModelFloatInput
+  subtotal: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelCartItemFilterInput {
+  and: [ModelCartItemFilterInput]
+  cartId: ModelIDInput
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  not: ModelCartItemFilterInput
+  or: [ModelCartItemFilterInput]
+  price: ModelFloatInput
+  produceListingId: ModelIDInput
+  quantity: ModelFloatInput
+  subtotal: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelDeliveryConditionInput {
+  actualDeliveryTime: ModelStringInput
+  and: [ModelDeliveryConditionInput]
+  createdAt: ModelStringInput
+  deliveryRouteId: ModelIDInput
+  deliveryTime: ModelStringInput
+  driverId: ModelIDInput
+  dropoffAddress: ModelStringInput
+  dropoffLocationLat: ModelFloatInput
+  dropoffLocationLng: ModelFloatInput
+  estimatedDeliveryTime: ModelStringInput
+  not: ModelDeliveryConditionInput
+  notes: ModelStringInput
+  or: [ModelDeliveryConditionInput]
+  orderId: ModelIDInput
+  pickupAddress: ModelStringInput
+  pickupLocationLat: ModelFloatInput
+  pickupLocationLng: ModelFloatInput
+  pickupTime: ModelStringInput
+  status: ModelDeliveryStatusInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelDeliveryFilterInput {
+  actualDeliveryTime: ModelStringInput
+  and: [ModelDeliveryFilterInput]
+  createdAt: ModelStringInput
+  deliveryRouteId: ModelIDInput
+  deliveryTime: ModelStringInput
+  driverId: ModelIDInput
+  dropoffAddress: ModelStringInput
+  dropoffLocationLat: ModelFloatInput
+  dropoffLocationLng: ModelFloatInput
+  estimatedDeliveryTime: ModelStringInput
+  id: ModelIDInput
+  not: ModelDeliveryFilterInput
+  notes: ModelStringInput
+  or: [ModelDeliveryFilterInput]
+  orderId: ModelIDInput
+  pickupAddress: ModelStringInput
+  pickupLocationLat: ModelFloatInput
+  pickupLocationLng: ModelFloatInput
+  pickupTime: ModelStringInput
+  status: ModelDeliveryStatusInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelDeliveryRatingConditionInput {
+  and: [ModelDeliveryRatingConditionInput]
+  comment: ModelStringInput
+  createdAt: ModelStringInput
+  deliveryId: ModelIDInput
+  driverId: ModelIDInput
+  not: ModelDeliveryRatingConditionInput
+  or: [ModelDeliveryRatingConditionInput]
+  rating: ModelIntInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelDeliveryRatingFilterInput {
+  and: [ModelDeliveryRatingFilterInput]
+  comment: ModelStringInput
+  createdAt: ModelStringInput
+  deliveryId: ModelIDInput
+  driverId: ModelIDInput
+  id: ModelIDInput
+  not: ModelDeliveryRatingFilterInput
+  or: [ModelDeliveryRatingFilterInput]
+  rating: ModelIntInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelDeliveryRouteConditionInput {
+  actualDistance: ModelFloatInput
+  actualDuration: ModelIntInput
+  and: [ModelDeliveryRouteConditionInput]
+  createdAt: ModelStringInput
+  driverId: ModelIDInput
+  endLocationLat: ModelFloatInput
+  endLocationLng: ModelFloatInput
+  endTime: ModelStringInput
+  estimatedDistance: ModelFloatInput
+  estimatedDuration: ModelIntInput
+  not: ModelDeliveryRouteConditionInput
+  or: [ModelDeliveryRouteConditionInput]
+  startLocationLat: ModelFloatInput
+  startLocationLng: ModelFloatInput
+  startTime: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelDeliveryRouteFilterInput {
+  actualDistance: ModelFloatInput
+  actualDuration: ModelIntInput
+  and: [ModelDeliveryRouteFilterInput]
+  createdAt: ModelStringInput
+  driverId: ModelIDInput
+  endLocationLat: ModelFloatInput
+  endLocationLng: ModelFloatInput
+  endTime: ModelStringInput
+  estimatedDistance: ModelFloatInput
+  estimatedDuration: ModelIntInput
+  id: ModelIDInput
+  not: ModelDeliveryRouteFilterInput
+  or: [ModelDeliveryRouteFilterInput]
+  startLocationLat: ModelFloatInput
+  startLocationLng: ModelFloatInput
+  startTime: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelDeliveryStatusInput {
+  eq: DeliveryStatus
+  ne: DeliveryStatus
+}
+
+input ModelDriverConditionInput {
+  active: ModelBooleanInput
+  and: [ModelDriverConditionInput]
+  avatar: ModelStringInput
+  createdAt: ModelStringInput
+  currentLocationLat: ModelFloatInput
+  currentLocationLng: ModelFloatInput
+  email: ModelStringInput
+  firstName: ModelStringInput
+  lastLocationUpdateTime: ModelStringInput
+  lastName: ModelStringInput
+  licenseExpiry: ModelStringInput
+  licenseNumber: ModelStringInput
+  not: ModelDriverConditionInput
+  or: [ModelDriverConditionInput]
+  phoneNumber: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+  vehicleColor: ModelStringInput
+  vehicleLicensePlate: ModelStringInput
+  vehicleMake: ModelStringInput
+  vehicleModel: ModelStringInput
+  vehicleYear: ModelIntInput
+}
+
+input ModelDriverFilterInput {
+  active: ModelBooleanInput
+  and: [ModelDriverFilterInput]
+  avatar: ModelStringInput
+  createdAt: ModelStringInput
+  currentLocationLat: ModelFloatInput
+  currentLocationLng: ModelFloatInput
+  email: ModelStringInput
+  firstName: ModelStringInput
+  id: ModelIDInput
+  lastLocationUpdateTime: ModelStringInput
+  lastName: ModelStringInput
+  licenseExpiry: ModelStringInput
+  licenseNumber: ModelStringInput
+  not: ModelDriverFilterInput
+  or: [ModelDriverFilterInput]
+  phoneNumber: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+  vehicleColor: ModelStringInput
+  vehicleLicensePlate: ModelStringInput
+  vehicleMake: ModelStringInput
+  vehicleModel: ModelStringInput
+  vehicleYear: ModelIntInput
+}
+
+input ModelDriverLocationConditionInput {
+  and: [ModelDriverLocationConditionInput]
+  createdAt: ModelStringInput
+  driverId: ModelIDInput
+  heading: ModelFloatInput
+  lat: ModelFloatInput
+  lng: ModelFloatInput
+  not: ModelDriverLocationConditionInput
+  or: [ModelDriverLocationConditionInput]
+  timestamp: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelDriverLocationFilterInput {
+  and: [ModelDriverLocationFilterInput]
+  createdAt: ModelStringInput
+  driverId: ModelIDInput
+  heading: ModelFloatInput
+  id: ModelIDInput
+  lat: ModelFloatInput
+  lng: ModelFloatInput
+  not: ModelDriverLocationFilterInput
+  or: [ModelDriverLocationFilterInput]
+  timestamp: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelFarmConditionInput {
+  active: ModelBooleanInput
+  address: ModelStringInput
+  and: [ModelFarmConditionInput]
+  certifications: ModelStringInput
+  certified: ModelBooleanInput
+  city: ModelStringInput
+  coverImage: ModelStringInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  email: ModelStringInput
+  location: ModelStringInput
+  name: ModelStringInput
+  not: ModelFarmConditionInput
+  or: [ModelFarmConditionInput]
+  ownerId: ModelIDInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  state: ModelStringInput
+  updatedAt: ModelStringInput
+  website: ModelStringInput
+  yearEstablished: ModelIntInput
+  zipCode: ModelStringInput
+}
+
+input ModelFarmFilterInput {
+  active: ModelBooleanInput
+  address: ModelStringInput
+  and: [ModelFarmFilterInput]
+  certifications: ModelStringInput
+  certified: ModelBooleanInput
+  city: ModelStringInput
+  coverImage: ModelStringInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  email: ModelStringInput
+  id: ModelIDInput
+  location: ModelStringInput
+  name: ModelStringInput
+  not: ModelFarmFilterInput
+  or: [ModelFarmFilterInput]
+  ownerId: ModelIDInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  state: ModelStringInput
+  updatedAt: ModelStringInput
+  website: ModelStringInput
+  yearEstablished: ModelIntInput
+  zipCode: ModelStringInput
+}
+
+input ModelFarmFollowConditionInput {
+  and: [ModelFarmFollowConditionInput]
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  not: ModelFarmFollowConditionInput
+  or: [ModelFarmFollowConditionInput]
+  receiveNotifications: ModelBooleanInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelFarmFollowFilterInput {
+  and: [ModelFarmFollowFilterInput]
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  id: ModelIDInput
+  not: ModelFarmFollowFilterInput
+  or: [ModelFarmFollowFilterInput]
+  receiveNotifications: ModelBooleanInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelFarmMetricsConditionInput {
+  and: [ModelFarmMetricsConditionInput]
+  averageOrderValue: ModelFloatInput
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  not: ModelFarmMetricsConditionInput
+  or: [ModelFarmMetricsConditionInput]
+  totalCustomers: ModelIntInput
+  totalOrders: ModelIntInput
+  totalSales: ModelFloatInput
+  updatedAt: ModelStringInput
+}
+
+input ModelFarmMetricsFilterInput {
+  and: [ModelFarmMetricsFilterInput]
+  averageOrderValue: ModelFloatInput
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  id: ModelIDInput
+  not: ModelFarmMetricsFilterInput
+  or: [ModelFarmMetricsFilterInput]
+  totalCustomers: ModelIntInput
+  totalOrders: ModelIntInput
+  totalSales: ModelFloatInput
+  updatedAt: ModelStringInput
+}
+
+input ModelFarmPostConditionInput {
+  and: [ModelFarmPostConditionInput]
+  content: ModelStringInput
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  images: ModelStringInput
+  not: ModelFarmPostConditionInput
+  or: [ModelFarmPostConditionInput]
+  preHarvestListingId: ModelIDInput
+  title: ModelStringInput
+  type: ModelPostTypeInput
+  updatedAt: ModelStringInput
+  videos: ModelStringInput
+}
+
+input ModelFarmPostFilterInput {
+  and: [ModelFarmPostFilterInput]
+  content: ModelStringInput
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  id: ModelIDInput
+  images: ModelStringInput
+  not: ModelFarmPostFilterInput
+  or: [ModelFarmPostFilterInput]
+  preHarvestListingId: ModelIDInput
+  title: ModelStringInput
+  type: ModelPostTypeInput
+  updatedAt: ModelStringInput
+  videos: ModelStringInput
+}
+
+input ModelFloatInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Float]
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+}
+
+input ModelIDInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelInventoryBatchConditionInput {
+  actualQuantity: ModelFloatInput
+  and: [ModelInventoryBatchConditionInput]
+  createdAt: ModelStringInput
+  estimatedHarvestDate: ModelStringInput
+  estimatedQuantity: ModelFloatInput
+  expirationDate: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  harvestDate: ModelStringInput
+  isOrganic: ModelBooleanInput
+  not: ModelInventoryBatchConditionInput
+  notes: ModelStringInput
+  or: [ModelInventoryBatchConditionInput]
+  plantingDate: ModelStringInput
+  price: ModelFloatInput
+  priceUnit: ModelStringInput
+  produceVarietyId: ModelIDInput
+  quantityUnit: ModelStringInput
+  remainingQuantity: ModelFloatInput
+  status: ModelInventoryStatusInput
+  storageConditions: ModelStringInput
+  storageLocation: ModelStringInput
+  updatedAt: ModelStringInput
+  zoneId: ModelIDInput
+}
+
+input ModelInventoryBatchFilterInput {
+  actualQuantity: ModelFloatInput
+  and: [ModelInventoryBatchFilterInput]
+  createdAt: ModelStringInput
+  estimatedHarvestDate: ModelStringInput
+  estimatedQuantity: ModelFloatInput
+  expirationDate: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  harvestDate: ModelStringInput
+  id: ModelIDInput
+  isOrganic: ModelBooleanInput
+  not: ModelInventoryBatchFilterInput
+  notes: ModelStringInput
+  or: [ModelInventoryBatchFilterInput]
+  plantingDate: ModelStringInput
+  price: ModelFloatInput
+  priceUnit: ModelStringInput
+  produceVarietyId: ModelIDInput
+  quantityUnit: ModelStringInput
+  remainingQuantity: ModelFloatInput
+  status: ModelInventoryStatusInput
+  storageConditions: ModelStringInput
+  storageLocation: ModelStringInput
+  updatedAt: ModelStringInput
+  zoneId: ModelIDInput
+}
+
+input ModelInventoryStatusInput {
+  eq: InventoryStatus
+  ne: InventoryStatus
+}
+
+input ModelListingReviewConditionInput {
+  and: [ModelListingReviewConditionInput]
+  comment: ModelStringInput
+  createdAt: ModelStringInput
+  images: ModelStringInput
+  not: ModelListingReviewConditionInput
+  or: [ModelListingReviewConditionInput]
+  produceListingId: ModelIDInput
+  rating: ModelIntInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelListingReviewFilterInput {
+  and: [ModelListingReviewFilterInput]
+  comment: ModelStringInput
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  images: ModelStringInput
+  not: ModelListingReviewFilterInput
+  or: [ModelListingReviewFilterInput]
+  produceListingId: ModelIDInput
+  rating: ModelIntInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelMarketScheduleConditionInput {
+  active: ModelBooleanInput
+  address: ModelStringInput
+  and: [ModelMarketScheduleConditionInput]
+  city: ModelStringInput
+  createdAt: ModelStringInput
+  dayOfWeek: ModelIntInput
+  endTime: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  marketName: ModelStringInput
+  not: ModelMarketScheduleConditionInput
+  or: [ModelMarketScheduleConditionInput]
+  startTime: ModelStringInput
+  state: ModelStringInput
+  updatedAt: ModelStringInput
+  zipCode: ModelStringInput
+}
+
+input ModelMarketScheduleFilterInput {
+  active: ModelBooleanInput
+  address: ModelStringInput
+  and: [ModelMarketScheduleFilterInput]
+  city: ModelStringInput
+  createdAt: ModelStringInput
+  dayOfWeek: ModelIntInput
+  endTime: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  id: ModelIDInput
+  marketName: ModelStringInput
+  not: ModelMarketScheduleFilterInput
+  or: [ModelMarketScheduleFilterInput]
+  startTime: ModelStringInput
+  state: ModelStringInput
+  updatedAt: ModelStringInput
+  zipCode: ModelStringInput
+}
+
+input ModelNotificationConditionInput {
+  actionLink: ModelStringInput
+  and: [ModelNotificationConditionInput]
+  createdAt: ModelStringInput
+  imageLink: ModelStringInput
+  message: ModelStringInput
+  not: ModelNotificationConditionInput
+  or: [ModelNotificationConditionInput]
+  read: ModelBooleanInput
+  title: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelNotificationFilterInput {
+  actionLink: ModelStringInput
+  and: [ModelNotificationFilterInput]
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  imageLink: ModelStringInput
+  message: ModelStringInput
+  not: ModelNotificationFilterInput
+  or: [ModelNotificationFilterInput]
+  read: ModelBooleanInput
+  title: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelOrderConditionInput {
+  and: [ModelOrderConditionInput]
+  createdAt: ModelStringInput
+  deliveryAddressId: ModelIDInput
+  deliveryFee: ModelFloatInput
+  deliveryNotes: ModelStringInput
+  not: ModelOrderConditionInput
+  or: [ModelOrderConditionInput]
+  requestedDeliveryDate: ModelStringInput
+  status: ModelOrderStatusInput
+  subtotal: ModelFloatInput
+  tax: ModelFloatInput
+  total: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelOrderFilterInput {
+  and: [ModelOrderFilterInput]
+  createdAt: ModelStringInput
+  deliveryAddressId: ModelIDInput
+  deliveryFee: ModelFloatInput
+  deliveryNotes: ModelStringInput
+  id: ModelIDInput
+  not: ModelOrderFilterInput
+  or: [ModelOrderFilterInput]
+  requestedDeliveryDate: ModelStringInput
+  status: ModelOrderStatusInput
+  subtotal: ModelFloatInput
+  tax: ModelFloatInput
+  total: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelOrderItemConditionInput {
+  and: [ModelOrderItemConditionInput]
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  not: ModelOrderItemConditionInput
+  or: [ModelOrderItemConditionInput]
+  orderId: ModelIDInput
+  price: ModelFloatInput
+  produceListingId: ModelIDInput
+  quantity: ModelFloatInput
+  subtotal: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelOrderItemFilterInput {
+  and: [ModelOrderItemFilterInput]
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  id: ModelIDInput
+  not: ModelOrderItemFilterInput
+  or: [ModelOrderItemFilterInput]
+  orderId: ModelIDInput
+  price: ModelFloatInput
+  produceListingId: ModelIDInput
+  quantity: ModelFloatInput
+  subtotal: ModelFloatInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelOrderStatusInput {
+  eq: OrderStatus
+  ne: OrderStatus
+}
+
+input ModelPaymentConditionInput {
+  amount: ModelFloatInput
+  and: [ModelPaymentConditionInput]
+  createdAt: ModelStringInput
+  method: ModelPaymentMethodInput
+  not: ModelPaymentConditionInput
+  or: [ModelPaymentConditionInput]
+  orderId: ModelIDInput
+  status: ModelPaymentStatusInput
+  transactionId: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPaymentFilterInput {
+  amount: ModelFloatInput
+  and: [ModelPaymentFilterInput]
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  method: ModelPaymentMethodInput
+  not: ModelPaymentFilterInput
+  or: [ModelPaymentFilterInput]
+  orderId: ModelIDInput
+  status: ModelPaymentStatusInput
+  transactionId: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPaymentMethodInput {
+  eq: PaymentMethod
+  ne: PaymentMethod
+}
+
+input ModelPaymentStatusInput {
+  eq: PaymentStatus
+  ne: PaymentStatus
+}
+
+input ModelPostCommentConditionInput {
+  and: [ModelPostCommentConditionInput]
+  content: ModelStringInput
+  createdAt: ModelStringInput
+  farmPostId: ModelIDInput
+  not: ModelPostCommentConditionInput
+  or: [ModelPostCommentConditionInput]
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPostCommentFilterInput {
+  and: [ModelPostCommentFilterInput]
+  content: ModelStringInput
+  createdAt: ModelStringInput
+  farmPostId: ModelIDInput
+  id: ModelIDInput
+  not: ModelPostCommentFilterInput
+  or: [ModelPostCommentFilterInput]
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPostLikeConditionInput {
+  and: [ModelPostLikeConditionInput]
+  createdAt: ModelStringInput
+  farmPostId: ModelIDInput
+  not: ModelPostLikeConditionInput
+  or: [ModelPostLikeConditionInput]
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPostLikeFilterInput {
+  and: [ModelPostLikeFilterInput]
+  createdAt: ModelStringInput
+  farmPostId: ModelIDInput
+  id: ModelIDInput
+  not: ModelPostLikeFilterInput
+  or: [ModelPostLikeFilterInput]
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPostTypeInput {
+  eq: PostType
+  ne: PostType
+}
+
+input ModelPreHarvestListingConditionInput {
+  and: [ModelPreHarvestListingConditionInput]
+  availableForReservation: ModelBooleanInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  estimatedHarvestDate: ModelStringInput
+  estimatedQuantity: ModelFloatInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  image: ModelStringInput
+  inventoryBatchId: ModelIDInput
+  isOrganic: ModelBooleanInput
+  not: ModelPreHarvestListingConditionInput
+  or: [ModelPreHarvestListingConditionInput]
+  price: ModelFloatInput
+  priceUnit: ModelStringInput
+  produceVarietyId: ModelIDInput
+  quantityUnit: ModelStringInput
+  title: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelPreHarvestListingFilterInput {
+  and: [ModelPreHarvestListingFilterInput]
+  availableForReservation: ModelBooleanInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  estimatedHarvestDate: ModelStringInput
+  estimatedQuantity: ModelFloatInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  id: ModelIDInput
+  image: ModelStringInput
+  inventoryBatchId: ModelIDInput
+  isOrganic: ModelBooleanInput
+  not: ModelPreHarvestListingFilterInput
+  or: [ModelPreHarvestListingFilterInput]
+  price: ModelFloatInput
+  priceUnit: ModelStringInput
+  produceVarietyId: ModelIDInput
+  quantityUnit: ModelStringInput
+  title: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelPreHarvestReservationConditionInput {
+  and: [ModelPreHarvestReservationConditionInput]
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  not: ModelPreHarvestReservationConditionInput
+  notes: ModelStringInput
+  or: [ModelPreHarvestReservationConditionInput]
+  preHarvestListingId: ModelIDInput
+  quantity: ModelFloatInput
+  quantityUnit: ModelStringInput
+  requestedPickupDate: ModelStringInput
+  status: ModelReservationStatusInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelPreHarvestReservationFilterInput {
+  and: [ModelPreHarvestReservationFilterInput]
+  createdAt: ModelStringInput
+  farmId: ModelIDInput
+  id: ModelIDInput
+  not: ModelPreHarvestReservationFilterInput
+  notes: ModelStringInput
+  or: [ModelPreHarvestReservationFilterInput]
+  preHarvestListingId: ModelIDInput
+  quantity: ModelFloatInput
+  quantityUnit: ModelStringInput
+  requestedPickupDate: ModelStringInput
+  status: ModelReservationStatusInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelProduceCategoryConditionInput {
+  and: [ModelProduceCategoryConditionInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  icon: ModelStringInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceCategoryConditionInput
+  or: [ModelProduceCategoryConditionInput]
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceCategoryFilterInput {
+  and: [ModelProduceCategoryFilterInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  icon: ModelStringInput
+  id: ModelIDInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceCategoryFilterInput
+  or: [ModelProduceCategoryFilterInput]
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceListingConditionInput {
+  active: ModelBooleanInput
+  and: [ModelProduceListingConditionInput]
+  availableQuantity: ModelFloatInput
+  createdAt: ModelStringInput
+  daysToExpiration: ModelIntInput
+  description: ModelStringInput
+  estimatedDeliveryMinutes: ModelIntInput
+  expirationDate: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  freshness: ModelIntInput
+  harvestDate: ModelStringInput
+  images: ModelStringInput
+  instantDeliveryFee: ModelFloatInput
+  inventoryBatchId: ModelIDInput
+  isInstantlyAvailable: ModelBooleanInput
+  isOrganic: ModelBooleanInput
+  not: ModelProduceListingConditionInput
+  or: [ModelProduceListingConditionInput]
+  price: ModelFloatInput
+  priceUnit: ModelStringInput
+  produceVarietyId: ModelIDInput
+  quantity: ModelFloatInput
+  quantityUnit: ModelStringInput
+  title: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceListingFilterInput {
+  active: ModelBooleanInput
+  and: [ModelProduceListingFilterInput]
+  availableQuantity: ModelFloatInput
+  createdAt: ModelStringInput
+  daysToExpiration: ModelIntInput
+  description: ModelStringInput
+  estimatedDeliveryMinutes: ModelIntInput
+  expirationDate: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  freshness: ModelIntInput
+  harvestDate: ModelStringInput
+  id: ModelIDInput
+  images: ModelStringInput
+  instantDeliveryFee: ModelFloatInput
+  inventoryBatchId: ModelIDInput
+  isInstantlyAvailable: ModelBooleanInput
+  isOrganic: ModelBooleanInput
+  not: ModelProduceListingFilterInput
+  or: [ModelProduceListingFilterInput]
+  price: ModelFloatInput
+  priceUnit: ModelStringInput
+  produceVarietyId: ModelIDInput
+  quantity: ModelFloatInput
+  quantityUnit: ModelStringInput
+  title: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceNutrientConditionInput {
+  amount: ModelFloatInput
+  and: [ModelProduceNutrientConditionInput]
+  createdAt: ModelStringInput
+  dailyValue: ModelFloatInput
+  name: ModelStringInput
+  not: ModelProduceNutrientConditionInput
+  or: [ModelProduceNutrientConditionInput]
+  unit: ModelStringInput
+  updatedAt: ModelStringInput
+  varietyId: ModelIDInput
+}
+
+input ModelProduceNutrientFilterInput {
+  amount: ModelFloatInput
+  and: [ModelProduceNutrientFilterInput]
+  createdAt: ModelStringInput
+  dailyValue: ModelFloatInput
+  id: ModelIDInput
+  name: ModelStringInput
+  not: ModelProduceNutrientFilterInput
+  or: [ModelProduceNutrientFilterInput]
+  unit: ModelStringInput
+  updatedAt: ModelStringInput
+  varietyId: ModelIDInput
+}
+
+input ModelProduceSubcategoryConditionInput {
+  and: [ModelProduceSubcategoryConditionInput]
+  categoryId: ModelIDInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  icon: ModelStringInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceSubcategoryConditionInput
+  or: [ModelProduceSubcategoryConditionInput]
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceSubcategoryFilterInput {
+  and: [ModelProduceSubcategoryFilterInput]
+  categoryId: ModelIDInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  icon: ModelStringInput
+  id: ModelIDInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceSubcategoryFilterInput
+  or: [ModelProduceSubcategoryFilterInput]
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceTypeConditionInput {
+  and: [ModelProduceTypeConditionInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  icon: ModelStringInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceTypeConditionInput
+  or: [ModelProduceTypeConditionInput]
+  subcategoryId: ModelIDInput
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceTypeFilterInput {
+  and: [ModelProduceTypeFilterInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  icon: ModelStringInput
+  id: ModelIDInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceTypeFilterInput
+  or: [ModelProduceTypeFilterInput]
+  subcategoryId: ModelIDInput
+  updatedAt: ModelStringInput
+}
+
+input ModelProduceVarietyConditionInput {
+  and: [ModelProduceVarietyConditionInput]
+  averageShelfLife: ModelIntInput
+  averageWeight: ModelFloatInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  harvestInstructions: ModelStringInput
+  icon: ModelStringInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceVarietyConditionInput
+  or: [ModelProduceVarietyConditionInput]
+  season: ModelStringInput
+  storageInstructions: ModelStringInput
+  typeId: ModelIDInput
+  updatedAt: ModelStringInput
+  weightUnit: ModelStringInput
+}
+
+input ModelProduceVarietyFilterInput {
+  and: [ModelProduceVarietyFilterInput]
+  averageShelfLife: ModelIntInput
+  averageWeight: ModelFloatInput
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  harvestInstructions: ModelStringInput
+  icon: ModelStringInput
+  id: ModelIDInput
+  image: ModelStringInput
+  name: ModelStringInput
+  not: ModelProduceVarietyFilterInput
+  or: [ModelProduceVarietyFilterInput]
+  season: ModelStringInput
+  storageInstructions: ModelStringInput
+  typeId: ModelIDInput
+  updatedAt: ModelStringInput
+  weightUnit: ModelStringInput
+}
+
+input ModelReservationStatusInput {
+  eq: ReservationStatus
+  ne: ReservationStatus
+}
+
+input ModelShoppingListConditionInput {
+  and: [ModelShoppingListConditionInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  isDefault: ModelBooleanInput
+  name: ModelStringInput
+  not: ModelShoppingListConditionInput
+  or: [ModelShoppingListConditionInput]
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelShoppingListFilterInput {
+  and: [ModelShoppingListFilterInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  id: ModelIDInput
+  isDefault: ModelBooleanInput
+  name: ModelStringInput
+  not: ModelShoppingListFilterInput
+  or: [ModelShoppingListFilterInput]
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelShoppingListItemConditionInput {
+  and: [ModelShoppingListItemConditionInput]
+  completed: ModelBooleanInput
+  createdAt: ModelStringInput
+  not: ModelShoppingListItemConditionInput
+  notes: ModelStringInput
+  or: [ModelShoppingListItemConditionInput]
+  produceVarietyId: ModelIDInput
+  quantity: ModelIntInput
+  shoppingListId: ModelIDInput
+  unit: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelShoppingListItemFilterInput {
+  and: [ModelShoppingListItemFilterInput]
+  completed: ModelBooleanInput
+  createdAt: ModelStringInput
+  id: ModelIDInput
+  not: ModelShoppingListItemFilterInput
+  notes: ModelStringInput
+  or: [ModelShoppingListItemFilterInput]
+  produceVarietyId: ModelIDInput
+  quantity: ModelIntInput
+  shoppingListId: ModelIDInput
+  unit: ModelStringInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelSizeInput {
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelStringInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionAddressFilterInput {
+  and: [ModelSubscriptionAddressFilterInput]
+  city: ModelSubscriptionStringInput
+  country: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  isDefault: ModelSubscriptionBooleanInput
+  label: ModelSubscriptionStringInput
+  or: [ModelSubscriptionAddressFilterInput]
+  postalCode: ModelSubscriptionStringInput
+  state: ModelSubscriptionStringInput
+  street: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionBooleanInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelSubscriptionCartFilterInput {
+  active: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionCartFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionCartFilterInput]
+  subtotal: ModelSubscriptionFloatInput
+  tax: ModelSubscriptionFloatInput
+  total: ModelSubscriptionFloatInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionCartItemFilterInput {
+  and: [ModelSubscriptionCartItemFilterInput]
+  cartId: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionCartItemFilterInput]
+  price: ModelSubscriptionFloatInput
+  produceListingId: ModelSubscriptionIDInput
+  quantity: ModelSubscriptionFloatInput
+  subtotal: ModelSubscriptionFloatInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionDeliveryFilterInput {
+  actualDeliveryTime: ModelSubscriptionStringInput
+  and: [ModelSubscriptionDeliveryFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  deliveryRouteId: ModelSubscriptionIDInput
+  deliveryTime: ModelSubscriptionStringInput
+  driverId: ModelSubscriptionIDInput
+  dropoffAddress: ModelSubscriptionStringInput
+  dropoffLocationLat: ModelSubscriptionFloatInput
+  dropoffLocationLng: ModelSubscriptionFloatInput
+  estimatedDeliveryTime: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  notes: ModelSubscriptionStringInput
+  or: [ModelSubscriptionDeliveryFilterInput]
+  orderId: ModelSubscriptionIDInput
+  pickupAddress: ModelSubscriptionStringInput
+  pickupLocationLat: ModelSubscriptionFloatInput
+  pickupLocationLng: ModelSubscriptionFloatInput
+  pickupTime: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionDeliveryRatingFilterInput {
+  and: [ModelSubscriptionDeliveryRatingFilterInput]
+  comment: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  deliveryId: ModelSubscriptionIDInput
+  driverId: ModelSubscriptionIDInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionDeliveryRatingFilterInput]
+  rating: ModelSubscriptionIntInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionDeliveryRouteFilterInput {
+  actualDistance: ModelSubscriptionFloatInput
+  actualDuration: ModelSubscriptionIntInput
+  and: [ModelSubscriptionDeliveryRouteFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  driverId: ModelStringInput
+  endLocationLat: ModelSubscriptionFloatInput
+  endLocationLng: ModelSubscriptionFloatInput
+  endTime: ModelSubscriptionStringInput
+  estimatedDistance: ModelSubscriptionFloatInput
+  estimatedDuration: ModelSubscriptionIntInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionDeliveryRouteFilterInput]
+  startLocationLat: ModelSubscriptionFloatInput
+  startLocationLng: ModelSubscriptionFloatInput
+  startTime: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionDriverFilterInput {
+  active: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionDriverFilterInput]
+  avatar: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  currentLocationLat: ModelSubscriptionFloatInput
+  currentLocationLng: ModelSubscriptionFloatInput
+  email: ModelSubscriptionStringInput
+  firstName: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  lastLocationUpdateTime: ModelSubscriptionStringInput
+  lastName: ModelSubscriptionStringInput
+  licenseExpiry: ModelSubscriptionStringInput
+  licenseNumber: ModelSubscriptionStringInput
+  or: [ModelSubscriptionDriverFilterInput]
+  phoneNumber: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+  vehicleColor: ModelSubscriptionStringInput
+  vehicleLicensePlate: ModelSubscriptionStringInput
+  vehicleMake: ModelSubscriptionStringInput
+  vehicleModel: ModelSubscriptionStringInput
+  vehicleYear: ModelSubscriptionIntInput
+}
+
+input ModelSubscriptionDriverLocationFilterInput {
+  and: [ModelSubscriptionDriverLocationFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  driverId: ModelStringInput
+  heading: ModelSubscriptionFloatInput
+  id: ModelSubscriptionIDInput
+  lat: ModelSubscriptionFloatInput
+  lng: ModelSubscriptionFloatInput
+  or: [ModelSubscriptionDriverLocationFilterInput]
+  timestamp: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionFarmFilterInput {
+  active: ModelSubscriptionBooleanInput
+  address: ModelSubscriptionStringInput
+  and: [ModelSubscriptionFarmFilterInput]
+  certifications: ModelSubscriptionStringInput
+  certified: ModelSubscriptionBooleanInput
+  city: ModelSubscriptionStringInput
+  coverImage: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  location: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionFarmFilterInput]
+  ownerId: ModelStringInput
+  phone: ModelSubscriptionStringInput
+  profileImage: ModelSubscriptionStringInput
+  state: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  website: ModelSubscriptionStringInput
+  yearEstablished: ModelSubscriptionIntInput
+  zipCode: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionFarmFollowFilterInput {
+  and: [ModelSubscriptionFarmFollowFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionFarmFollowFilterInput]
+  receiveNotifications: ModelSubscriptionBooleanInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionFarmMetricsFilterInput {
+  and: [ModelSubscriptionFarmMetricsFilterInput]
+  averageOrderValue: ModelSubscriptionFloatInput
+  createdAt: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionFarmMetricsFilterInput]
+  totalCustomers: ModelSubscriptionIntInput
+  totalOrders: ModelSubscriptionIntInput
+  totalSales: ModelSubscriptionFloatInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionFarmPostFilterInput {
+  and: [ModelSubscriptionFarmPostFilterInput]
+  content: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  id: ModelSubscriptionIDInput
+  images: ModelSubscriptionStringInput
+  or: [ModelSubscriptionFarmPostFilterInput]
+  preHarvestListingId: ModelSubscriptionIDInput
+  title: ModelSubscriptionStringInput
+  type: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  videos: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionFloatInput {
+  between: [Float]
+  eq: Float
+  ge: Float
+  gt: Float
+  in: [Float]
+  le: Float
+  lt: Float
+  ne: Float
+  notIn: [Float]
+}
+
+input ModelSubscriptionIDInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  in: [ID]
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+  notIn: [ID]
+}
+
+input ModelSubscriptionIntInput {
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  in: [Int]
+  le: Int
+  lt: Int
+  ne: Int
+  notIn: [Int]
+}
+
+input ModelSubscriptionInventoryBatchFilterInput {
+  actualQuantity: ModelSubscriptionFloatInput
+  and: [ModelSubscriptionInventoryBatchFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  estimatedHarvestDate: ModelSubscriptionStringInput
+  estimatedQuantity: ModelSubscriptionFloatInput
+  expirationDate: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  harvestDate: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  isOrganic: ModelSubscriptionBooleanInput
+  notes: ModelSubscriptionStringInput
+  or: [ModelSubscriptionInventoryBatchFilterInput]
+  plantingDate: ModelSubscriptionStringInput
+  price: ModelSubscriptionFloatInput
+  priceUnit: ModelSubscriptionStringInput
+  produceVarietyId: ModelSubscriptionIDInput
+  quantityUnit: ModelSubscriptionStringInput
+  remainingQuantity: ModelSubscriptionFloatInput
+  status: ModelSubscriptionStringInput
+  storageConditions: ModelSubscriptionStringInput
+  storageLocation: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  zoneId: ModelSubscriptionIDInput
+}
+
+input ModelSubscriptionListingReviewFilterInput {
+  and: [ModelSubscriptionListingReviewFilterInput]
+  comment: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  images: ModelSubscriptionStringInput
+  or: [ModelSubscriptionListingReviewFilterInput]
+  produceListingId: ModelSubscriptionIDInput
+  rating: ModelSubscriptionIntInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionMarketScheduleFilterInput {
+  active: ModelSubscriptionBooleanInput
+  address: ModelSubscriptionStringInput
+  and: [ModelSubscriptionMarketScheduleFilterInput]
+  city: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  dayOfWeek: ModelSubscriptionIntInput
+  endTime: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  id: ModelSubscriptionIDInput
+  marketName: ModelSubscriptionStringInput
+  or: [ModelSubscriptionMarketScheduleFilterInput]
+  startTime: ModelSubscriptionStringInput
+  state: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  zipCode: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionNotificationFilterInput {
+  actionLink: ModelSubscriptionStringInput
+  and: [ModelSubscriptionNotificationFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  imageLink: ModelSubscriptionStringInput
+  message: ModelSubscriptionStringInput
+  or: [ModelSubscriptionNotificationFilterInput]
+  read: ModelSubscriptionBooleanInput
+  title: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionOrderFilterInput {
+  and: [ModelSubscriptionOrderFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  deliveryAddressId: ModelSubscriptionIDInput
+  deliveryFee: ModelSubscriptionFloatInput
+  deliveryNotes: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionOrderFilterInput]
+  requestedDeliveryDate: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  subtotal: ModelSubscriptionFloatInput
+  tax: ModelSubscriptionFloatInput
+  total: ModelSubscriptionFloatInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionOrderItemFilterInput {
+  and: [ModelSubscriptionOrderItemFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionOrderItemFilterInput]
+  orderId: ModelSubscriptionIDInput
+  price: ModelSubscriptionFloatInput
+  produceListingId: ModelSubscriptionIDInput
+  quantity: ModelSubscriptionFloatInput
+  subtotal: ModelSubscriptionFloatInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionPaymentFilterInput {
+  amount: ModelSubscriptionFloatInput
+  and: [ModelSubscriptionPaymentFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  method: ModelSubscriptionStringInput
+  or: [ModelSubscriptionPaymentFilterInput]
+  orderId: ModelSubscriptionIDInput
+  status: ModelSubscriptionStringInput
+  transactionId: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionPostCommentFilterInput {
+  and: [ModelSubscriptionPostCommentFilterInput]
+  content: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  farmPostId: ModelSubscriptionIDInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionPostCommentFilterInput]
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionPostLikeFilterInput {
+  and: [ModelSubscriptionPostLikeFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  farmPostId: ModelSubscriptionIDInput
+  id: ModelSubscriptionIDInput
+  or: [ModelSubscriptionPostLikeFilterInput]
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionPreHarvestListingFilterInput {
+  and: [ModelSubscriptionPreHarvestListingFilterInput]
+  availableForReservation: ModelSubscriptionBooleanInput
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  estimatedHarvestDate: ModelSubscriptionStringInput
+  estimatedQuantity: ModelSubscriptionFloatInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  id: ModelSubscriptionIDInput
+  image: ModelSubscriptionStringInput
+  inventoryBatchId: ModelSubscriptionIDInput
+  isOrganic: ModelSubscriptionBooleanInput
+  or: [ModelSubscriptionPreHarvestListingFilterInput]
+  price: ModelSubscriptionFloatInput
+  priceUnit: ModelSubscriptionStringInput
+  produceVarietyId: ModelSubscriptionIDInput
+  quantityUnit: ModelSubscriptionStringInput
+  title: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionPreHarvestReservationFilterInput {
+  and: [ModelSubscriptionPreHarvestReservationFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  id: ModelSubscriptionIDInput
+  notes: ModelSubscriptionStringInput
+  or: [ModelSubscriptionPreHarvestReservationFilterInput]
+  preHarvestListingId: ModelSubscriptionIDInput
+  quantity: ModelSubscriptionFloatInput
+  quantityUnit: ModelSubscriptionStringInput
+  requestedPickupDate: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionProduceCategoryFilterInput {
+  and: [ModelSubscriptionProduceCategoryFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  icon: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  image: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionProduceCategoryFilterInput]
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionProduceListingFilterInput {
+  active: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionProduceListingFilterInput]
+  availableQuantity: ModelSubscriptionFloatInput
+  createdAt: ModelSubscriptionStringInput
+  daysToExpiration: ModelSubscriptionIntInput
+  description: ModelSubscriptionStringInput
+  estimatedDeliveryMinutes: ModelSubscriptionIntInput
+  expirationDate: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  freshness: ModelSubscriptionIntInput
+  harvestDate: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  images: ModelSubscriptionStringInput
+  instantDeliveryFee: ModelSubscriptionFloatInput
+  inventoryBatchId: ModelSubscriptionIDInput
+  isInstantlyAvailable: ModelSubscriptionBooleanInput
+  isOrganic: ModelSubscriptionBooleanInput
+  or: [ModelSubscriptionProduceListingFilterInput]
+  price: ModelSubscriptionFloatInput
+  priceUnit: ModelSubscriptionStringInput
+  produceVarietyId: ModelSubscriptionIDInput
+  quantity: ModelSubscriptionFloatInput
+  quantityUnit: ModelSubscriptionStringInput
+  title: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionProduceNutrientFilterInput {
+  amount: ModelSubscriptionFloatInput
+  and: [ModelSubscriptionProduceNutrientFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  dailyValue: ModelSubscriptionFloatInput
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionProduceNutrientFilterInput]
+  unit: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  varietyId: ModelSubscriptionIDInput
+}
+
+input ModelSubscriptionProduceSubcategoryFilterInput {
+  and: [ModelSubscriptionProduceSubcategoryFilterInput]
+  categoryId: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  icon: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  image: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionProduceSubcategoryFilterInput]
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionProduceTypeFilterInput {
+  and: [ModelSubscriptionProduceTypeFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  icon: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  image: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionProduceTypeFilterInput]
+  subcategoryId: ModelSubscriptionIDInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionProduceVarietyFilterInput {
+  and: [ModelSubscriptionProduceVarietyFilterInput]
+  averageShelfLife: ModelSubscriptionIntInput
+  averageWeight: ModelSubscriptionFloatInput
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  harvestInstructions: ModelSubscriptionStringInput
+  icon: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  image: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionProduceVarietyFilterInput]
+  season: ModelSubscriptionStringInput
+  storageInstructions: ModelSubscriptionStringInput
+  typeId: ModelSubscriptionIDInput
+  updatedAt: ModelSubscriptionStringInput
+  weightUnit: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionShoppingListFilterInput {
+  and: [ModelSubscriptionShoppingListFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  isDefault: ModelSubscriptionBooleanInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionShoppingListFilterInput]
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionShoppingListItemFilterInput {
+  and: [ModelSubscriptionShoppingListItemFilterInput]
+  completed: ModelSubscriptionBooleanInput
+  createdAt: ModelSubscriptionStringInput
+  id: ModelSubscriptionIDInput
+  notes: ModelSubscriptionStringInput
+  or: [ModelSubscriptionShoppingListItemFilterInput]
+  produceVarietyId: ModelSubscriptionIDInput
+  quantity: ModelSubscriptionIntInput
+  shoppingListId: ModelSubscriptionIDInput
+  unit: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionStringInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  in: [String]
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+  notIn: [String]
+}
+
+input ModelSubscriptionUserFilterInput {
+  and: [ModelSubscriptionUserFilterInput]
+  avatar: ModelSubscriptionStringInput
+  bio: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  id: ModelStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionUserFilterInput]
+  phoneNumber: ModelSubscriptionStringInput
+  role: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelSubscriptionUserPreferencesFilterInput {
+  and: [ModelSubscriptionUserPreferencesFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  emailNotificationsEnabled: ModelSubscriptionBooleanInput
+  farmUpdates: ModelSubscriptionBooleanInput
+  id: ModelSubscriptionIDInput
+  marketingCommunications: ModelSubscriptionBooleanInput
+  or: [ModelSubscriptionUserPreferencesFilterInput]
+  orderUpdates: ModelSubscriptionBooleanInput
+  preferredPaymentMethod: ModelSubscriptionStringInput
+  pushNotificationsEnabled: ModelSubscriptionBooleanInput
+  smsNotificationsEnabled: ModelSubscriptionBooleanInput
+  updatedAt: ModelSubscriptionStringInput
+  userId: ModelStringInput
+}
+
+input ModelSubscriptionZoneFilterInput {
+  active: ModelSubscriptionBooleanInput
+  and: [ModelSubscriptionZoneFilterInput]
+  createdAt: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  farmId: ModelSubscriptionIDInput
+  farmOwnerId: ModelStringInput
+  id: ModelSubscriptionIDInput
+  location: ModelSubscriptionStringInput
+  name: ModelSubscriptionStringInput
+  or: [ModelSubscriptionZoneFilterInput]
+  size: ModelSubscriptionFloatInput
+  sizeUnit: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+}
+
+input ModelUserConditionInput {
+  and: [ModelUserConditionInput]
+  avatar: ModelStringInput
+  bio: ModelStringInput
+  createdAt: ModelStringInput
+  email: ModelStringInput
+  id: ModelStringInput
+  name: ModelStringInput
+  not: ModelUserConditionInput
+  or: [ModelUserConditionInput]
+  phoneNumber: ModelStringInput
+  role: ModelUserRoleInput
+  updatedAt: ModelStringInput
+}
+
+input ModelUserFilterInput {
+  and: [ModelUserFilterInput]
+  avatar: ModelStringInput
+  bio: ModelStringInput
+  createdAt: ModelStringInput
+  email: ModelStringInput
+  id: ModelIDInput
+  name: ModelStringInput
+  not: ModelUserFilterInput
+  or: [ModelUserFilterInput]
+  phoneNumber: ModelStringInput
+  role: ModelUserRoleInput
+  updatedAt: ModelStringInput
+}
+
+input ModelUserPreferencesConditionInput {
+  and: [ModelUserPreferencesConditionInput]
+  createdAt: ModelStringInput
+  emailNotificationsEnabled: ModelBooleanInput
+  farmUpdates: ModelBooleanInput
+  marketingCommunications: ModelBooleanInput
+  not: ModelUserPreferencesConditionInput
+  or: [ModelUserPreferencesConditionInput]
+  orderUpdates: ModelBooleanInput
+  preferredPaymentMethod: ModelPaymentMethodInput
+  pushNotificationsEnabled: ModelBooleanInput
+  smsNotificationsEnabled: ModelBooleanInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelUserPreferencesFilterInput {
+  and: [ModelUserPreferencesFilterInput]
+  createdAt: ModelStringInput
+  emailNotificationsEnabled: ModelBooleanInput
+  farmUpdates: ModelBooleanInput
+  id: ModelIDInput
+  marketingCommunications: ModelBooleanInput
+  not: ModelUserPreferencesFilterInput
+  or: [ModelUserPreferencesFilterInput]
+  orderUpdates: ModelBooleanInput
+  preferredPaymentMethod: ModelPaymentMethodInput
+  pushNotificationsEnabled: ModelBooleanInput
+  smsNotificationsEnabled: ModelBooleanInput
+  updatedAt: ModelStringInput
+  userId: ModelIDInput
+}
+
+input ModelUserRoleInput {
+  eq: UserRole
+  ne: UserRole
+}
+
+input ModelZoneConditionInput {
+  active: ModelBooleanInput
+  and: [ModelZoneConditionInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  location: ModelStringInput
+  name: ModelStringInput
+  not: ModelZoneConditionInput
+  or: [ModelZoneConditionInput]
+  size: ModelFloatInput
+  sizeUnit: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input ModelZoneFilterInput {
+  active: ModelBooleanInput
+  and: [ModelZoneFilterInput]
+  createdAt: ModelStringInput
+  description: ModelStringInput
+  farmId: ModelIDInput
+  farmOwnerId: ModelIDInput
+  id: ModelIDInput
+  location: ModelStringInput
+  name: ModelStringInput
+  not: ModelZoneFilterInput
+  or: [ModelZoneFilterInput]
+  size: ModelFloatInput
+  sizeUnit: ModelStringInput
+  updatedAt: ModelStringInput
+}
+
+input UpdateAddressInput {
+  city: String
+  country: String
+  createdAt: AWSDateTime
+  id: ID!
+  isDefault: Boolean
+  label: String
+  postalCode: String
+  state: String
+  street: String
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateCartInput {
+  active: Boolean
+  createdAt: AWSDateTime
+  id: ID!
+  subtotal: Float
+  tax: Float
+  total: Float
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateCartItemInput {
+  cartId: ID
+  createdAt: AWSDateTime
+  id: ID!
+  price: Float
+  produceListingId: ID
+  quantity: Float
+  subtotal: Float
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateDeliveryInput {
+  actualDeliveryTime: AWSDateTime
+  createdAt: AWSDateTime
+  deliveryRouteId: ID
+  deliveryTime: AWSDateTime
+  driverId: ID
+  dropoffAddress: String
+  dropoffLocationLat: Float
+  dropoffLocationLng: Float
+  estimatedDeliveryTime: AWSDateTime
+  id: ID!
+  notes: String
+  orderId: ID
+  pickupAddress: String
+  pickupLocationLat: Float
+  pickupLocationLng: Float
+  pickupTime: AWSDateTime
+  status: DeliveryStatus
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateDeliveryRatingInput {
+  comment: String
+  createdAt: AWSDateTime
+  deliveryId: ID
+  driverId: ID
+  id: ID!
+  rating: Int
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateDeliveryRouteInput {
+  actualDistance: Float
+  actualDuration: Int
+  createdAt: AWSDateTime
+  driverId: ID
+  endLocationLat: Float
+  endLocationLng: Float
+  endTime: AWSDateTime
+  estimatedDistance: Float
+  estimatedDuration: Int
+  id: ID!
+  startLocationLat: Float
+  startLocationLng: Float
+  startTime: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input UpdateDriverInput {
+  active: Boolean
+  avatar: String
+  createdAt: AWSDateTime
+  currentLocationLat: Float
+  currentLocationLng: Float
+  email: AWSEmail
+  firstName: String
+  id: ID!
+  lastLocationUpdateTime: AWSDateTime
+  lastName: String
+  licenseExpiry: AWSDate
+  licenseNumber: String
+  phoneNumber: AWSPhone
+  updatedAt: AWSDateTime
+  userId: ID
+  vehicleColor: String
+  vehicleLicensePlate: String
+  vehicleMake: String
+  vehicleModel: String
+  vehicleYear: Int
+}
+
+input UpdateDriverLocationInput {
+  createdAt: AWSDateTime
+  driverId: ID
+  heading: Float
+  id: ID!
+  lat: Float
+  lng: Float
+  timestamp: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input UpdateFarmFollowInput {
+  createdAt: AWSDateTime
+  farmId: ID
+  id: ID!
+  receiveNotifications: Boolean
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateFarmInput {
+  active: Boolean
+  address: String
+  certifications: [String]
+  certified: Boolean
+  city: String
+  coverImage: String
+  createdAt: AWSDateTime
+  description: String
+  email: AWSEmail
+  id: ID!
+  location: String
+  name: String
+  ownerId: ID
+  phone: AWSPhone
+  profileImage: String
+  state: String
+  updatedAt: AWSDateTime
+  website: AWSURL
+  yearEstablished: Int
+  zipCode: String
+}
+
+input UpdateFarmMetricsInput {
+  averageOrderValue: Float
+  createdAt: AWSDateTime
+  farmId: ID
+  farmOwnerId: ID
+  id: ID!
+  totalCustomers: Int
+  totalOrders: Int
+  totalSales: Float
+  updatedAt: AWSDateTime
+}
+
+input UpdateFarmPostInput {
+  content: String
+  createdAt: AWSDateTime
+  farmId: ID
+  farmOwnerId: ID
+  id: ID!
+  images: [String]
+  preHarvestListingId: ID
+  title: String
+  type: PostType
+  updatedAt: AWSDateTime
+  videos: [String]
+}
+
+input UpdateInventoryBatchInput {
+  actualQuantity: Float
+  createdAt: AWSDateTime
+  estimatedHarvestDate: AWSDate
+  estimatedQuantity: Float
+  expirationDate: AWSDate
+  farmId: ID
+  farmOwnerId: ID
+  harvestDate: AWSDate
+  id: ID!
+  isOrganic: Boolean
+  notes: String
+  plantingDate: AWSDate
+  price: Float
+  priceUnit: String
+  produceVarietyId: ID
+  quantityUnit: String
+  remainingQuantity: Float
+  status: InventoryStatus
+  storageConditions: String
+  storageLocation: String
+  updatedAt: AWSDateTime
+  zoneId: ID
+}
+
+input UpdateListingReviewInput {
+  comment: String
+  createdAt: AWSDateTime
+  id: ID!
+  images: [String]
+  produceListingId: ID
+  rating: Int
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateMarketScheduleInput {
+  active: Boolean
+  address: String
+  city: String
+  createdAt: AWSDateTime
+  dayOfWeek: Int
+  endTime: AWSTime
+  farmId: ID
+  farmOwnerId: ID
+  id: ID!
+  marketName: String
+  startTime: AWSTime
+  state: String
+  updatedAt: AWSDateTime
+  zipCode: String
+}
+
+input UpdateNotificationInput {
+  actionLink: String
+  createdAt: AWSDateTime
+  id: ID!
+  imageLink: String
+  message: String
+  read: Boolean
+  title: String
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateOrderInput {
+  createdAt: AWSDateTime
+  deliveryAddressId: ID
+  deliveryFee: Float
+  deliveryNotes: String
+  id: ID!
+  requestedDeliveryDate: AWSDate
+  status: OrderStatus
+  subtotal: Float
+  tax: Float
+  total: Float
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateOrderItemInput {
+  createdAt: AWSDateTime
+  farmId: ID
+  id: ID!
+  orderId: ID
+  price: Float
+  produceListingId: ID
+  quantity: Float
+  subtotal: Float
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdatePaymentInput {
+  amount: Float
+  createdAt: AWSDateTime
+  id: ID!
+  method: PaymentMethod
+  orderId: ID
+  status: PaymentStatus
+  transactionId: String
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdatePostCommentInput {
+  content: String
+  createdAt: AWSDateTime
+  farmPostId: ID
+  id: ID!
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdatePostLikeInput {
+  createdAt: AWSDateTime
+  farmPostId: ID
+  id: ID!
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdatePreHarvestListingInput {
+  availableForReservation: Boolean
+  createdAt: AWSDateTime
+  description: String
+  estimatedHarvestDate: AWSDate
+  estimatedQuantity: Float
+  farmId: ID
+  farmOwnerId: ID
+  id: ID!
+  image: String
+  inventoryBatchId: ID
+  isOrganic: Boolean
+  price: Float
+  priceUnit: String
+  produceVarietyId: ID
+  quantityUnit: String
+  title: String
+  updatedAt: AWSDateTime
+}
+
+input UpdatePreHarvestReservationInput {
+  createdAt: AWSDateTime
+  farmId: ID
+  id: ID!
+  notes: String
+  preHarvestListingId: ID
+  quantity: Float
+  quantityUnit: String
+  requestedPickupDate: AWSDate
+  status: ReservationStatus
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateProduceCategoryInput {
+  createdAt: AWSDateTime
+  description: String
+  icon: String
+  id: ID!
+  image: String
+  name: String
+  updatedAt: AWSDateTime
+}
+
+input UpdateProduceListingInput {
+  active: Boolean
+  availableQuantity: Float
+  createdAt: AWSDateTime
+  daysToExpiration: Int
+  description: String
+  estimatedDeliveryMinutes: Int
+  expirationDate: AWSDate
+  farmId: ID
+  farmOwnerId: ID
+  freshness: Int
+  harvestDate: AWSDate
+  id: ID!
+  images: [String]
+  instantDeliveryFee: Float
+  inventoryBatchId: ID
+  isInstantlyAvailable: Boolean
+  isOrganic: Boolean
+  price: Float
+  priceUnit: String
+  produceVarietyId: ID
+  quantity: Float
+  quantityUnit: String
+  title: String
+  updatedAt: AWSDateTime
+}
+
+input UpdateProduceNutrientInput {
+  amount: Float
+  createdAt: AWSDateTime
+  dailyValue: Float
+  id: ID!
+  name: String
+  unit: String
+  updatedAt: AWSDateTime
+  varietyId: ID
+}
+
+input UpdateProduceSubcategoryInput {
+  categoryId: ID
+  createdAt: AWSDateTime
+  description: String
+  icon: String
+  id: ID!
+  image: String
+  name: String
+  updatedAt: AWSDateTime
+}
+
+input UpdateProduceTypeInput {
+  id: ID!
+  name: String
+  slug: String
+  description: String
+  iconUrl: String
+  tasteProfile: String
+  commonUses: [String!]
+  subcategoryID: ID
+  tags: [String!]
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  seasonalMonths: [Int!]
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input UpdateProduceVarietyInput {
+  averageShelfLife: Int
+  averageWeight: Float
+  createdAt: AWSDateTime
+  description: String
+  harvestInstructions: String
+  icon: String
+  id: ID!
+  image: String
+  name: String
+  season: [String]
+  storageInstructions: String
+  typeId: ID
+  updatedAt: AWSDateTime
+  weightUnit: String
+}
+
+input UpdateShoppingListInput {
+  createdAt: AWSDateTime
+  description: String
+  id: ID!
+  isDefault: Boolean
+  name: String
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateShoppingListItemInput {
+  completed: Boolean
+  createdAt: AWSDateTime
+  id: ID!
+  notes: String
+  produceVarietyId: ID
+  quantity: Int
+  shoppingListId: ID
+  unit: String
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateUserInput {
+  avatar: String
+  bio: String
+  createdAt: AWSDateTime
+  email: AWSEmail
+  id: ID!
+  name: String
+  phoneNumber: AWSPhone
+  role: UserRole
+  updatedAt: AWSDateTime
+}
+
+input UpdateUserPreferencesInput {
+  createdAt: AWSDateTime
+  emailNotificationsEnabled: Boolean
+  farmUpdates: Boolean
+  id: ID!
+  marketingCommunications: Boolean
+  orderUpdates: Boolean
+  preferredPaymentMethod: PaymentMethod
+  pushNotificationsEnabled: Boolean
+  smsNotificationsEnabled: Boolean
+  updatedAt: AWSDateTime
+  userId: ID
+}
+
+input UpdateZoneInput {
+  active: Boolean
+  createdAt: AWSDateTime
+  description: String
+  farmId: ID
+  farmOwnerId: ID
+  id: ID!
+  location: String
+  name: String
+  size: Float
+  sizeUnit: String
+  updatedAt: AWSDateTime
+}

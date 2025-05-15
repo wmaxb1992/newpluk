@@ -939,11 +939,20 @@ export const getProduceType = /* GraphQL */ `
   query GetProduceType($id: ID!) {
     getProduceType(id: $id) {
       id
-      subcategoryId
+      subcategoryID
       name
       description
       image
       icon
+      slug
+      iconUrl
+      tasteProfile
+      commonUses
+      tags
+      farmCountInApp
+      farmCountInZone
+      farmCountNearby
+      seasonalMonths
       createdAt
       updatedAt
       __typename
@@ -959,11 +968,20 @@ export const listProduceTypes = /* GraphQL */ `
     listProduceTypes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        subcategoryId
+        subcategoryID
         name
         description
         image
         icon
+        slug
+        iconUrl
+        tasteProfile
+        commonUses
+        tags
+        farmCountInApp
+        farmCountInZone
+        farmCountNearby
+        seasonalMonths
         createdAt
         updatedAt
         __typename
@@ -973,16 +991,16 @@ export const listProduceTypes = /* GraphQL */ `
     }
   }
 `;
-export const produceTypesBySubcategoryId = /* GraphQL */ `
-  query ProduceTypesBySubcategoryId(
-    $subcategoryId: ID!
+export const produceTypesBySubcategoryID = /* GraphQL */ `
+  query ProduceTypesBySubcategoryID(
+    $subcategoryID: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelProduceTypeFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    produceTypesBySubcategoryId(
-      subcategoryId: $subcategoryId
+    produceTypesBySubcategoryID(
+      subcategoryID: $subcategoryID
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -990,11 +1008,20 @@ export const produceTypesBySubcategoryId = /* GraphQL */ `
     ) {
       items {
         id
-        subcategoryId
+        subcategoryID
         name
         description
         image
         icon
+        slug
+        iconUrl
+        tasteProfile
+        commonUses
+        tags
+        farmCountInApp
+        farmCountInZone
+        farmCountNearby
+        seasonalMonths
         createdAt
         updatedAt
         __typename

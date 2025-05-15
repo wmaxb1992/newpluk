@@ -1,0 +1,52 @@
+{
+  "produceTypes": [
+    {
+      "id": "pt1",
+      "subcategoryId": "sc1",
+      "name": "Heirloom Tomatoes",
+      "description": "Sweet and juicy heirloom tomatoes",
+      "image": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png",
+      "icon": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png"
+    },
+    {
+      "id": "pt2",
+      "subcategoryId": "sc1",
+      "name": "Cherry Tomatoes",
+      "description": "Sweet and bite-sized cherry tomatoes",
+      "image": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png",
+      "icon": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png"
+    },
+    {
+      "id": "pt3",
+      "subcategoryId": "sc2",
+      "name": "Butter Lettuce",
+      "description": "Tender and sweet butter lettuce",
+      "image": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png",
+      "icon": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png"
+    },
+    {
+      "id": "pt4",
+      "subcategoryId": "sc2",
+      "name": "Romaine Lettuce",
+      "description": "Crisp and fresh romaine lettuce",
+      "image": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png",
+      "icon": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png"
+    },
+    {
+      "id": "pt5",
+      "subcategoryId": "sc3",
+      "name": "Red Bell Peppers",
+      "description": "Sweet and crunchy red bell peppers",
+      "image": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png",
+      "icon": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png"
+    },
+    {
+      "id": "pt6",
+      "subcategoryId": "sc3",
+      "name": "Green Bell Peppers",
+      "description": "Fresh and crisp green bell peppers",
+      "image": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png",
+      "icon": "https://cdn-icons-png.flaticon.com/512/2153/2153788.png"
+    }
+  ]
+}

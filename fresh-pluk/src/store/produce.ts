@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { client } from '../config/amplify';
-import { LIST_PRODUCE_LISTINGS, GET_PRODUCE_LISTING } from '../graphql/queries';
+import { LIST_PRODUCE_LISTINGS, GET_PRODUCE_LISTING, LIST_PRODUCE_TYPES } from '../graphql/queries';
 import {
   ProduceCategory,
   ProduceSubcategory,
@@ -81,8 +81,19 @@ export const useProduceStore = create<ProduceState>()(
       fetchTypes: async (subcategoryId) => {
         set({ isLoading: true, error: undefined });
         try {
-          // TODO: Implement when types API is ready
-          set({ lastUpdated: Date.now() });
+          const { data } = await client.graphql({
+            query: LIST_PRODUCE_TYPES,
+            variables: {
+              filter: subcategoryId ? { subcategoryID: { eq: subcategoryId } } : undefined,
+              limit: 50
+            }
+          }) as { data: { listProduceTypes: { items: ProduceType[] } } };
+          
+          const types = data.listProduceTypes.items;
+          set({
+            types,
+            lastUpdated: Date.now(),
+          });
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'An error occurred' });
         } finally {

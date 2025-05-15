@@ -739,11 +739,20 @@ export const onCreateProduceType = /* GraphQL */ `
   ) {
     onCreateProduceType(filter: $filter) {
       id
-      subcategoryId
+      subcategoryID
       name
       description
       image
       icon
+      slug
+      iconUrl
+      tasteProfile
+      commonUses
+      tags
+      farmCountInApp
+      farmCountInZone
+      farmCountNearby
+      seasonalMonths
       createdAt
       updatedAt
       __typename
@@ -756,11 +765,20 @@ export const onUpdateProduceType = /* GraphQL */ `
   ) {
     onUpdateProduceType(filter: $filter) {
       id
-      subcategoryId
+      subcategoryID
       name
       description
       image
       icon
+      slug
+      iconUrl
+      tasteProfile
+      commonUses
+      tags
+      farmCountInApp
+      farmCountInZone
+      farmCountNearby
+      seasonalMonths
       createdAt
       updatedAt
       __typename
@@ -773,11 +791,20 @@ export const onDeleteProduceType = /* GraphQL */ `
   ) {
     onDeleteProduceType(filter: $filter) {
       id
-      subcategoryId
+      subcategoryID
       name
       description
       image
       icon
+      slug
+      iconUrl
+      tasteProfile
+      commonUses
+      tags
+      farmCountInApp
+      farmCountInZone
+      farmCountNearby
+      seasonalMonths
       createdAt
       updatedAt
       __typename

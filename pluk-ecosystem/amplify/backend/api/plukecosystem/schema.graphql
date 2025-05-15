@@ -284,11 +284,20 @@ type ProduceType @model @auth(rules: [
   { allow: groups, groups: ["Admins"] }
 ]) {
   id: ID!
-  subcategoryId: ID! @index(name: "bySubcategory")
+  subcategoryID: ID! @index(name: "bySubcategory")
   name: String!
   description: String
   image: String
   icon: String
+  slug: String
+  iconUrl: String
+  tasteProfile: [String]
+  commonUses: [String]
+  tags: [String]
+  farmCountInApp: Int
+  farmCountInZone: Int
+  farmCountNearby: Int
+  seasonalMonths: [String]
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }

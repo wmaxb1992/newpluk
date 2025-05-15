@@ -10,6 +10,14 @@
       "StackName": "amplify-plukecosystem-dev-01ea0",
       "StackId": "arn:aws:cloudformation:us-east-1:207091906014:stack/amplify-plukecosystem-dev-01ea0/1a2c2ec0-2d42-11f0-ae03-0affcf34068b",
       "AmplifyAppId": "d1e4crb9os1yrm"
+    },
+    "categories": {
+      "auth": {
+        "plukecosystem8896845f": {}
+      },
+      "api": {
+        "plukecosystem": {}
+      }
     }
   },
   "pluk": {
